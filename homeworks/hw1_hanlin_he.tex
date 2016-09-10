@@ -10,6 +10,7 @@
 \usepackage{algpseudocode}
 \usepackage{listings}
 \usepackage{enumitem}
+%\usepackage{pgfplots}
 
 \usetikzlibrary{automata,positioning}
 
@@ -83,8 +84,8 @@
     \exitProblemHeader{homeworkProblemCounter}
 }
 
-\newenvironment{homeworkSubProblem}[1][-1]{
-    \subsection{Part (\alph{homeworkSubProblemCounter})}
+\newenvironment{homeworkSubProblem}[1][]{
+    \subsection{{Part (\alph{homeworkSubProblemCounter}) #1}}
     \stepcounter{homeworkSubProblemCounter}
     %\setcounter{partCounter}{1}
 }{
@@ -168,6 +169,8 @@
     stringstyle=\color{orange},
 }
 
+
+
 \renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
 
 \newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case: }}
@@ -182,7 +185,7 @@
 \begin{homeworkProblem} %Running Time Analysis
 
 \begin{homeworkSubProblem}
-$\Theta(\log_2(n))$
+$\Theta\left(\log_2(n)\right)$
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}
@@ -209,7 +212,11 @@ Let $nodes(n)$ be the nodes number of a good binary tree $gbt$, $n$ is the leave
 
 Let us assume the induction hypothesis: for every $gbt$ with $i$ leaves, $0 < i \leq k$, assume $nodes(i) = 2i - 1$. We will prove $nodes(i+1) = 2(i+1)-1$.
 
-Since the tree is a $gbt$, every non-leaf node point two distinct $gbt$'s. If we want to add one leaves to the tree, we need to add two leaves to a leaf node, making the original leaf node a non-leaf node. Hence two nodes are added to the $gbt$, which mean $nodes(k+1) = nodes(k) + 2 = 2k - 1 + 2 = 2(k+1)-1$.
+Since the tree is a $gbt$, every non-leaf node point two distinct $gbt$'s. If we want to add one leaves to the tree, we need to add two leaves to a leaf node, making the original leaf node a non-leaf node. Hence two nodes are added to the $gbt$, which mean
+
+\begin{equation}
+nodes(k+1) = nodes(k) + 2 = 2k - 1 + 2 = 2(k+1)-1
+\end{equation}
 
 Thus establishes the claim for $k+1$.
 \\
@@ -234,8 +241,8 @@ Thus, the upper bound possible is $2n$.
 
 The Asymptotic Bounds are as follow:
 \begin{enumerate}[label=(\alph*)]
-\item \[\sum_{i=1}^{n}{\frac{n}{i}} = \Theta(n\log(n))\]
-\item \[\sum_{i=1}^{n}{i^3} = \Theta(\frac{n^2(n+1)^2}{4}) = \Theta(n^4)\]
+\item \[\sum_{i=1}^{n}{\frac{n}{i}} = \Theta\left(n\log(n)\right)\]
+\item \[\sum_{i=1}^{n}{i^3} = \Theta\left(\frac{n^2(n+1)^2}{4}\right) = \Theta\left(n^4\right)\]
 \item
 \[
 \begin{split}
@@ -246,6 +253,13 @@ The Asymptotic Bounds are as follow:
 & = \Theta(n) \\
 \end{split}
 \]
+\item
+\[\frac{2}{n} + \sqrt{n} + \log ^3 n = \Theta\left(n^{\frac{1}{2}}\right)\]
+
+\item
+\[Bits(n) = \log_2(10^n) = n \log_2(10) = \Theta(n)\]
+
+\item \[P(100) = \Theta(1)\]
 
 
 \end{enumerate}
@@ -254,19 +268,231 @@ The Asymptotic Bounds are as follow:
 
 
 \begin{homeworkProblem} %Ordering functions
-to-do
+\begin{itemize}
+\item $n^{\frac{7}{(2n)}}$
+\item $\cos{n} + 2$
+\item $\lg^*\left(\frac{n}{8}\right)$, $\lg^*\left(2^{2^{2^{n}}}\right)$
+\item $\lg^{(201)}n$
+\item $1+\lg\lg\lg n$
+\item $12 + \lfloor\lg\lg(n)\rfloor$
+\item $\sqrt{\lg n}$
+\item $\lg n$
+\item $(\lg^*n)^{\lg n}$
+\item $n^{3/2\lg n}$
+\item $n^{1/\lg\lg n}$
+\item $n^{\frac{1}{125}}$
+\item $n$, $2^{\lg n}$
+\item $n(\lg n)^4$
+\item $\sqrt{n}^e$
+\item $\sum_{i = 1}^n i$
+\item $n^{2.1}$
+\item $\sum_{i = 1}^n i^2$
+\item $n^{5}$
+\item $n^{\lg\lg n}$
+\item $(\lg(2+n))^{\lg n}$
+\item $\left(1+\frac{1}{154}\right)^{15n}$
+
+\end{itemize}
 \end{homeworkProblem}
 
 
 \begin{homeworkProblem} %UTD Parking
-to-do
+The pseudo-code:
+
+
+\begin{algorithm}[H]
+\caption{Count Number of Distinct Strings}\label{problem_5_alg}
+\begin{algorithmic}[1]
+\Procedure{P}{n}
+\If{$n=0$} \Comment{If there is no space left.}
+    \State \textbf{return} {$1$}
+\ElsIf{$n=1$} \Comment{If there is only $1$ space left.}
+    \State \textbf{return} {$1$}
+\Else \Comment{If there are more than $1$ spaces, then there are two ways to park.}
+    \State \textbf{return} {$P(n-1) + P(n-2)$}
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
 \end{homeworkProblem}
 
 
 \begin{homeworkProblem} %Bounding Recurrences
-to-do
+
+\begin{homeworkSubProblem}[$T(n)=2T(n/2)+n^4$]
+$T(n)=2T(n/2)+n^4$ indicates that at the $i$ recursive level, the total
+operations are:
+\[f_i(n) = 2^i\times\left(\frac{n}{2^i}\right)^4=\frac{n^4}{2^{3i}}\]
+
+The depth of the recursion tree is $\lg n$, hence, the total running time is:
+\[T(n) =\sum_{i=0}^{\lg n}f_i(n) = \sum_{i=0}^{\lg n}\frac{n^4}{2^{3i}}\]
+
+Now consider the ratio of successive level sums:
+
+\begin{equation*}
+r = \frac{f_{i+1}(n)}{f_i(n)}
+  = \cfrac{\cfrac{n^4}{2^{3(i+1)}}}{\cfrac{n^4}{2^{3i}}}
+  = \frac{1}{8}
+  < 1
+\end{equation*}
+
+Which means the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
+
+\begin{equation}
+T(n) = \Theta(n^4)
+\end{equation}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[$T(n)=16T(n/4)+n^2$]
+
+$T(n)=16T(n/4)+n^2$ indicates that at the $i$ recursive level, the total
+operations are:
+
+\begin{equation*}
+f_i(n) = 16^i*\left(\frac{n}{4^i}\right)^2=n^2
+\end{equation*}
+
+which is not related to the level $i$. As the depth of the recursion tree is $\log_4 n$, hence, the total running time is:
+
+\begin{equation} \label{eq:6.2.1}
+T(n)
+=\sum_{i=0}^{\log_4 n}f_i(n)
+= \sum_{i=0}^{\log_4 n}n^2
+= n^2 \log_4 n
+= \Theta(n^2\log n)
+\end{equation}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[$T(n)=2T(n/3)+T(n/4)+n$]
+
+Assume $T(n)=2T(n/3)+T(n/4)+n$ indicates that at the $i$ recursive level,
+the total operations are $f_i(n)$. We can write the $f_i(n)$ as:
+
+\begin{equation*}
+\begin{split}
+f_0(n) & = n ,\\
+f_1(n) & = \left(\frac{2}{3}+\frac{1}{4}\right) n
+         = \left(\frac{11}{12}\right) n ,\\
+f_2(n) & = \left(\frac{4}{3^2}+\frac{4}{3\times 4}+\frac{1}{4^2}\right) n
+         = \left(\frac{121}{144}\right) n
+         = \left(\frac{11}{12}\right)^2 n ,\\
+f_3(n) & = \left(\frac{8}{3^3}+\frac{12}{3^2\times 4}+\frac{6}{3\times 4^2}
+            +\frac{1}{4^3}\right) n
+         = \left(\frac{1331}{1728}\right) n
+         = \left(\frac{11}{12}\right)^3 n ,\\
+\dotso \\ %“other dots”
+%\xrightarrow[1]{aaa} f_i(n) & = \\
+\end{split}
+\end{equation*}
+
+According the pattern of $f_i(n)$ above, it is easy to conclude and prove
+by induction that the general form of $f_i(n)$ is:
+
+\begin{equation*}
+f_i(n) = \left(\frac{11}{12}\right)^i n \\
+\end{equation*}
+
+Now consider the ratio of successive level sums:
+
+\begin{equation*}
+r = \frac{f_{i+1}(n)}{f_i(n)}
+  = \cfrac{\left(\cfrac{11}{12}\right)^{i+1} n}{\left(\cfrac{11}{12}\right)^i n}
+  = \frac{11}{12}
+  < 1
+\end{equation*}
+
+Which means that the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
+
+\begin{equation} \label{eq:6.3}
+T(n) = \Theta(n)
+\end{equation}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[$T(n) = T(n-1) + \sqrt{n}$]
+
+$T(n) = T(n-1) + \sqrt{n}$ indicates that at the $i$ recursive level, the total operations are:
+
+\begin{equation*}
+f_i(n) = \sqrt{n-i}
+\end{equation*}
+
+The depth of the recursion tree is $n$, hence, the total running time is:
+
+\[T(n) =\sum_{i=0}^n f_i(n) = \sum_{i=0}^n \sqrt{n-i} = \sum_{i=1}^n \sqrt n\]
+
+Now consider the ratio of successive level sums:
+
+\begin{equation*}
+r = \frac{f_{i+1}(n)}{f_i(n)}
+  = \frac{\sqrt{n-i+1}}{\sqrt{n-i}}
+  < 1
+\end{equation*}
+
+Which means that the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
+
+\begin{equation} \label{eq:6.4}
+T(n) = \Theta(\sqrt n)
+\end{equation}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[$T(n)=3T(n/2)+5n$]
+$T(n)=3T(n/2)+5n$ indicates that at the $i$ recursive level, the total
+operations are:
+\begin{equation*}
+f_i(n) = 3^i\times\left(\frac{5n}{2^i}\right)
+       = \left(\frac{3}{2}\right)^i 5n
+\end{equation*}
+
+The depth of the recursion tree is $\lg n$, hence, the total running time is:
+
+\begin{equation*}
+T(n) =\sum_{i=0}^{\lg n}\left(\frac{3}{2}\right)^i 5n
+     =5n\sum_{i=0}^{\lg n}\left(\frac{3}{2}\right)^i
+\end{equation*}
+Now consider the ratio of successive level sums:
+
+\begin{equation*}
+r = \frac{f_{i+1}(n)}{f_i(n)}
+  = \cfrac{\left(\cfrac{3}{2}\right)^{i+1} 5n}{\left(\cfrac{3}{2}\right)^i 5n}
+  = \frac{3}{2}
+  > 1
+\end{equation*}
+
+Which means the total running time $T(n)$ is mainly decided by the $T(leaf)$, the last recursion's running time i.e.
+
+\begin{equation}
+T(n) = 5 \times 3^{\lg n}= \Theta(n^{\lg3})
+\end{equation}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[$T(n)=T(\sqrt{n})+7$]
+
+$T(n)=T(\sqrt{n})+7$ indicates that at the $i$ recursive level, the total operations are:
+
+\begin{equation*}
+f_i(n) = 7
+\end{equation*}
+
+The depth of the recursion tree is $n$, hence, the total running time is:
+
+\[T(n) =\sum_{i=0}^{\sqrt{n}} f_i(n) = \sum_{i=0}^{\sqrt{n}} 7\]
+
+In this case, the ratio of successive level sums is apparently $r = 1$, which means that the total running time $T(n)$ is mainly decided by the depth of the recursion tree.
+
+Assume the base case is $n=1$, $\sqrt[2i]{n}$, in which $i$ is a natural number representing the $ith$ recursion, will not reach $1$, though $\lim_{i=0}^{\infty} \sqrt[2i]{n}= 1$. Thus, the recursion will not reach base case, i.e.
+
+\begin{equation} \label{eq:6.6}
+T(n) = \Theta(\infty)
+\end{equation}
+
+\end{homeworkSubProblem}
+
 \end{homeworkProblem}
-
-
 
 \end{document}
