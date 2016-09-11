@@ -1,0 +1,27 @@
+\begin{homeworkProblem} %Asymptotic Bounds
+
+The Asymptotic Bounds are as follow:
+\begin{enumerate}[label=(\alph*)]
+\item \[\sum_{i=1}^{n}{\frac{n}{i}} = \Theta\left(n\log(n)\right)\]
+\item \[\sum_{i=1}^{n}{i^3} = \Theta\left(\frac{n^2(n+1)^2}{4}\right) = \Theta\left(n^4\right)\]
+\item
+\[
+\begin{split}
+\sum_{i=1}^{n}{\log(\frac{n}{i})} & = \sum_{i=1}^{n}({\log(n) - \log(i)}) \\
+& = \sum_{i=1}^{n}({\log(n)}) - \sum_{i=1}^{n}({\log(i)}) \\
+& = n\log(n) - \log n! \\
+& \approx n\log n - (n\log n - n) \\
+& = \Theta(n) \\
+\end{split}
+\]
+\item
+\[\frac{2}{n} + \sqrt{n} + \log ^3 n = \Theta\left(n^{\frac{1}{2}}\right)\]
+
+\item
+\[Bits(n) = \log_2(10^n) = n \log_2(10) = \Theta(n)\]
+
+\item \[P(100) = \Theta(1)\]
+
+\end{enumerate}
+
+\end{homeworkProblem}

@@ -1,0 +1,36 @@
+\begin{homeworkProblem} %Induction on Binary Trees
+\begin{homeworkSubProblem}
+
+\begin{proof}
+Let $nodes(n)$ be the nodes number of a good binary tree $gbt$, $n$ is the leaves number. We are required to prove $\forall n > 0 \text{, } nodes(n) = 2n-1$.
+
+\BaseCase $n=1$: The only node in the tree is the leaf itself. The tree has $2n-1 = 1$ node. Hence the claim holds true for $n=1$.
+
+\InductionStep Let $k > 1$ be an arbitrary natural number.
+
+Let us assume the induction hypothesis: for every $gbt$ with $i$ leaves, $0 < i \leq k$, assume $nodes(i) = 2i - 1$. We will prove $nodes(i+1) = 2(i+1)-1$.
+
+Since the tree is a $gbt$, every non-leaf node point two distinct $gbt$'s. If we want to add one leaves to the tree, we need to add two leaves to a leaf node, making the original leaf node a non-leaf node. Hence two nodes are added to the $gbt$, which mean
+
+\begin{equation}
+nodes(k+1) = nodes(k) + 2 = 2k - 1 + 2 = 2(k+1)-1
+\end{equation}
+
+Thus establishes the claim for $k+1$.
+\\
+
+By the principle of mathematical induction, the claim holds for all $n \in \mathbb{N}$.
+\end{proof}
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}
+
+It does not hold that a $bbt$ with $n > 0$ leaves, has $2n-1$ nodes in total.
+
+Consider removing one leaf from a $gbt$ only. The leaf's parent node now has one child point to a $bbt$, which is Null (i.e. the empty tree). Now there are $n-1$ leaves with $2n-2$ nodes, which indicates $nodes(n-1) = 2(n-1)$ for a $bbt$.
+
+Thus, the upper bound possible is $2n$.
+
+\end{homeworkSubProblem}
+\end{homeworkProblem}
