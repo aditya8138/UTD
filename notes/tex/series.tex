@@ -1,0 +1,67 @@
+
+\section{Series}
+\subsection{Some Definition}
+
+\begin{definition}
+Harmonic Series:
+\[\sum_{i=1}^n {\frac{1}{i}} = \Theta(\log(n))\]
+\end{definition}
+
+\begin{definition}
+Geometric Series:
+\[
+\sum_{i=0}^{n-1}{x^i} = \frac{x^n - 1}{x-1} =
+\begin{cases}
+\Theta(x^n) & \text{if } \forall x>1, \\
+\Theta(1) & \text{if } \forall x<1, \\
+\Theta(n) & \text{if } \forall x=1.
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}
+Arithmetic Series:
+\[\sum_{i=1}^n {i} = \frac{n(n+1)}{2} = \Theta(n^2)\]
+
+\end{definition}
+
+\subsection{Some Theorem}
+
+Suppose I want to know if $f(n) = o(g(n))$.
+
+\begin{theorem}
+If $\log(f(n)) = o(\log(g(n))$, then $f(n) = o(g(n))$.
+\end{theorem}
+
+Example: Let $f(n) = n^3$, $g(n) = 2^n$. Then $\log(f(n)) = \log(n^3) = 3\log(n)$, $\log(g(n)) = \log(2^n) = n$.
+\[\text{i.e. } \log(f(n)) < \log(g(n) \Rightarrow f(n) < g(n)\]
+
+\emph{Note that this theorem stands for `o', NOT TRUE for `$\mathcal{O}$'.}
+
+Example: $\log(n^3) = \mathcal{O}(\log(n^2))$, but $n^3 \neq \mathcal{O}(n^2)$.
+
+\section{Induction}
+\subsection{When to use?}
+Prove statement for all $n \in \mathbb{N}$, s.t. $n \geq n_0$.
+
+\subsection{Definition}
+Basically, induction has two parts:
+\begin{enumerate}
+\item {Base case(s) -- Sometimes there are more than one base cases.
+
+Prove statement for some $n$. -- Often $n_0 = 0 \text{ or } 1$.}
+
+\item {Induction Hypothesis
+
+Assume statement hold true for all $m \leq n$.
+
+Prove the hypothesis implies that it hold true for $n+1$.}
+\end{enumerate}
+
+Note that the process may be different from previous, which just hypothesize $n-1$ is true and prove for $n$.
+
+
+
+
+
+
