@@ -1,21 +1,26 @@
-\begin{homeworkProblem} %Bounding Recurrences
+\begin{homeworkProblem}[Bounding Recurrences]
 
-\begin{homeworkSubProblem}[$T(n)=2T(n/2)+n^4$]
+\begin{homeworkSubProblem}[$T(n)=2T(n/2)+n^4$]\label{sub6.1}
 $T(n)=2T(n/2)+n^4$ indicates that at the $i$ recursive level, the total
 operations are:
-\[f_i(n) = 2^i\times\left(\frac{n}{2^i}\right)^4=\frac{n^4}{2^{3i}}\]
+
+\begin{equation}
+f_i(n) = 2^i\times\left(\frac{n}{2^i}\right)^4=\frac{n^4}{2^{3i}}
+\end{equation}
 
 The depth of the recursion tree is $\lg n$, hence, the total running time is:
-\[T(n) =\sum_{i=0}^{\lg n}f_i(n) = \sum_{i=0}^{\lg n}\frac{n^4}{2^{3i}}\]
+
+\begin{equation}T(n) =\sum_{i=0}^{\lg n}f_i(n) = \sum_{i=0}^{\lg n}\frac{n^4}{2^{3i}}
+\end{equation}
 
 Now consider the ratio of successive level sums:
 
-\begin{equation*}
+\begin{equation}
 r = \frac{f_{i+1}(n)}{f_i(n)}
   = \cfrac{\cfrac{n^4}{2^{3(i+1)}}}{\cfrac{n^4}{2^{3i}}}
   = \frac{1}{8}
   < 1
-\end{equation*}
+\end{equation}
 
 Which means the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
 
@@ -30,9 +35,9 @@ T(n) = \Theta(n^4)
 $T(n)=16T(n/4)+n^2$ indicates that at the $i$ recursive level, the total
 operations are:
 
-\begin{equation*}
+\begin{equation}
 f_i(n) = 16^i*\left(\frac{n}{4^i}\right)^2=n^2
-\end{equation*}
+\end{equation}
 
 which is not related to the level $i$. As the depth of the recursion tree is $\log_4 n$, hence, the total running time is:
 
@@ -51,7 +56,7 @@ T(n)
 Assume $T(n)=2T(n/3)+T(n/4)+n$ indicates that at the $i$ recursive level,
 the total operations are $f_i(n)$. We can write the $f_i(n)$ as:
 
-\begin{equation*}
+\begin{equation}
 \begin{split}
 f_0(n) & = n ,\\
 f_1(n) & = \left(\frac{2}{3}+\frac{1}{4}\right) n
@@ -66,23 +71,23 @@ f_3(n) & = \left(\frac{8}{3^3}+\frac{12}{3^2\times 4}+\frac{6}{3\times 4^2}
 \dotso \\ %“other dots”
 %\xrightarrow[1]{aaa} f_i(n) & = \\
 \end{split}
-\end{equation*}
+\end{equation}
 
 According the pattern of $f_i(n)$ above, it is easy to conclude and prove
 by induction that the general form of $f_i(n)$ is:
 
-\begin{equation*}
-f_i(n) = \left(\frac{11}{12}\right)^i n \\
-\end{equation*}
+\begin{equation}
+f_i(n) = \left(\frac{11}{12}\right)^i n
+\end{equation}
 
 Now consider the ratio of successive level sums:
 
-\begin{equation*}
+\begin{equation}
 r = \frac{f_{i+1}(n)}{f_i(n)}
   = \cfrac{\left(\cfrac{11}{12}\right)^{i+1} n}{\left(\cfrac{11}{12}\right)^i n}
   = \frac{11}{12}
   < 1
-\end{equation*}
+\end{equation}
 
 Which means that the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
 
@@ -92,13 +97,13 @@ T(n) = \Theta(n)
 
 \end{homeworkSubProblem}
 
-\begin{homeworkSubProblem}[$T(n) = T(n-1) + \sqrt{n}$]
+\begin{homeworkSubProblem}[$T(n)=T(n-1)+\sqrt{n}$]
 
 $T(n) = T(n-1) + \sqrt{n}$ indicates that at the $i$ recursive level, the total operations are:
 
-\begin{equation*}
+\begin{equation}
 f_i(n) = \sqrt{n-i}
-\end{equation*}
+\end{equation}
 
 The depth of the recursion tree is $n$, hence, the total running time is:
 
@@ -106,11 +111,11 @@ The depth of the recursion tree is $n$, hence, the total running time is:
 
 Now consider the ratio of successive level sums:
 
-\begin{equation*}
+\begin{equation}
 r = \frac{f_{i+1}(n)}{f_i(n)}
   = \frac{\sqrt{n-i+1}}{\sqrt{n-i}}
   < 1
-\end{equation*}
+\end{equation}
 
 Which means that the total running time $T(n)$ is mainly decided by the $T(root)$, i.e.
 
@@ -123,25 +128,25 @@ T(n) = \Theta(\sqrt n)
 \begin{homeworkSubProblem}[$T(n)=3T(n/2)+5n$]
 $T(n)=3T(n/2)+5n$ indicates that at the $i$ recursive level, the total
 operations are:
-\begin{equation*}
+\begin{equation}
 f_i(n) = 3^i\times\left(\frac{5n}{2^i}\right)
        = \left(\frac{3}{2}\right)^i 5n
-\end{equation*}
+\end{equation}
 
 The depth of the recursion tree is $\lg n$, hence, the total running time is:
 
-\begin{equation*}
+\begin{equation}
 T(n) =\sum_{i=0}^{\lg n}\left(\frac{3}{2}\right)^i 5n
      =5n\sum_{i=0}^{\lg n}\left(\frac{3}{2}\right)^i
-\end{equation*}
+\end{equation}
 Now consider the ratio of successive level sums:
 
-\begin{equation*}
+\begin{equation}
 r = \frac{f_{i+1}(n)}{f_i(n)}
   = \cfrac{\left(\cfrac{3}{2}\right)^{i+1} 5n}{\left(\cfrac{3}{2}\right)^i 5n}
   = \frac{3}{2}
   > 1
-\end{equation*}
+\end{equation}
 
 Which means the total running time $T(n)$ is mainly decided by the $T(leaf)$, the last recursion's running time i.e.
 
@@ -155,13 +160,15 @@ T(n) = 5 \times 3^{\lg n}= \Theta(n^{\lg3})
 
 $T(n)=T(\sqrt{n})+7$ indicates that at the $i$ recursive level, the total operations are:
 
-\begin{equation*}
+\begin{equation}
 f_i(n) = 7
-\end{equation*}
+\end{equation}
 
 The depth of the recursion tree is $n$, hence, the total running time is:
 
-\[T(n) =\sum_{i=0}^{\sqrt{n}} f_i(n) = \sum_{i=0}^{\sqrt{n}} 7\]
+\begin{equation}
+T(n) =\sum_{i=0}^{\sqrt{n}} f_i(n) = \sum_{i=0}^{\sqrt{n}} 7
+\end{equation}
 
 In this case, the ratio of successive level sums is apparently $r = 1$, which means that the total running time $T(n)$ is mainly decided by the depth of the recursion tree.
 

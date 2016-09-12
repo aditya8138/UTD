@@ -1,11 +1,18 @@
-\begin{homeworkProblem} %Asymptotic Bounds
+\begin{homeworkProblem}[Asymptotic Bounds]
 
 The Asymptotic Bounds are as follow:
 \begin{enumerate}[label=(\alph*)]
-\item \[\sum_{i=1}^{n}{\frac{n}{i}} = \Theta\left(n\log(n)\right)\]
-\item \[\sum_{i=1}^{n}{i^3} = \Theta\left(\frac{n^2(n+1)^2}{4}\right) = \Theta\left(n^4\right)\]
 \item
-\[
+\begin{equation}
+\sum_{i=1}^{n}{\frac{n}{i}} = \Theta\left(n\log(n)\right)
+\end{equation}
+
+\item
+\begin{equation}\sum_{i=1}^{n}{i^3} = \Theta\left(\frac{n^2(n+1)^2}{4}\right) = \Theta\left(n^4\right)
+\end{equation}
+
+\item
+\begin{equation}
 \begin{split}
 \sum_{i=1}^{n}{\log(\frac{n}{i})} & = \sum_{i=1}^{n}({\log(n) - \log(i)}) \\
 & = \sum_{i=1}^{n}({\log(n)}) - \sum_{i=1}^{n}({\log(i)}) \\
@@ -13,15 +20,25 @@ The Asymptotic Bounds are as follow:
 & \approx n\log n - (n\log n - n) \\
 & = \Theta(n) \\
 \end{split}
-\]
-\item
-\[\frac{2}{n} + \sqrt{n} + \log ^3 n = \Theta\left(n^{\frac{1}{2}}\right)\]
+\end{equation}
 
 \item
-\[Bits(n) = \log_2(10^n) = n \log_2(10) = \Theta(n)\]
+\begin{equation}
+\frac{2}{n} + \sqrt{n} + \log ^3 n = \Theta\left(n^{\frac{1}{2}}\right)
+\end{equation}
 
-\item \[P(100) = \Theta(1)\]
+\item
+\begin{equation}
+Bits(n) = \log_2(10^n) = n \log_2(10) = \Theta(n)
+\end{equation}
+
+\item
+\begin{equation}
+P(100) = \Theta(1)
+\end{equation}
 
 \end{enumerate}
 
 \end{homeworkProblem}
+
+\pagebreak

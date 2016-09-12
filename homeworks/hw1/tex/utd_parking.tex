@@ -1,6 +1,5 @@
-\begin{homeworkProblem} %UTD Parking
-The pseudo-code:
-
+\begin{homeworkProblem}[UTD Parking]
+The recurrence is described in pseudo-code as followed:
 
 \begin{algorithm}[H]
 \caption{Count Number of Distinct Strings}\label{problem_5_alg}
@@ -10,7 +9,7 @@ The pseudo-code:
     \State \textbf{return} {$1$}
 \ElsIf{$n=1$} \Comment{If there is only $1$ space left.}
     \State \textbf{return} {$1$}
-\Else \Comment{If there are more than $1$ spaces, then there are two ways to park.}
+\Else \Comment{If there are more than $1$ space, then there are two ways to park.}
     \State \textbf{return} {$P(n-1) + P(n-2)$}
 \EndIf
 \EndProcedure
