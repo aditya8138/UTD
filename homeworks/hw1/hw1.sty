@@ -1,7 +1,7 @@
 \ProvidesPackage{hw1}
 
-\RequirePackage{fancyhdr}
 \RequirePackage{hyperref}
+\RequirePackage{fancyhdr}
 \RequirePackage{makeidx}
 \RequirePackage{extramarks}
 \RequirePackage{amsmath}
@@ -12,6 +12,7 @@
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
 \RequirePackage{enumitem}
+\RequirePackage{textcomp}
 
 \usetikzlibrary{automata,positioning}
 %
@@ -122,7 +123,7 @@
 }
 
 \newenvironment{homeworkSubProblem}[1][]{
-    \subsection{{Part (\alph{homeworkSubProblemCounter}) \texorpdfstring{#1}{#1}}}
+    \subsection{Part (\alph{homeworkSubProblemCounter}) {#1}}
     \stepcounter{homeworkSubProblemCounter}
     %\setcounter{partCounter}{1}
 }{
