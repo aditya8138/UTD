@@ -163,23 +163,23 @@ WHERE "Name" = 'Hanlin He';
 ------------------------------------------------------------------------------
 --1. Write following queries in SQL.
 ----a. For each department whose average employee salary is more than $30,000, retrieve the department name and the number of employees working for that department.
-SELECT DEPARTMENT."DNAME", COUNT(*) EMPLOYEE_NUMBER
+SELECT DEPARTMENT.DNAME, COUNT(*) EMPLOYEE_NUMBER
 FROM DEPARTMENT, EMPLOYEE
-WHERE DEPARTMENT."DNO" = EMPLOYEE."DNO"
+WHERE DEPARTMENT.DNO = EMPLOYEE.DNO
 GROUP BY DEPARTMENT."DNAME"
 HAVING AVG("SALARY") > 30000;
 
 ----b. Same as a, except output the number of male employees instead of the number of employees.
-SELECT D."DNAME", COUNT(*) MALE_EMPLOYEE_NUMBER
+SELECT D.DNAME, COUNT(*) MALE_EMPLOYEE_NUMBER
 FROM DEPARTMENT D, EMPLOYEE E
-WHERE D."DNO" = E."DNO"
-    AND E."SEX" = 'M'
-    AND D."DNO" IN (SELECT DEPARTMENT."DNO"
+WHERE D.DNO = E.DNO
+    AND E.SEX = 'M'
+    AND D.DNO IN (SELECT DEPARTMENT.DNO
                                 FROM DEPARTMENT, EMPLOYEE
-                                WHERE DEPARTMENT."DNO" = EMPLOYEE."DNO"
-                                GROUP BY DEPARTMENT."DNO"
+                                WHERE DEPARTMENT.DNO = EMPLOYEE.DNO
+                                GROUP BY DEPARTMENT.DNO
                                 HAVING AVG("SALARY") > 30000)
-GROUP BY D."DNAME";
+GROUP BY D.DNAME;
 
 
 ----c. Retrieve the names of all employees who work in the department that has the employee with the highest salary among all employees.
@@ -227,11 +227,11 @@ AS  SELECT D.DNAME DEPARTMENT_NAME, E.FNAME||' '||E.LNAME MGR_NAME, E.SALARY MGR
 ----b. A view that has the department name, its manager's name, number of employees working in that department, and the number of projects controlled by that department (for each department).
 CREATE VIEW MGR_INFO_2
 AS  SELECT D.DNAME, M.FNAME||' '||M.LNAME MGR_NAME, EMPLOYEES_NUM, PROJECT_NUM
-    FROM (DEPARTMENT D JOIN EMPLOYEE M ON D.MGRSSN = M.SSN) JOIN (
+    FROM (DEPARTMENT D JOIN EMPLOYEE M ON D.MGRSSN = M.SSN) FULL OUTER JOIN (
         SELECT DE.DNAME DEPARTMENT_NAME_E, COUNT(E.SSN) EMPLOYEES_NUM --get number of employees
         FROM DEPARTMENT DE, EMPLOYEE E
         WHERE DE.DNO = E.DNO
-        GROUP BY DE.DNAME) ON D.DNAME = DEPARTMENT_NAME_E JOIN (
+        GROUP BY DE.DNAME) ON D.DNAME = DEPARTMENT_NAME_E FULL OUTER JOIN (
             SELECT DP.DNAME DEPARTMENT_NAME_P, COUNT(P.PNO) PROJECT_NUM --get number of projects
             FROM DEPARTMENT DP, PROJECT P
             WHERE DP.DNO = P.DNO
