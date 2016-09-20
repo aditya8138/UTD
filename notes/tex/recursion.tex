@@ -1,9 +1,32 @@
 \section{Recursion (Divide \& Conquer)}
-\begin{enumerate}
+\begin{itemize}
 \item Recursion is like Induction's twin brother, whereas induction is similar to movie filmed, and recursion is similar to movie backward.
 \item Recursion design may be most important course topic.
 \item Recursion is a type of reduction. \footnote{Reduction is to solve problem A using a black box for B. Typically B is smaller.}
-\end{enumerate}
+\end{itemize}
 
 \subsection{Definition of Recursion: a Powerful type of reduction}
- dddd
+\begin{enumerate}
+\item[STEP 1] if problem size very small (think $\mathcal{O}(1)$), just solve it.
+\item[STEP 2] reduce to one or more small instances of some problem.
+\end{enumerate}
+
+\question How are the smaller (but not $\mathcal{O}(1)$ size) problem solved?
+
+Not your problem! Handled by the recursion fairy.
+
+\subsection{Tower of Hanoi}
+\begin{itemize}
+    \item 3 pegs, which hold n distinct sized disks.
+    \item initially $tmp$, $dst$ empty and $src$ has all disks sorted.
+    \item 3 rules:
+    \begin{enumerate}
+        \item larger cannot be placed on smaller.
+        \item only one disks can move at a time.
+        \item move all disks to $dst$.
+    \end{enumerate}
+\end{itemize}
+
+\question How long until the world end?
+
+\solution

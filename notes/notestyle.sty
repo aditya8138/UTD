@@ -56,11 +56,14 @@
 \DTMsetstyle{en-US}
 
 % Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{plain} % default
 \newtheorem{theorem}{Theorem}[subsection]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 %\newenvironment{Proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 
@@ -69,6 +72,12 @@
 \newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
 \newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
 \newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }
+
+
+\newcommand{\question}{\vspace{0.1in}\textbf{Question:}\ }
+
+% Alias for the Solution section header
+\newcommand{\solution}{\vspace{0.1in}\textbf{\large Solution}}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
