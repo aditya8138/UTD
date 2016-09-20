@@ -29,8 +29,7 @@
 % ADD PACKAGES here:
 %
 
-\RequirePackage{amsmath,amsfonts,graphicx}
-
+\RequirePackage{graphicx}
 \RequirePackage{fancyhdr}
 \RequirePackage{extramarks}
 \RequirePackage{amsmath}
@@ -40,6 +39,21 @@
 \RequirePackage[plain]{algorithm}
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
+\RequirePackage{enumitem}
+\RequirePackage{textcomp}
+
+%
+% Time Format Settings
+%
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
+% Use standard mappings for the time zones (if supported)
+\DTMlangsetup*{mapzone,zone=standard}
+\selectlanguage{american}
+\DTMsetstyle{en-US}
 
 % Use these for theorems, lemmas, proofs, etc.
 \newtheorem{theorem}{Theorem}[subsection]
@@ -48,7 +62,13 @@
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
-\newenvironment{Proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+%\newenvironment{Proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+\renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
+
+\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
+\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 

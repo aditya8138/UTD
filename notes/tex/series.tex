@@ -20,7 +20,9 @@ Geometric Series:
 \end{definition}
 
 \begin{definition}
+
 Arithmetic Series:
+
 \[\sum_{i=1}^n {i} = \frac{n(n+1)}{2} = \Theta(n^2)\]
 
 \end{definition}
@@ -42,6 +44,7 @@ Example: $\log(n^3) = \mathcal{O}(\log(n^2))$, but $n^3 \neq \mathcal{O}(n^2)$.
 
 \section{Induction}
 \subsection{When to use?}
+
 Prove statement for all $n \in \mathbb{N}$, s.t. $n \geq n_0$.
 
 \subsection{Definition}
@@ -60,7 +63,33 @@ Prove the hypothesis implies that it hold true for $n+1$.}
 
 Note that the process may be different from previous, which just hypothesize $n-1$ is true and prove for $n$.
 
+\subsection{Example}
+\subsubsection{Good Induction: Prove $\sum _{i=1}^n i = \frac{n(n+1)}{2}$}
 
+\begin{proof}
+We are required to prove $\forall n > 0 \text{, } \sum _{i=1}^n i = \frac{n(n+1)}{2}$.
+
+
+\BaseCase $n=1$, $\sum _{i=1}^1 i = 1 = \frac{1\times (1+1)}{2}$. Hence the claim holds true for $n=1$.
+
+\InductionStep Let $k > 1$ be an arbitrary natural number.
+
+Let us assume the induction hypothesis: for every $k < n$, assume $\sum _{i=1}^k i = \frac{k(k+1)}{2}$. We will prove $\sum _{i=1}^{k+1} i = \frac{(k+1)(k+2)}{2}$
+
+\begin{equation}
+\sum _{i=1}^{k+1} i = \left(\sum _{i=1}^{k} i \right) + (n+1)
+                    = \frac{k(k+1)}{2} + \frac{2(k+1)}{2}
+                    = \frac{(k+1)(k+2)}{2}
+\end{equation}
+
+Thus establishes the claim for $k+1$.
+
+\InductionConclusion By the principle of mathematical induction, the claim holds for all $n$.
+\end{proof}
+
+\subsubsection{Bad Induction: Prove all horses are the same color}
+
+The process is omitted. The key point is that: if the base case is not true for induction hypothesis, the induction will not be solid.
 
 
 

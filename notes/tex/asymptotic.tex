@@ -86,7 +86,7 @@ For $n_0 = 2^10$, $c = 1$,
 \end{split}
 \]
 
-$n_0 = 1$ ($n_0 = 2^{10}$) means $n$ is at least $1$ (or $2^10$).
+$n_0 = 1$ ($n_0 = 2^{10}$) means $n$ is at least $1$ (or $2^{10}$).
 \end{proof}
 
 \begin{corollary}
@@ -96,40 +96,47 @@ $\mathcal{O}(1)$ means \textbf{Any Constant}.
 \textbf{Attention}: \emph{Asymptotic notation has limit. It is not applicable for all scenarios}.
 
 \subsection{Properties of $\log(n)$}
-\definition{$n = C^{\log_c{n}}$, $c > 1$, $\lg{n} = \log_2{n}$, $\ln{n} = \log_e{n}$.}
+\definition{$n = C^{\log_c{n}}$, $c > 1$, dd $\lg{n} = \log_2{n}$, $\ln{n} = \log_e{n}$.}
 
-\begin{theorem}
-$\forall{a,b}  > 1$
-\[
+\begin{corollary}
+$\forall{a,b} > 1$
+
+\begin{equation}
 \begin{split}
 \log_b(n) & = \frac{\log_a(n)}{\log_a(b)} \\
 \log_b(n) & = \Theta({\log_a(n)}) \\
 \end{split}
-\]
-\end{theorem}
+\end{equation}
 
-\begin{theorem}
+\end{corollary}
+
+\begin{corollary}
 $\forall{a,b} \in \mathbb{R}$
-\[\begin{split}
-\log(a^n) & = n*\log(a)
-\\
-\log(a*b) & = \log(a) + \log(b))
-\\
-a^{\log(b)} & = b^{\log(a)}
-\\
-\end{split}\]
-\end{theorem}
 
-\theorem{$\lg(n)$ is to $n$ as n is to $2^n$.}
+\begin{equation}
+\begin{split}
+\log(a^n) & = n*\log(a) \\
+\log(a*b) & = \log(a) + \log(b)) \\
+a^{\log(b)} & = b^{\log(a)} \\
+\end{split}
+\end{equation}
+
+\end{corollary}
+
+\textup{\textbf{Note}: $\lg(n)$ is to $n$ as n is to $2^n$.}
 
 \subsection{Something More}
 
-\theorem{Let $f(n)$ be a polynomial function, then $\log(f(n)) = \Theta(\log(n))$.}
-\proof{The asymptotic result of $n^2$ and $n^10$ are the same.}
+\begin{theorem}
+Let $f(n)$ be a polynomial function, then $\log(f(n)) = \Theta(\log(n))$.
+\end{theorem}
+
+\begin{proof}
+The asymptotic result of $n^2$ and $n^10$ are the same.
+\end{proof}
 
 \begin{definition}
 $\log^*(n) = o(\log\log\log\log\log(n)) = \alpha$.
 \end{definition}
-
 
 Example: $\lg^*(2^{2^{2^{2^{2}}}}) = 5$.
