@@ -124,3 +124,54 @@ According to previous examples, we can summarize the general method to solve DP 
 \end{enumerate}
 
 \subsection{Longest Increasing Subsequence (LIS)}
+\subsubsection{Description of Problem}
+Input: Array $A[1...n]$ of integers.
+Output: Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}$ for all j.
+
+Warning: Subarray is ``contiguous''. So what is a subsequence?
+\begin{itemize}
+    \item if $n=0$, the onl subsequence is empty sequence.
+    \item otherwise, a subsequence is either
+    \begin{enumerate}
+        \item a subsequence of $A[2...n] or$,
+        \item $A[1]$ followed by the subsequence of $A[2...n]$.
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Analysis}
+Suggest recursive strategy for any array subsequence problem.
+\begin{itemize}
+    \item if empty, do nothing.
+    \item otherwise figure out whether to take $A[1]$ and let recursion fairy handle $A[2...n]$.
+\end{itemize}
+
+However, the definition of the subsequence is not fully recursive as stated, causing handling $A[2...n]$ depends on whether take $A[1]$.
+
+To fix it, define LIS subsequence with all elements greater than some value as follow.
+
+\begin{itemize}
+    \item LIS(prev, start) be the LIS in $A[start, n]$, s.t. all elements greater then $A[prev]$.
+    \item Augment A s.t $A[0] = -\infty$, then LIS of $A[1...n]$ is LIS(0, 1).
+\end{itemize}
+
+Note that the idea of adding a $A[0]$ maybe useful in many scenarios.
+
+\begin{algorithm}[H]
+\caption{Original Algorithm for LIS Problem}\label{ori_lis_alg}
+\begin{algorithmic}[1]
+\Procedure{LIS}{prev, start} \Comment{$prev < start$}
+\If{$start > n$}
+    \State \textbf{return} {$0$}
+\EndIf
+\State $ignore = LIS(prev, start +1)$
+\State best = ignore
+\If{$A[start] > A[prev]$}
+    \State $include = 1 + LIS(start, start+1)$
+    \If{include > ignore}
+        \State $best = include$
+    \EndIf
+\EndIf
+\State \textbf{return} {$best$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
