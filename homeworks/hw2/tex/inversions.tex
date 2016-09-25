@@ -1,0 +1,40 @@
+\begin{homeworkProblem}[Inversions (25 points)]
+    \begin{algorithm}
+        \caption{Count Inversion of two sorted arrays.} \label{count_inversion}
+        \begin{algorithmic}[1]
+            \Procedure{Count\_Inversions}{$A[1\ldots n+m]$, $B[1\ldots n]$, $C[1\ldots m]$}
+            \State$InversionsCount = 0$
+            \State$Bindex = 1$
+            \State$Cindex = 1$
+            \For{$Aindex = 1 \text{ to } n+m$}
+                \If{$Cindex > m$} \Comment{$C$ is exhausted.}
+                    \State $A[Aindex]= B[Bindex]$
+                    \State $Bindex++$
+                \ElsIf{$Bindex > n$} \Comment{$B$ is exhausted.}
+                    \State $A[Aindex] = C[Cindex]$
+                    \State $Cindex++$
+                \ElsIf{$B[index] < C[Cindex$]} \Comment{$B$ is smaller than $C$.}
+                    \State $A[Aindex] = B[Bindex]$
+                    \State $Bindex++$
+                \Else \Comment{$C$ is smaller than $B$, count inversions.}
+                    \State $A[Aindex] = C[Cindex]$
+                    \State $Cindex++$
+                    \State $InversionsCount = InversionsCount + (n - Aindex)$
+                \EndIf
+            \EndFor
+            \State \textbf{return} $InversionsCount$
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+    \begin{algorithm}
+        \caption{Sort and Count Inversions} \label{sort_and_count}
+        \begin{algorithmic}[1]
+            \Procedure{Sort\_and\_Count}{$A[1 \ldots n]$}
+                \If{$n>1$}
+                \State Sort\_and\_Count($A[1 \ldots \lfloor n/2 \rfloor]$)
+                \State Sort\_and\_Count($A[\lfloor n/2 \rfloor + 1 \ldots n]$)
+                \State Count\_Inversions($\overline{A}[1 \ldots n]$, $A[1 \ldots \lfloor n/2 \rfloor$, $A[\lfloor n/2 \rfloor + 1 \ldots n]$)
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+\end{homeworkProblem}
