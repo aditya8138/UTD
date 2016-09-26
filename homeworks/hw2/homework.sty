@@ -13,6 +13,8 @@
 \RequirePackage{listings}
 \RequirePackage{enumitem}
 \RequirePackage{textcomp}
+\RequirePackage{cleveref}
+
 
 \usetikzlibrary{automata,positioning}
 %
@@ -57,11 +59,11 @@
 % Basic Document Settings
 %
 
-\topmargin=-0.45in
+\topmargin=-0.6in
 \evensidemargin=0in
 \oddsidemargin=0in
 \textwidth=6.5in
-\textheight=9.0in
+\textheight=9.25in
 \headsep=0.25in
 
 \headheight=15pt
@@ -177,9 +179,12 @@
     stringstyle=\color{orange},
 }
 
-\renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
+\renewenvironment{proof}{{\textbf{Proof:}\qquad}}{\qedsymbol}
 
-\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
-\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
-\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }
-\algsetup{linenosize=\small}
+\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\qquad  }
+\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\qquad }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\qquad }
+
+%\algsetup{linenosize=\small}
+
+\newcommand{\Claim}{\vspace{0.1in}\textbf{Claim:}\qquad}
