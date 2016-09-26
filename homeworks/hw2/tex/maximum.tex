@@ -49,8 +49,7 @@ Observing \cref{recursive_max_sub_sum}, we can find that:
 
 Therefore, we can memorize \textsc{MaxSum} and \textsc{MaxEndAt} in each recursion.
 The memoized algorithm is shown in \cref{memoized_max_sub_sum}.
-
-Globally defined array $R[1 \ldots n]$ for \textsc{MemMaxSum} and $M[i \ldots n]$ for \textsc{MemMaxEndAt}.
+Globally defined array $R[1 \ldots n]$ and $M[i \ldots n]$.
 
 \begin{algorithm}[H]
     \caption{Memoized Solution to Maximum Sub-array Sum}\label{memoized_max_sub_sum}
@@ -79,7 +78,6 @@ Globally defined array $R[1 \ldots n]$ for \textsc{MemMaxSum} and $M[i \ldots n]
 
 To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MemMaxSum}$(A[1\ldots n])$.
 
-\vspace{0.1in}
 \textbf{Applying DP:\ }
 According to the previous observation, \textsc{MemMaxSum}$(A[1\ldots n])$ depends on two array 
 $R[1\ldots n]$ and $M[1\ldots n]$, each ranging over $\mathcal{O}(n)$ values, and is strictly
@@ -101,10 +99,11 @@ The dynamic programming algorithm is shown in \cref{dp_max_sub_sum}.
             \For{$i = 1$ to $n$}
                 \State $R[j] = \max\left\{M[i]\text{,\ }R[i-1])\right\}$
             \EndFor
+            \State \textbf{return }$R[n]$
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
 
-There are two for loop with $n$ iteration. Thus, the running time for \cref{dp_max_sub_sum} is $\mathcal{O}(n)$.
+With two for loop of $n$ iteration and constant time operations in each iteration, the running time for \cref{dp_max_sub_sum} is $\mathcal{O}(n)$.
 
 \end{homeworkProblem}

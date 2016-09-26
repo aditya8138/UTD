@@ -46,7 +46,7 @@ previous observation.
 ranging over $\mathcal{O}(n)$ values and the second over $\mathcal{O}(b)$
 values, since they are indices into $J[1\ldots n]$ and the size downgraded
 from $b$ respectively. Hence the above recursive algorithm can be turned
-into a DP algorithm using a 2D array, of total size\mathcal{O}$(nb)$.
+into a DP algorithm using a 2D array, of total size $\mathcal{O}(nb)$.
 \textsc{JCollection}$(CurN, CurB)$ makes at most two recursive calls to
 \textsc{JCollection}$(CurN+1, CurB)$ and
 \textsc{JCollection}$(CurN+1, CurB-V[CurN])$.
@@ -96,4 +96,7 @@ The dynamic programming solution to the problem is shown in \cref{recursive_jewe
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+With two for loop of $n$ and $b$ iterations and constant time operation in each iteration, the running time of \cref{recursive_jewelery_collection} is obviously $\mathcal{O}(nb)$.
+
 \end{homeworkProblem}

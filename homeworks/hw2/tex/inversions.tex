@@ -9,8 +9,8 @@ Consider \textsc{MergeSort}:
 
 So, when counting the inversions, we can also adopt similar method:
 \begin{enumerate}
-\item divides the array into two same size sub-array;
-\item recursively count inversions within each two sub-array;
+\item divide the array into two same size sub-arrays;
+\item recursively count inversions within each two sub-arrays;
 \item count inversions which one index comes from first sub-array and the other index comes
 second sub-array;
 \item combine the result.
@@ -24,7 +24,7 @@ According to the definition of inversion, if the $jth$ element in the second
 array is smaller than the $ith$ element of the first array, then there are $n - i$
 inversions.
 
-Therefore, the modified \textsc{Merge} is shown as \textsc{Count\_Inversions} in \cref{count_inversion}.
+According to the observation above, the modified \textsc{Merge} is shown as \textsc{Count\_Inversions} in \cref{count_inversion}.
 
 \begin{algorithm}[H]
     \caption{Modified Merge of two arrays.} \label{count_inversion}
@@ -45,7 +45,7 @@ Therefore, the modified \textsc{Merge} is shown as \textsc{Count\_Inversions} in
             \Else \Comment{$C$ is smaller than $B$, count inversions.}
                 \State $A[Aindex] = C[Cindex]$
                 \State $Cindex++$
-                \State $InversionsCount = InversionsCount + (n - Aindex)$
+                \State $InversionsCount = InversionsCount + (n - Bindex)$
             \EndIf
         \EndFor
         \State \textbf{return } $InversionsCount$
@@ -89,7 +89,7 @@ sub-array, we will get the result of inversions sum. Therefore, the modified
     If $n = 1$, the length of the array is $1$, obviously there is no inversion.
     Otherwise, divide the array from the middle into two sub-array. The total
     inversions of the array is the combination of the inversions number of the
-    first half and second half and those inversions whose indices split into two half.
+    first half and second half and those inversions whose indices split into two halves.
 
     Thus, sort and count the inversions within each sub-array respectively. Then merge two
     sub-array and count inversions which two indices split into to sub-array.
@@ -101,9 +101,12 @@ The \textsc{Sort\_and\_Count}$(A[1 \ldots n])$ is recursive, according to the al
 its running time can be expressed by a recurrence.
 
 \begin{equation}
-    T(n) = T(\lfloor n/2 \rfloor) + T(\lceil n/2 \rceil) + \mathcal{O}(n)
+\begin{split}
+    T(n) & = T(\lfloor n/2 \rfloor) + T(\lceil n/2 \rceil) + \mathcal{O}(n) \\
+         & = 2T(n/2) + \mathcal{O}(n) \\
+\end{split}
 \end{equation}
 
-Thus, the running time of \cref{sort_count_inversion} is $T(n) = \theta(n \log n)$
+Thus, the running time of \cref{sort_count_inversion} is $T(n) = \Theta(n \log n)$
 
 \end{homeworkProblem}
