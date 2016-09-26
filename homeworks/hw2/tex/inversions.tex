@@ -1,4 +1,4 @@
-\begin{homeworkProblem}[Inversions (25 points)]
+\begin{homeworkProblem}[Inversions]
 
 Consider \textsc{MergeSort}:
 
@@ -17,7 +17,7 @@ second sub-array;
 \end{enumerate}
 
 In the merge step of the \textsc{MergeSort}, the function combine the first half
-and the second half sub-array into one sorted array. Now we need to count the 
+and the second half sub-array into one sorted array. Now we need to count the
 inversions which one index comes from first sub-array, and the other index come
 from second sub-array. Consider the length of two arrays are $n$ and $m$.
 According to the definition of inversion, if the $jth$ element in the second
@@ -88,7 +88,7 @@ sub-array, we will get the result of inversions sum. Therefore, the modified
 \begin{proof}
     If $n = 1$, the length of the array is $1$, obviously there is no inversion.
     Otherwise, divide the array from the middle into two sub-array. The total
-    inversions of the array is the combination of the inversions number of the 
+    inversions of the array is the combination of the inversions number of the
     first half and second half and those inversions whose indices split into two half.
 
     Thus, sort and count the inversions within each sub-array respectively. Then merge two
