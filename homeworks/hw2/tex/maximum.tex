@@ -38,7 +38,10 @@ Thus, the recursive algorithm solving the maximum sub-array sum can be described
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
 To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MaxSum}$(A[1\ldots n])$.
+
+\pagebreak
 
 Observing \cref{recursive_max_sub_sum}, we can find that:
 \begin{itemize}
@@ -49,6 +52,7 @@ Observing \cref{recursive_max_sub_sum}, we can find that:
 
 Therefore, we can memorize \textsc{MaxSum} and \textsc{MaxEndAt} in each recursion.
 The memoized algorithm is shown in \cref{memoized_max_sub_sum}.
+
 Globally defined array $R[1 \ldots n]$ and $M[i \ldots n]$.
 
 \begin{algorithm}[H]
@@ -78,7 +82,10 @@ Globally defined array $R[1 \ldots n]$ and $M[i \ldots n]$.
 
 To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MemMaxSum}$(A[1\ldots n])$.
 
+\pagebreak
+\noindent
 \textbf{Applying DP:\ }
+
 According to the previous observation, \textsc{MemMaxSum}$(A[1\ldots n])$ depends on two array 
 $R[1\ldots n]$ and $M[1\ldots n]$, each ranging over $\mathcal{O}(n)$ values, and is strictly
 based on previous call. Hence the above recursive algorithm can be turned into a DP

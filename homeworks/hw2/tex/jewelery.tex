@@ -1,10 +1,10 @@
 \begin{homeworkProblem}[Starting A Jewelery Collection]
 
-    Consider how to handle the very first element (jewelery) of $J[1\ldots n]$ with the bag size $S$. Let $JCV(J[1\ldots n], S)$ be the max value to steal.
+    Consider how to handle the very first element (jewelery) of $J[1\ldots n]$ with the bag size $S$. 
 \begin{itemize}
     \item If $A$ is empty, there is no element to be taken, return $0$.
     \item If the size of the first element is bigger than the bag size, i.e. $V[1] > S$, the first element cannot be taken.
-        \[JCV(J[1\ldots n], S) = JCV(J[2\ldots n], S)\]
+        \[JCV\footnote{$JCV(J[1\ldots n], S)$ is the max value to achieve in jewelery set $J[1\ldots n]$ with $S$ size bag.}(J[1\ldots n], S) = JCV(J[2\ldots n], S)\]
     \item If the size of the first element is smaller than the bag size, i.e. $V[1] < S$, the first element can be either taken or thrown out.
         \[JCV(J[1\ldots n], S) = \max\left\{JCV(J[2\ldots n], S), JCV(J[2\ldots n], S - V[1])\right\}\]
 \end{itemize}
@@ -40,15 +40,17 @@ To find the maximum value of $J[1\ldots n]$ with $b$ size bag, we can call \text
 The correctness of \cref{recursive_jewelery_collection} can be proved by 
 previous observation.
 
-\pagebreak
+\vspace{1em}
+\noindent
 \textbf{Applying DP:\ }
 \textsc{JCollection}$(CurN, CurB)$ depends on two parameters, the first
 ranging over $\mathcal{O}(n)$ values and the second over $\mathcal{O}(b)$
 values, since they are indices into $J[1\ldots n]$ and the size downgraded
 from $b$ respectively. Hence the above recursive algorithm can be turned
 into a DP algorithm using a 2D array, of total size $\mathcal{O}(nb)$.
-\textsc{JCollection}$(CurN, CurB)$ makes at most two recursive calls to
-\textsc{JCollection}$(CurN+1, CurB)$ and
+
+\textsc{JCollection}$(CurN, CurB)$ makes at most two recursive calls 
+which are \textsc{JCollection}$(CurN+1, CurB)$ and
 \textsc{JCollection}$(CurN+1, CurB-V[CurN])$.
 In each case, at least one of the two parameters increases and the
 other does not decrease. Therefore, the 2D array can be filled in
