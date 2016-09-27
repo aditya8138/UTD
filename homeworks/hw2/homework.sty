@@ -1,5 +1,5 @@
 \ProvidesPackage{homework}
-
+\RequirePackage[letterpaper,top=1.2in, bottom=1.05in, left=0.8in, right=0.8in]{geometry}
 \RequirePackage{hyperref}
 \RequirePackage{fancyhdr}
 \RequirePackage{makeidx}
@@ -15,6 +15,8 @@
 \RequirePackage{textcomp}
 \RequirePackage{cleveref}
 
+%\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
+\RequirePackage[scaled=0.9]{DejaVuSansMono}
 
 \usetikzlibrary{automata,positioning}
 %
@@ -31,7 +33,6 @@
 \DTMsetstyle{en-US}
 
 %Setup hyperref package, and colours for links
-
 \definecolor{linkcolour}{rgb}{0,0.2,0.5}
 \hypersetup{
 %    bookmarks=true,         % show bookmarks bar?
@@ -49,6 +50,7 @@
     pdfnewwindow=true,      % links in new PDF window
     colorlinks=false,       % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor={1 0 0},
     citecolor=green,        % color of links to bibliography
     filecolor=magenta,      % color of file links
     urlcolor=cyan,           % color of external links
@@ -59,19 +61,19 @@
 % Basic Document Settings
 %
 
-\topmargin=-0.65in
-\evensidemargin=0in
-\oddsidemargin=0in
-\textwidth=6.5in
-\textheight=9.4in
-\headsep=0.25in
+%\topmargin=0in
+%\evensidemargin=0in
+%\oddsidemargin=0in
+%\textwidth=6.5in
+%\textheight=9.4in
+\headsep=0.2in
 
 \headheight=15pt
 
 \linespread{1.1}
 
 \pagestyle{fancy}
-\lhead{\hmwkAuthorName \footnotesize{(\hmwkAuthorNetID)}}
+\lhead{\setpalatino{\hmwkAuthorName \footnotesize{(\hmwkAuthorNetID)}}}
 \chead{\hmwkClass\ (\hmwkClassInstructor)}
 \rhead{\hmwkTitle}
 \lfoot{\lastxmark}
@@ -80,7 +82,7 @@
 \renewcommand\headrulewidth{0.2pt}
 \renewcommand\footrulewidth{0.2pt}
 
-\setlength\parindent{0pt}
+%\setlength\parindent{0pt}
 
 %
 % Create Problem Sections
@@ -150,7 +152,7 @@
 \newcommand{\dx}{\mathrm{d}x}
 
 % Alias for the Solution section header
-\newcommand{\solution}{\vspace{0.1in}\textbf{\large Solution}}
+\newcommand{\solution}{\vspace{0.1in}\noindent \textbf{\large Solution}}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
 \newcommand{\E}{\mathrm{E}}
@@ -179,12 +181,18 @@
     stringstyle=\color{orange},
 }
 
-\renewenvironment{proof}{{\textbf{Proof:}\qquad}}{\qedsymbol}
+\renewenvironment{proof}{{\vspace{0.1in}\noindent \textbf{Proof:}\qquad}}{\qedsymbol}
 
-\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\qquad  }
-\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\qquad }
-\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\qquad }
+\newcommand{\BaseCase}{\vspace{0.1in}\noindent \underline{Base Case:}\qquad  }
+\newcommand{\InductionStep}{\vspace{0.1in}\noindent \underline{Induction step:}\qquad }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\noindent \underline{Conclusion:}\qquad }
 
 %\algsetup{linenosize=\small}
 
-\newcommand{\Claim}{\vspace{0.1in}\textbf{Claim:}\qquad}
+\newcommand{\Claim}{\vspace{0.1in}\noindent \textbf{Claim:}\qquad}
+
+\algrenewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \texttt{\small{#1}}\normalsize{ \(\triangleleft\) }}
+
+\newcommand*{\setpalatino}{\fontfamily{ppl}\selectfont}
+
+\newcommand*{\ProcedureName}[1]{\textsc{#1}}
