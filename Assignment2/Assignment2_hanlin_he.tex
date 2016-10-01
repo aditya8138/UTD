@@ -1,0 +1,102 @@
+\documentclass[10pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{homework}
+%\usepackage{mathptmx}
+
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+
+\newcommand{\hmwkTitle}{Quiz\ \#2 }
+\DTMsavetimestamp{DueDate}{2016-09-15T22:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6360.003}
+\newcommand{\hmwkClassName}{Database Design}
+\newcommand{\hmwkClassInstructor}{Nurcan Yuruk}
+\newcommand{\hmwkAuthorName}{Hanlin He}
+\newcommand{\hmwkAuthorNetID}{hxh160630}
+\newcommand{\hmwkAuthorUTDEmail}{\href{mailto:hanlin.he@utdallas.edu}{hanlin.he@utdallas.edu}}
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ \hmwkAuthorUTDEmail}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\pagebreak
+
+\begin{homeworkProblem} %[How many copies of the book titled ``The Lost Tribe'' are owned by each libr怕·ary branch?]
+
+\begin{tabular}{lll}
+$BOOK\_INFO$ & $\leftarrow $ & $ BOOK \ \star \ BOOK\_COPIES$ \\
+$LIB\_BOOK\_INFO$ & $\leftarrow $ & $ BOOK\_INFO \ \star \ LIBRARY\_BRANCH$ \\
+$BOOK\_NEEDED$ & $\leftarrow $ & $ \sigma_{(Title = 'The Lost Tribe')}(LIB\_BOOK\_INFO)$ \\
+$RESULT$ & $\leftarrow $ & $ \pi\ _{Branch\_name,\ No\_of\_copies\ }( BOOK\_NEEDED )$ \\
+\end{tabular}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}%[Retrieve the names of all borrowers who do not have any books checked out.]
+
+\begin{tabular}{lll}
+$ BORROWER\_BOOK\_LOANS $ & $ \leftarrow $ & $  BOOK\_LOANS \ \star \ BORROWER $ \\
+$ BORROWED$ & $ \leftarrow $ & $  \pi\ _{Card\_no,\ Name}\ (BORROWER\_BOOK\_LOANS) $ \\
+$ ALL $ & $ \leftarrow $ & $  \pi\ _{Card\_no,\ Name}\ (BORROWER) $ \\
+$ NOT\_BORROWED\_INFO $ & $ \leftarrow $ & $  ALL\ -\ BORROWED $ \\
+$ RESULT$ & $ \leftarrow $ & $  \pi\ _{Name}\ (NOT\_BORROWED\_INFO) $ \\
+\end{tabular}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem} %[For each book that is loaned out from the ``Sharpstown'' branch and whose Due\_date is ``September 15, 2016'', retrieve the book title, the borrower\'s name, and the borrower\'s address.]
+
+\begin{tabular}{lll}
+$ LIB\_BOOK $ & $ \leftarrow $ & $  BOOK\_LOAN \ \star \ LIBRARY\_BRANCH $ \\
+$ LIB\_BOOK\_BORROW $ & $ \leftarrow $ & $  LIB\_BOOK \ \star \ BORROWER $ \\
+$ DESIRED\_INFO $ & $ \leftarrow $ & $  \sigma _{Branch\_name = 'Sharpstown' \text{ \textbf{AND} } Due\_date = September 15, 2016} (LIB\_BOOK\_BORROW) $ \\
+$ RESULT$ & $ \leftarrow $ & $  \pi\ _{Title,\ Name,\ Address} (DESIRED\_INFO) $ \\
+\end{tabular}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}%[For each library branch, retrieve the branch name and the total number of books loaned out from that branch.]
+
+\begin{tabular}{lll}
+$ LIB\_BOOK\_LOANS $ & $ \leftarrow $ & $  LIBRARY\_BRANCH \ \star \ BOOK\_LOANS $ \\
+$ RESULT $ & $ \leftarrow $ & $  \rho _{(Bname,\ Book\_loan\_num)} (_{Branch\_name\ } \mathcal{F}\ _{COUNT\ Book\_id} (LIB\_BOOK\_LOANS)) $\\
+\end{tabular}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}%[Retrieve the names, addresses, and number of books checked out for all borrowers who have more than five books checked out.]
+
+\begin{tabular}{lll}
+$ BRW\_BOOK\_LOANS $ & $ \leftarrow $ & $  BOOK\_LOANS\ \star\ BORROWER $ \\
+$ BRW\_LOANS\_NUM $ & $ \leftarrow $ & $  \rho _{(Name,\ Address,\ Book\_loan\_num)} (_{Name,\ Address\ } \mathcal{F}\ _{COUNT\ Book\_id} (BRW\_BOOK\_LOANS)) $ \\
+$ RESULT $ & $ \leftarrow $ & $  \sigma\ _{Book\_loan\_num\ >\ 5}\ (BRW\_LOANS\_NUM) $ \\
+\end{tabular}
+
+\end{homeworkProblem}
+
+\end{document}

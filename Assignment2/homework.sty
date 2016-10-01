@@ -1,0 +1,233 @@
+\ProvidesPackage{homework}
+
+%This package doesn’t do anything as long as your syntax is right.
+%Load the package in the first lines of your preamble (even before
+%the \documentclass command). It then checks for obsolete LaTeX
+%packages and outdated commands.
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\RequirePackage[letterpaper,margin=1in]{geometry}
+
+\RequirePackage{fancyhdr}
+\RequirePackage{makeidx}
+\RequirePackage{extramarks}
+
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amsfonts}
+
+\RequirePackage{tikz}
+
+%This package introduces the \includegraphics command, which is needed
+%for inserting figures.
+\RequirePackage{graphicx}
+
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+\RequirePackage{listings}
+
+\RequirePackage{enumitem}
+
+\RequirePackage{textcomp}
+
+%As a rule of thumb it should be loaded at the end of the preamble,
+%after all the other packages. A few exceptions exist, such as the
+%cleveref package that is also mentioned in this post. Hence, cleveref
+%should be loaded after hyperref.
+\RequirePackage{hyperref}
+
+%This package introduces the \cref command. When using this command
+%to make cross-references, instead of \ref or \eqref, a word is placed
+%in front of the reference according to the type of reference: fig.
+%for figures, eq. for equations
+\RequirePackage{cleveref}
+
+%\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
+\RequirePackage[scaled=0.8]{DejaVuSansMono}
+
+%The microtype package improves the spacing between words and letters.
+%It does a lot more and most people won’t notice the difference.
+%But still, the resulting document will be easier to read and looks
+%better when microtype is loaded. Load this package after fonts,
+%if any, as the package behavior is dependent on this font.
+\RequirePackage{microtype}
+
+\usetikzlibrary{automata,positioning}
+%
+% Time Format Settings
+%
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
+% Use standard mappings for the time zones (if supported)
+\DTMlangsetup*{mapzone,zone=standard}
+\selectlanguage{american}
+\DTMsetstyle{en-US}
+
+%Setup hyperref package, and colours for links
+\definecolor{linkcolour}{rgb}{0,0.2,0.5}
+\hypersetup{
+%    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={Homework for CS6363},    % title
+    pdfauthor={Hanlin He},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Hanlin He},   % creator of the document
+    %pdfproducer={Producer}, % producer of the document
+    pdfkeywords={Algorithm, Homework}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor={1 0 0},
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    plainpages=false,
+    pageanchor=false,       %put an anchor on every page
+}
+%
+% Basic Document Settings
+%
+
+%\topmargin=0in
+%\evensidemargin=0in
+%\oddsidemargin=0in
+%\textwidth=6.5in
+%\textheight=9.4in
+\headsep=0.2in
+
+\headheight=15pt
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName \footnotesize{(\hmwkAuthorNetID)}}
+\chead{\hmwkClass\ (\hmwkClassInstructor)}
+\rhead{\hmwkTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.2pt}
+\renewcommand\footrulewidth{0.2pt}
+
+%\setlength\parindent{0pt}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+\newcounter{homeworkSubProblemCounter}[homeworkProblemCounter]
+\setcounter{homeworkSubProblemCounter}{0}
+\nobreak\extramarks{Problem \alph{homeworkSubProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential.
+%
+\newenvironment{homeworkProblem}[1][]{
+    %\ifnum#1>0
+    %    \setcounter{homeworkProblemCounter}{#1}
+    %\fi
+    \section{Problem \arabic{homeworkProblemCounter} \texorpdfstring{#1}{#1}}
+    %\setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+    \stepcounter{homeworkSubProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+\newenvironment{homeworkSubProblem}[1][]{
+    \subsection{Part (\alph{homeworkSubProblemCounter}) {#1}}
+    \stepcounter{homeworkSubProblemCounter}
+    %\setcounter{partCounter}{1}
+}{
+}
+
+\numberwithin{equation}{homeworkProblemCounter}
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\vspace{0.1in}\noindent \textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+
+%
+% Java Code Display Settings
+%
+\lstdefinestyle{customJava}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=single,
+    xleftmargin=10pt,
+    language=Java,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    stringstyle=\color{orange},
+}
+
+\renewenvironment{proof}{{\vspace{0.1in}\noindent \textbf{Proof:}\qquad}}{\qedsymbol}
+
+\newcommand{\BaseCase}{\vspace{0.1in}\noindent \underline{Base Case:}\qquad  }
+\newcommand{\InductionStep}{\vspace{0.1in}\noindent \underline{Induction step:}\qquad }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\noindent \underline{Conclusion:}\qquad }
+
+%\algsetup{linenosize=\small}
+
+\newcommand{\Claim}{\vspace{0.1in}\noindent \textbf{Claim:}\qquad}
+
+\algrenewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \texttt{\footnotesize{#1}}\normalsize{ \(\triangleleft\) }}
+
+\newcommand*{\setpalatino}{\fontfamily{ppl}\selectfont}
+
+\newcommand*{\ProcedureName}[1]{\textsc{#1}}
