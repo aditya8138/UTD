@@ -1,7 +1,6 @@
-\documentclass[10pt,letterpaper,titlepage,en-US]{article}
+\documentclass[12pt,letterpaper,titlepage,en-US]{article}
 
 \usepackage{homework}
-%\usepackage{mathptmx}
 
 
 %
@@ -15,8 +14,8 @@
 %
 
 
-\newcommand{\hmwkTitle}{Quiz\ \#2 }
-\DTMsavetimestamp{DueDate}{2016-09-15T22:00:00-06:00}
+\newcommand{\hmwkTitle}{Homework\ \#2 }
+\DTMsavetimestamp{DueDate}{2016-10-02T23:59:59-06:00}
 \newcommand{\hmwkClass}{CS 6360.003}
 \newcommand{\hmwkClassName}{Database Design}
 \newcommand{\hmwkClassInstructor}{Nurcan Yuruk}
@@ -46,57 +45,105 @@
 
 \pagebreak
 
-\begin{homeworkProblem} %[How many copies of the book titled ``The Lost Tribe'' are owned by each libr怕·ary branch?]
+\begin{homeworkProblem}
+Retrieve the names of all employees in department 5 who work more than 10 hours per week on the ProductX project.
 
-\begin{tabular}{lll}
-$BOOK\_INFO$ & $\leftarrow $ & $ BOOK \ \star \ BOOK\_COPIES$ \\
-$LIB\_BOOK\_INFO$ & $\leftarrow $ & $ BOOK\_INFO \ \star \ LIBRARY\_BRANCH$ \\
-$BOOK\_NEEDED$ & $\leftarrow $ & $ \sigma_{(Title = 'The Lost Tribe')}(LIB\_BOOK\_INFO)$ \\
-$RESULT$ & $\leftarrow $ & $ \pi\ _{Branch\_name,\ No\_of\_copies\ }( BOOK\_NEEDED )$ \\
-\end{tabular}
-
-\end{homeworkProblem}
-
-\begin{homeworkProblem}%[Retrieve the names of all borrowers who do not have any books checked out.]
-
-\begin{tabular}{lll}
-$ BORROWER\_BOOK\_LOANS $ & $ \leftarrow $ & $  BOOK\_LOANS \ \star \ BORROWER $ \\
-$ BORROWED$ & $ \leftarrow $ & $  \pi\ _{Card\_no,\ Name}\ (BORROWER\_BOOK\_LOANS) $ \\
-$ ALL $ & $ \leftarrow $ & $  \pi\ _{Card\_no,\ Name}\ (BORROWER) $ \\
-$ NOT\_BORROWED\_INFO $ & $ \leftarrow $ & $  ALL\ -\ BORROWED $ \\
-$ RESULT$ & $ \leftarrow $ & $  \pi\ _{Name}\ (NOT\_BORROWED\_INFO) $ \\
-\end{tabular}
+\begin{align*}
+Works\_Project & \leftarrow Project \bowtie_{Pnumber = Pno} Works\_on \\
+Employee\_Works & \leftarrow  Employee \bowtie_{Ssn = Essn} Works\_Project \\
+Target\_Employee & \leftarrow \sigma_{Dno=5\text{ AND }Pname='ProductX'\text{ AND }Hours>10}(Employee\_Works) \\
+Result & \leftarrow \pi_{Fname,\ Minit,\ Lname} (Target\_Employee)
+\end{align*}
 
 \end{homeworkProblem}
 
-\begin{homeworkProblem} %[For each book that is loaned out from the ``Sharpstown'' branch and whose Due\_date is ``September 15, 2016'', retrieve the book title, the borrower\'s name, and the borrower\'s address.]
 
-\begin{tabular}{lll}
-$ LIB\_BOOK $ & $ \leftarrow $ & $  BOOK\_LOAN \ \star \ LIBRARY\_BRANCH $ \\
-$ LIB\_BOOK\_BORROW $ & $ \leftarrow $ & $  LIB\_BOOK \ \star \ BORROWER $ \\
-$ DESIRED\_INFO $ & $ \leftarrow $ & $  \sigma _{Branch\_name = 'Sharpstown' \text{ \textbf{AND} } Due\_date = September 15, 2016} (LIB\_BOOK\_BORROW) $ \\
-$ RESULT$ & $ \leftarrow $ & $  \pi\ _{Title,\ Name,\ Address} (DESIRED\_INFO) $ \\
-\end{tabular}
-
+\begin{homeworkProblem}
+List the names of all employees who have a dependent with the same first name as themselves.
+\begin{align*}
+    Employee\_Dependent & \leftarrow Employee \times Dependent \\
+    Target\_Employee & \leftarrow \sigma_{Ssn=Essn\text{ AND }Fname=Dependent\_name} (Employee\_Dependent) \\
+    Result & \leftarrow \pi_{Fname,\ Minit,\ Lname} (Target\_Employee)
+\end{align*}
 \end{homeworkProblem}
 
-\begin{homeworkProblem}%[For each library branch, retrieve the branch name and the total number of books loaned out from that branch.]
-
-\begin{tabular}{lll}
-$ LIB\_BOOK\_LOANS $ & $ \leftarrow $ & $  LIBRARY\_BRANCH \ \star \ BOOK\_LOANS $ \\
-$ RESULT $ & $ \leftarrow $ & $  \rho _{(Bname,\ Book\_loan\_num)} (_{Branch\_name\ } \mathcal{F}\ _{COUNT\ Book\_id} (LIB\_BOOK\_LOANS)) $\\
-\end{tabular}
-
+\begin{homeworkProblem}
+Find the names of all employees who are directly supervised by ‘Franklin Wong’.
+\begin{align*}
+    Manager & \leftarrow \sigma_{Fname='Franklin'\text{ AND }Lname='Wong'}(Employee) \\
+    Target\_Employee & \leftarrow Employee \bowtie_{Employee.Super\_ssn = Manager.Ssn}Manager \\
+    Result & \leftarrow \pi_{Fname,\ Minit,\ Lname}(Target\_Employee)
+\end{align*}
 \end{homeworkProblem}
 
-\begin{homeworkProblem}%[Retrieve the names, addresses, and number of books checked out for all borrowers who have more than five books checked out.]
+\begin{homeworkProblem}
+For each project, list the project name and the total hours per week (by all employees) spent on that project.
+\begin{align*}
+    Hours & \leftarrow \rho_{(Pnumber, Sum\_Hours)}(_{Pno}\mathcal{F}_{SUM\ Hours}(Works\_on)\\
+    Project\_Hours & \leftarrow Hours \star Project \\
+    Result & \leftarrow \pi_{Pname,\ Sum\_Hours}(Project\_Hours)
+\end{align*}
+\end{homeworkProblem}
 
-\begin{tabular}{lll}
-$ BRW\_BOOK\_LOANS $ & $ \leftarrow $ & $  BOOK\_LOANS\ \star\ BORROWER $ \\
-$ BRW\_LOANS\_NUM $ & $ \leftarrow $ & $  \rho _{(Name,\ Address,\ Book\_loan\_num)} (_{Name,\ Address\ } \mathcal{F}\ _{COUNT\ Book\_id} (BRW\_BOOK\_LOANS)) $ \\
-$ RESULT $ & $ \leftarrow $ & $  \sigma\ _{Book\_loan\_num\ >\ 5}\ (BRW\_LOANS\_NUM) $ \\
-\end{tabular}
+\begin{homeworkProblem}
+Retrieve the names of all employees who work on every project.
+\begin{align*}
+    Project\_Count & \leftarrow \rho_{(Count)}(\mathcal{F}_{COUNT\ Pnumber}(Project)) \\
+    Employee\_Project\_Count & \leftarrow \rho_{(Ssn,\ Count)}(_{Essn}\mathcal{F}_{COUNT\ Pno}(Works\_on)) \\
+    Target\_Employee & \leftarrow Project\_Count\ \star\ Employee\_Project\_Count \\
+    Target\_Employee\_Info & \leftarrow Target\_Employee\ \star\ Employee \\
+    Result & \leftarrow \pi_{Fname,\  Minit,\ Lname}(Target\_Employee\_Info)
+\end{align*}
+\end{homeworkProblem}
 
+\begin{homeworkProblem}
+Retrieve the names of all employees who do not work on any project.
+\begin{align*}
+    All\_ssn & \leftarrow \pi_{Ssn}(Employee) \\
+    Work\_ssn & \leftarrow \rho_{Ssn}(\pi_{Essn}(Work\_on)) \\
+    Not\_work\_ssn & \leftarrow All\_ssn - Work\_ssn \\
+    Target\_Eployee & \leftarrow Not\_work\_ssn\ \star\ Employee \\
+    Result & \leftarrow \pi_{Fname,\ Minit,\ Lname}(Target\_Employee)
+\end{align*}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+For each department, retrieve the department name and the average salary of all employees working in that department.
+\begin{align*}
+    Salary & \leftarrow \rho_{Dnum,\ Average\_Salary}(_{Dno}\mathcal{F}_{AVERAGE\ Salary}(Employee)) \\
+    Target & \leftarrow Salary\ \star\ Department \\
+    Result & \leftarrow \pi_{Dname,\ Average\_Salary}(Target)
+\end{align*}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+Retrieve the average salary of all female employees.
+\begin{align*}
+    Female\_Employee & \leftarrow \sigma_{Sex='Female'}(Employee) \\
+    Result & \leftarrow \rho_{Avg\_Salary}(\mathcal{F}_{AVERAGE\ Salary}(Female\_Employee))
+\end{align*}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+Find the names and addresses of all employees who work on at least one project located in Houston but whose department has no location in Houston.
+\begin{align*}
+    Houston\_Deparment & \leftarrow \pi_{Dnumber}(\sigma_{Dlocation = 'Houston'}(Department\ \star\ Dept\_Locations)) \\
+    Target\_Department & \leftarrow \rho_{Dno}(\pi_{Dnumber}(Department) - Houston\_Department) \\
+    Houston\_Project & \leftarrow \sigma_{Plocation = 'Houston'}(Project) \\
+    Works\_on\_Houston & \leftarrow \rho_{Ssn}(\pi_{Essn}(Works\_on \bowtie_{Pno = Pnumber} Houston\_Project)) \\
+    Target\_Employee & \leftarrow Employee\ \star\ Works\_on\_Houston\ \star\ Target\_Department \\
+    Result & \leftarrow \pi_{Fname,\ Minit,\ Lname,\ Address}(Target\_Employee)
+\end{align*}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+List the last names of all department managers who have no dependents.
+\begin{align*}
+    Manager\_ssn & \leftarrow \rho_{Ssn}(\pi_{Mgr\_ssn}(Department)) \\
+    Dependent\_ssn & \leftarrow \rho_{Ssn}(\pi_{Essn}(Dependent)) \\
+    Target\_Manager & \leftarrow Manager\_ssn - Dependent\_ssn \\
+    Result & \leftarrow \pi_{Lname}(Target\_Manager\ \star\ Employee) \\
+\end{align*}
 \end{homeworkProblem}
 
 \end{document}
