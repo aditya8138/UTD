@@ -9,9 +9,14 @@
 \RequirePackage[letterpaper,margin=1in]{geometry}
 
 \RequirePackage{fancyhdr}
+
 \RequirePackage{makeidx}
+
 \RequirePackage{extramarks}
 
+%
+% AMS packages.
+%
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amsfonts}
@@ -27,10 +32,17 @@
 
 \RequirePackage{listings}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %Font Settings.
+%
 %\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
-\RequirePackage[scaled=0.8]{DejaVuSansMono}
+\RequirePackage[scaled=0.8]{DejaVuSansMono} % Use DejaVu Sans Mono as typewriter font.
+
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
 
 %The microtype package improves the spacing between words and letters.
 %It does a lot more and most people won’t notice the difference.
@@ -38,6 +50,7 @@
 %better when microtype is loaded. Load this package after fonts,
 %if any, as the package behavior is dependent on this font.
 \RequirePackage{microtype}
+
 \RequirePackage{enumitem}
 
 \RequirePackage{textcomp}
@@ -58,14 +71,10 @@
 \RequirePackage{cleveref}
 
 \usetikzlibrary{automata,positioning}
+
 %
 % Time Format Settings
 %
-\RequirePackage[american]{babel}
-\RequirePackage[useregional,% use regional style instead of default ISO format
-            showzoneminutes=false,% don't show time zone minutes
-            showdow% show the day of week name if supported
-           ]{datetime2}
 % Use standard mappings for the time zones (if supported)
 \DTMlangsetup*{mapzone,zone=standard}
 \selectlanguage{american}
@@ -80,12 +89,12 @@
     pdfmenubar=true,        % show Acrobat’s menu?
     pdffitwindow=false,     % window fit to page when opened
     pdfstartview={FitH},    % fits the width of the page to the window
-    pdftitle={Homework for CS6363},    % title
+    %pdftitle={Homework},    % title
     pdfauthor={Hanlin He},     % author
-    pdfsubject={Subject},   % subject of the document
+    %pdfsubject={Subject},   % subject of the document
     pdfcreator={Hanlin He},   % creator of the document
     %pdfproducer={Producer}, % producer of the document
-    pdfkeywords={Algorithm, Homework}, % list of keywords
+    %pdfkeywords={Algorithm, Homework}, % list of keywords
     pdfnewwindow=true,      % links in new PDF window
     colorlinks=false,       % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links (change box color with linkbordercolor)
@@ -96,15 +105,11 @@
     plainpages=false,
     pageanchor=false,       %put an anchor on every page
 }
+
 %
 % Basic Document Settings
 %
 
-%\topmargin=0in
-%\evensidemargin=0in
-%\oddsidemargin=0in
-%\textwidth=6.5in
-%\textheight=9.4in
 \headsep=0.2in
 
 \headheight=15pt
@@ -220,18 +225,21 @@
     stringstyle=\color{orange},
 }
 
+%
+% Proof and induction command.
+%
 \renewenvironment{proof}{{\vspace{0.1in}\noindent \textbf{Proof:}\qquad}}{\qedsymbol}
 
 \newcommand{\BaseCase}{\vspace{0.1in}\noindent \underline{Base Case:}\qquad  }
 \newcommand{\InductionStep}{\vspace{0.1in}\noindent \underline{Induction step:}\qquad }
 \newcommand{\InductionConclusion}{\vspace{0.1in}\noindent \underline{Conclusion:}\qquad }
 
-%\algsetup{linenosize=\small}
-
 \newcommand{\Claim}{\vspace{0.1in}\noindent \textbf{Claim:}\qquad}
 
+% Renew the commit font to texttt.
 \algrenewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \texttt{\footnotesize{#1}}\normalsize{ \(\triangleleft\) }}
 
+% Set certain text into Palatino font
 \newcommand*{\setpalatino}{\fontfamily{ppl}\selectfont}
 
 \newcommand*{\ProcedureName}[1]{\textsc{#1}}
