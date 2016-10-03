@@ -1,0 +1,47 @@
+\begin{homeworkProblem}[Selection in sorted arrays]
+
+\begin{algorithm}[H]
+    \caption{Merge two sorted arrays and return the $kth$ element.} \label{selectK}
+    \begin{algorithmic}[1]
+        \Procedure{SelectK}{$A[1\ldots n]$, $B[1\ldots m]$, $k$}
+        \State \textbf{Define } $C[1\ldots n+m]$
+        \State$Aindex = 1$; $Bindex = 1$
+        \For{$Cindex = 1 \text{ to } n+m$}
+            \If{$Bindex > m$} \Comment{$B$ is exhausted.}
+                \State $C[Cindex]= A[Aindex]$
+                \State $Aindex++$
+            \ElsIf{$Aindex > n$} \Comment{$A$ is exhausted.}
+                \State $C[Cindex] = B[Bindex]$
+                \State $Bindex++$
+            \ElsIf{$A[Aindex] < B[Bindex$]} \Comment{$A$ is smaller than $B$.}
+                \State $C[Cindex] = A[Aindex]$
+                \State $Aindex++$
+            \Else \Comment{$B$ is smaller than $A$.}
+                \State $C[Cindex] = B[Bindex]$
+                \State $Bindex++$
+            \EndIf
+        \EndFor
+        \State \textbf{return } $C[k]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\Claim \textsc{SelectK}$(A[1\ldots n], B[1\ldots m], k)$ returns the $kth$
+ranked value in the union of the two arrays.
+
+\begin{proof}
+    Merge two array into one, sort this new array, then the $kth$ element
+    in this array is the $kth$ ranked value in the union of the two arrays.
+    The two array is sorted in the first place. Thus, in the For-Loop
+    shown in \cref{selectK}, the smaller element in two array is put into
+    the new array. Therefore, when the For-Loop finishes, the new array
+    would be a sorted array.
+
+    Thus, Return the $kth$ element in the new array will give the $kth$ ranked value
+    in the union of the two arrays.
+\end{proof}
+
+In \cref{selectK}, there is one For-Loop with only constant time operation in each loop.
+Thus the running time of \textsc{SelectK} is $\mathcal{O}(n+m)$.
+
+\end{homeworkProblem}

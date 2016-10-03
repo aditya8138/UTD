@@ -1,0 +1,19 @@
+\begin{homeworkProblem}[UTD Parking]
+The recurrence is described in pseudo-code as followed:
+
+\begin{algorithm}[H]
+\caption{Count Number of Distinct Strings}\label{problem_5_alg}
+\begin{algorithmic}[1]
+\Procedure{P}{n}
+\If{$n=0$} \Comment{If there is no space left.}
+    \State \textbf{return} {$1$}
+\ElsIf{$n=1$} \Comment{If there is only $1$ space left.}
+    \State \textbf{return} {$1$}
+\Else \Comment{If there are more than $1$ space, then there are two ways to park.}
+    \State \textbf{return} {$P(n-1) + P(n-2)$}
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\end{homeworkProblem}

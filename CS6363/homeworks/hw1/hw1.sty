@@ -1,0 +1,184 @@
+\ProvidesPackage{hw1}
+
+\RequirePackage{hyperref}
+\RequirePackage{fancyhdr}
+\RequirePackage{makeidx}
+\RequirePackage{extramarks}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amsfonts}
+\RequirePackage{tikz}
+\RequirePackage[plain]{algorithm}
+\RequirePackage{algpseudocode}
+\RequirePackage{listings}
+\RequirePackage{enumitem}
+\RequirePackage{textcomp}
+
+\usetikzlibrary{automata,positioning}
+%
+% Time Format Settings
+%
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
+% Use standard mappings for the time zones (if supported)
+\DTMlangsetup*{mapzone,zone=standard}
+\selectlanguage{american}
+\DTMsetstyle{en-US}
+
+%Setup hyperref package, and colours for links
+
+\definecolor{linkcolour}{rgb}{0,0.2,0.5}
+\hypersetup{
+%    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={Homework for CS6363},    % title
+    pdfauthor={Hanlin He},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Hanlin He},   % creator of the document
+    %pdfproducer={Producer}, % producer of the document
+    pdfkeywords={Algorithm, Homework}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    plainpages=false,
+    pageanchor=false,       %put an anchor on every page
+}
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\headheight=15pt
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName \footnotesize{(\hmwkAuthorNetID)}}
+\chead{\hmwkClass\ (\hmwkClassInstructor)}
+\rhead{\hmwkTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.2pt}
+\renewcommand\footrulewidth{0.2pt}
+
+\setlength\parindent{0pt}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+\newcounter{homeworkSubProblemCounter}[homeworkProblemCounter]
+\setcounter{homeworkSubProblemCounter}{0}
+\nobreak\extramarks{Problem \alph{homeworkSubProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential.
+%
+\newenvironment{homeworkProblem}[1][]{
+    %\ifnum#1>0
+    %    \setcounter{homeworkProblemCounter}{#1}
+    %\fi
+    \section{Problem \arabic{homeworkProblemCounter} \texorpdfstring{#1}{#1}}
+    %\setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+    \stepcounter{homeworkSubProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+\newenvironment{homeworkSubProblem}[1][]{
+    \subsection{Part (\alph{homeworkSubProblemCounter}) {#1}}
+    \stepcounter{homeworkSubProblemCounter}
+    %\setcounter{partCounter}{1}
+}{
+}
+
+\numberwithin{equation}{homeworkProblemCounter}
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\vspace{0.1in}\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+
+%
+% Java Code Display Settings
+%
+\lstdefinestyle{customJava}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=single,
+    xleftmargin=10pt,
+    language=Java,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    stringstyle=\color{orange},
+}
+
+\renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
+
+\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
+\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }

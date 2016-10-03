@@ -1,0 +1,177 @@
+\section{Dynamic Programming}
+
+\subsection{Rod Cutting}
+%\ProblemDescription
+
+\begin{itemize}
+\item steel rod of length $n$, where $n$ is some integer.
+\item $P[1...n]$, where $P[i]$ is market price for rod of length $i$.
+\end{itemize}
+
+\question
+
+Suppose you can cut rod to any integer length for free.
+How much money can you made?
+
+\analysis
+\begin{itemize}
+\item Consider leftmost cut of optimal solution.
+
+cut can be at positions $1...n$.
+
+If leftmost cut at $i$, then you get $P[i]$ for leftmost piece and then optimally sell remaining $n-i$ length rod.
+
+\item Don't know where to make first cut, so try them all and find
+\[\max\left(0, \max(P[i] + cutRod(n-i))\right)\]
+\end{itemize}
+
+So, the first attempt of the algorithm could be described as \cref{cutting_rod_raw_alg}.
+
+\begin{algorithm}[H]
+\caption{First Attempt of Solving Cutting Rod Problem}\label{cutting_rod_raw_alg}
+\begin{algorithmic}[1]
+\Procedure{CutRod}{n}
+\If{$n=0$} \Comment{If the remaining rod length is $0$.}
+    \State \textbf{return} {$0$}
+\EndIf
+\State $q=0$
+\For{$i=1 \text{ to } n$}
+    \State $q = \max\left(q, P[i]+\textsc{CutRod}(n-i)\right)$
+\EndFor
+\State \textbf{return} {$q$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, which is clearly \textbf{Exponential} since there are \underline{a lot of subproblem overlap}!
+
+\subsubsection{Memoized Version}
+\cref{cutting_rod_memoized_alg} illustrates the memoized version of the algorithm in \cref{cutting_rod_raw_alg}
+\begin{algorithm}[H]
+\caption{Memoized Version of Solving Cutting Rod Problem}\label{cutting_rod_memoized_alg}
+\begin{algorithmic}[1]
+\Procedure{MemRodCut}{n} \Comment{Globally define $R[1..n]$}
+\If{$n=0$}
+    \State \textbf{return} {$0$}
+\EndIf
+\If{$R[n]$ undefined}
+    \State $q=0$
+    \For{$i=1 \text{ to } n$}
+        \State $q = \max\left(q, P[i]+\textsc{MemRodCut}(n-i)\right)$
+    \EndFor
+    \State $R[n] = q$
+\EndIf
+\State \textbf{return} {$R[n]$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Note that $R[1...n]$ is filled in form \underline{left to right}.} It means we can store the result and use it later, which brings us to the dynamic programming version of the algorithm.
+
+\subsubsection{Dynamic Programming Version}
+\cref{cutting_rod_dp_alg} illustrates the dynamic programming version of the algorithm according to the memoized version \cref{cutting_rod_memoized_alg}.
+\begin{algorithm}[H]
+\caption{Dynamic Programming Version of Solving Cutting Rod Problem}\label{cutting_rod_dp_alg}
+\begin{algorithmic}[1]
+\Procedure{DPRodCut}{n}
+\State Let $R[0...n]$ be an array.
+\State $R[0] = 0$
+\For{$j = 1 \text{ to } n$}
+    \State $q = 0$
+    \For{$i = 0 \text{ to } j$}
+        \State $q = \max(q, P[i] + R[j-i])$
+    \EndFor
+    \State $R[i] = q$
+\EndFor
+\State \textbf{return} {$R[n]$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Running time of \cref{cutting_rod_dp_alg}: $T(n) = \mathcal{O}(n^2)$.
+
+Note that the process only computes the total number. If we are to know how to cut, we can store the cutting position during the progress.
+
+Define $C[1...n]$, and replace the inner for loop in \cref{cutting_rod_dp_alg} as:
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\For{$i = 0 \text{ to } j$}
+    \State $q = \max(q, P[i] + R[j-i])$
+    \State $C[j] = i$
+\EndFor
+\State $R[i] = q$
+\end{algorithmic}
+\end{algorithm}
+
+The for loop does the following:
+\begin{itemize}
+\item $C[j]$ stores last leftmost cut length for rod of length $j$.
+\item $C[n]$ says where to make first
+\end{itemize}
+
+Thus $C[n - C[n]]$ tells the second cut.
+
+\subsection{Solving DP problem}
+According to previous examples, we can summarize the general method to solve DP problem.
+
+\begin{enumerate}
+\item Write recursive solution, explain why the solution is correct.
+\item Identify all subproblems considered.
+\item Described how to store subproblems.
+\item Find order to evaluate subproblems, s.t. subproblems you depend on evaluated \textbf{\textit{before}} current subproblem.
+\item Running Time: time to fill an entry X size table.
+\item Write DP/Memoized algorithm.
+\end{enumerate}
+
+\subsection{Longest Increasing Subsequence (LIS)}
+\subsubsection{Description of Problem}
+Input: Array $A[1...n]$ of integers.
+Output: Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}$ for all j.
+
+Warning: Subarray is ``contiguous''. So what is a subsequence?
+\begin{itemize}
+    \item if $n=0$, the onl subsequence is empty sequence.
+    \item otherwise, a subsequence is either
+    \begin{enumerate}
+        \item a subsequence of $A[2...n] or$,
+        \item $A[1]$ followed by the subsequence of $A[2...n]$.
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Analysis}
+Suggest recursive strategy for any array subsequence problem.
+\begin{itemize}
+    \item if empty, do nothing.
+    \item otherwise figure out whether to take $A[1]$ and let recursion fairy handle $A[2...n]$.
+\end{itemize}
+
+However, the definition of the subsequence is not fully recursive as stated, causing handling $A[2...n]$ depends on whether take $A[1]$.
+
+To fix it, define LIS subsequence with all elements greater than some value as follow.
+
+\begin{itemize}
+    \item LIS(prev, start) be the LIS in $A[start, n]$, s.t. all elements greater then $A[prev]$.
+    \item Augment A s.t $A[0] = -\infty$, then LIS of $A[1...n]$ is LIS(0, 1).
+\end{itemize}
+
+Note that the idea of adding a $A[0]$ maybe useful in many scenarios.
+
+\begin{algorithm}[H]
+\caption{Original Algorithm for LIS Problem}\label{ori_lis_alg}
+\begin{algorithmic}[1]
+\Procedure{LIS}{prev, start} \Comment{$prev < start$}
+\If{$start > n$}
+    \State \textbf{return} {$0$}
+\EndIf
+\State $ignore = LIS(prev, start +1)$
+\State best = ignore
+\If{$A[start] > A[prev]$}
+    \State $include = 1 + LIS(start, start+1)$
+    \If{include > ignore}
+        \State $best = include$
+    \EndIf
+\EndIf
+\State \textbf{return} {$best$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

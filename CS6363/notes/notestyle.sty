@@ -1,0 +1,91 @@
+\ProvidesPackage{notestyle}
+
+%
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani.  When preparing
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+
+
+%
+% ADD PACKAGES here:
+%
+
+\RequirePackage{graphicx}
+\RequirePackage{fancyhdr}
+\RequirePackage{extramarks}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amsfonts}
+\RequirePackage{tikz}
+\RequirePackage[plain]{algorithm}
+\RequirePackage{algpseudocode}
+\RequirePackage{listings}
+\RequirePackage{enumitem}
+\RequirePackage{textcomp}
+\RequirePackage{cleveref}
+
+%
+% Time Format Settings
+%
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
+% Use standard mappings for the time zones (if supported)
+\DTMlangsetup*{mapzone,zone=standard}
+\selectlanguage{american}
+\DTMsetstyle{en-US}
+
+% Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{plain} % default
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+%\newenvironment{Proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+\renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
+
+\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
+\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }
+
+
+\newcommand{\question}{\vspace{0.1in}\textbf{Question:}\ }
+\newcommand{\analysis}{\vspace{0.1in}\textbf{Analysis:}\ }
+
+\newcommand{\ProblemDescription}{\vspace{0.1in}\textbf{Problem Description:}\ }
+
+% Alias for the Solution section header
+\newcommand{\solution}{\vspace{0.1in}\textbf{\large Solution}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+% Useful for algorithms
+\newcommand{\alg}[1]{{\bfseries \footnotesize #1}}

@@ -1,0 +1,112 @@
+\begin{homeworkProblem}[Inversions]
+
+Consider \textsc{MergeSort}:
+
+\begin{quote}
+    The procedure first divides the array into two same size sub-array, recursively
+    sort each sub-array, and then merge two sorted sub-array.
+\end{quote}
+
+So, when counting the inversions, we can also adopt similar method:
+\begin{enumerate}
+\item divide the array into two same size sub-arrays;
+\item recursively count inversions within each two sub-arrays;
+\item count inversions which one index comes from first sub-array and the other index comes
+second sub-array;
+\item combine the result.
+\end{enumerate}
+
+In the merge step of the \textsc{MergeSort}, the function combine the first half
+and the second half sub-array into one sorted array. Now we need to count the
+inversions which one index comes from first sub-array, and the other index come
+from second sub-array. Consider the length of two arrays are $n$ and $m$.
+According to the definition of inversion, if the $jth$ element in the second
+array is smaller than the $ith$ element of the first array, then there are $n - i$
+inversions.
+
+According to the observation, the modified \textsc{Merge} is shown as \textsc{Count\_Inversions} in \cref{count_inversion}.
+
+\begin{algorithm}[H]
+    \caption{Modified Merge of two arrays.} \label{count_inversion}
+    \begin{algorithmic}[1]
+        \Procedure{Count\_Inversions}{$A[1\ldots n+m]$, $B[1\ldots n]$, $C[1\ldots m]$}
+        \State$InversionsCount = 0$
+        \State$Bindex = 1$; $Cindex = 1$
+        \For{$Aindex = 1 \text{ to } n+m$}
+            \If{$Cindex > m$} \Comment{$C$ is exhausted.}
+                \State $A[Aindex]= B[Bindex]$
+                \State $Bindex++$
+            \ElsIf{$Bindex > n$} \Comment{$B$ is exhausted.}
+                \State $A[Aindex] = C[Cindex]$
+                \State $Cindex++$
+            \ElsIf{$B[Bindex] < C[Cindex$]} \Comment{$B$ is smaller than $C$.}
+                \State $A[Aindex] = B[Bindex]$
+                \State $Bindex++$
+            \Else \Comment{$C$ is smaller than $B$, count inversions.}
+                \State $A[Aindex] = C[Cindex]$
+                \State $Cindex++$
+                \State $InversionsCount = InversionsCount + (n - Bindex)$
+            \EndIf
+        \EndFor
+        \State \textbf{return } $InversionsCount$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+In \cref{count_inversion}, there is one For-Loop with only constant time operation
+in each loop. Thus the running time of \textsc{Count\_Inversion} is $\mathcal{O}(n)$.
+
+Based on \cref{count_inversion}, if we recursively sort and count inversions in two
+sub-array, we will get the result of inversions sum. Therefore, the modified
+\textsc{MergeSort} is shown as \textsc{Sort\_and\_Count} in \cref{sort_count_inversion}.
+
+\begin{algorithm}[H]
+    \caption{Count inversion of an array.} \label{sort_count_inversion}
+    \begin{algorithmic}[1]
+        \Procedure{Sort\_and\_Count}{$A[1 \ldots n]$}
+            \State \textbf{Define} $\overline{A}[1 \ldots n]$ as working buffer for merge.
+            \If{$n = 1$} \Comment{Only one element in the array, no inversions exist.}
+                \State \textbf{return} 0
+            \Else \Comment{if $n>1$}
+                \State $left\_inversion=$\Call{Sort\_and\_Count}{$A[1 \ldots \lfloor n/2 \rfloor]$}
+                    \\\Comment{Sort and count inversions within the first half subarray.}\\
+                \State $right\_inversion=$\Call{Sort\_and\_Count}{$A[\lfloor n/2 \rfloor + 1 \ldots n]$}
+                    \\\Comment{Sort and count inversions within the second half subarray.}\\
+                \State $split\_inversion=$\Call{Count\_Inversions}{$\overline{A}[1 \ldots n]$, $A[1 \ldots \lfloor n/2 \rfloor$, $A[\lfloor n/2 \rfloor + 1 \ldots n]$}
+                    \\\Comment{Merge two sorted subarray and count inversions between two subarrays.}\\
+                \State $A[1 \ldots n] \leftarrow \overline{A}[1 \ldots n]$
+                    \Comment{Copy buffer array to the original array.}
+            \EndIf
+        \State \textbf{return } $left\_inversion + right\_inversion + split\_inversion$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+\Claim \textsc{Sort\_and\_Count}$(A[1 \ldots n])$ returns the number of inversions of array $A[1 \ldots n]$.
+
+\begin{proof}
+    If $n = 1$, the length of the array is $1$, obviously there is no inversion.
+    Otherwise, divide the array from the middle into two sub-array. The total
+    inversions of the array is the combination of the inversions number of the
+    first half and second half and those inversions whose indices split into two halves.
+
+    Thus, sort and count the inversions within each sub-array respectively. Then merge two
+    sub-array and count inversions which two indices split into to sub-array.
+    Together, we can easily prove using induction that the combination of
+    three result is the total number of inversions in the array.
+\end{proof}
+
+The \textsc{Sort\_and\_Count}$(A[1 \ldots n])$ is recursive, according to the algorithm,
+its running time can be expressed by a recurrence.
+
+\begin{equation}
+\begin{split}
+    T(n) & = T(\lfloor n/2 \rfloor) + T(\lceil n/2 \rceil) + \mathcal{O}(n) \\
+         & = 2T(n/2) + \mathcal{O}(n) \\
+\end{split}
+\end{equation}
+
+Thus, the running time of \cref{sort_count_inversion} is $T(n) = \Theta(n \log n)$
+
+\end{homeworkProblem}

@@ -1,0 +1,115 @@
+\begin{homeworkProblem}[Maximum Subarray Sum]
+
+Let $maxSum(i, j)$ be the maximum sub-array sum in $A[i \ldots j]$, there are two cases:
+\begin{itemize}
+    \item $maxSum(i, j)$ does not include $A[j]$, then
+        \[maxSum(i,j) = maxSum(i, j-1)\]
+    \item $maxSum(i, j)$ does include $A[j]$, then
+        \[maxSum(i,j) = maxEndAt(i, j)\]
+    in which $maxEndAt(i, j)$ is the max sub-array sum in $A[i \ldots j]$ restricted to include $A[j]$.
+\end{itemize}
+
+There are again two cases for $maxEndAt(i, j)$:
+\begin{itemize}
+    \item $maxEndAt(i, j)$ is the element $A[j]$ itself, i.e.
+        \[maxEndAt(i, j) = A[j]\]
+    \item $maxEndAt(i, j)$ is the element $A[j]$ plus $maxEndAt(i, j-1)$, i.e.
+        \[maxEndAt(i, j) = A[j] +maxEndAt(i, j-1)\]
+\end{itemize}
+
+Thus, the recursive algorithm solving the maximum sub-array sum can be described as 
+\cref{recursive_max_sub_sum}.
+
+\begin{algorithm}[H]
+    \caption{Recursive Solution to Maximum Sub-array Sum} \label{recursive_max_sub_sum}
+    \begin{algorithmic}[1]
+        \Procedure{MaxSum}{$A[i\ldots j]$}
+            \If{$i>j$}
+                \State \textbf{return } $0$
+            \EndIf
+            \State \textbf{return }$\max\left\{\text{\textsc{MaxEndAt}}(A[i\ldots j])\text{,\ }\text{\textsc{MaxSum}}(A[i\ldots j-1])\right\}$
+        \EndProcedure
+        \\\hrulefill
+        \Procedure{MaxEndAt}{$A[i\ldots j]$}
+            \If{$i>j$}
+                \State \textbf{return } $0$
+            \EndIf
+            \State \textbf{return } $\max\left\{A[j]\text{,\ }A[j] + \text{\textsc{MaxEndAt}}(A[i\ldots j-1]) \right\}$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MaxSum}$(A[1\ldots n])$.
+
+\pagebreak
+
+Observing \cref{recursive_max_sub_sum}, we can find that:
+\begin{itemize}
+    \item In \textsc{MaxEndAt}, each recursion is strictly based on the previous call,
+        \\i.e. \textsc{MaxEndAt}$(i, j)$ is strictly based on \textsc{MaxEndAt}$(i, j-1)$.
+    \item In \textsc{MaxSum}, each recursion is strictly based on the previous call and \textsc{MaxEndAt}, \\i.e. \textsc{MaxSum}$(i, j)$ is strictly based on \textsc{MaxSum}$(i, j-1)$ and \textsc{MaxEndAt}$(i, j)$.
+\end{itemize}
+
+Therefore, we can memorize \textsc{MaxSum} and \textsc{MaxEndAt} in each recursion.
+The memoized algorithm is shown in \cref{memoized_max_sub_sum}.
+
+Globally defined array $R[1 \ldots n]$ and $M[i \ldots n]$.
+
+\begin{algorithm}[H]
+    \caption{Memoized Solution to Maximum Sub-array Sum}\label{memoized_max_sub_sum}
+    \begin{algorithmic}[1]
+        \Procedure{MemMaxSum}{$A[i\ldots j]$}
+            \If{$i>j$}
+                \State \textbf{return } $0$
+            \EndIf
+            \If{$R[j]$ undefined}
+            \State $R[j] = \max\left\{\text{\textsc{MemMaxEndAt}}(A[i\ldots j])\text{,\ }\text{\textsc{MemMaxSum}}(A[i\ldots j-1])\right\}$
+            \EndIf
+            \State \textbf{return } $R[j]$
+        \EndProcedure
+        \\\hrulefill
+        \Procedure{MemMaxEndAt}{$A[i\ldots j]$}
+            \If{$i>j$}
+                \State \textbf{return } $0$
+            \EndIf
+            \If{$M[j]$ undefined}
+            \State $M[j] = \max\left\{A[j]\text{,\ }A[j] + \text{\textsc{MemMaxEndAt}}(A[i\ldots j-1])\right\}$
+            \EndIf
+            \State \textbf{return } $M[j]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MemMaxSum}$(A[1\ldots n])$.
+
+\pagebreak
+\noindent
+\textbf{Applying DP:\ }
+According to the previous observation, \textsc{MemMaxSum}$(A[1\ldots n])$ depends on two array 
+$R[1\ldots n]$ and $M[1\ldots n]$, each ranging over $\mathcal{O}(n)$ values, and is strictly
+based on previous call. Hence the above recursive algorithm can be turned into a DP
+algorithm using this two array. The array can be filled starting at $1$ and going up to $n$.
+First the $M[1\ldots n]$, then the $R[1\dots n]$.
+
+The dynamic programming algorithm is shown in \cref{dp_max_sub_sum}.
+
+\begin{algorithm}[H]
+    \caption{Dynamic Programming Solution to Maximum Sub-array Sum}\label{dp_max_sub_sum}
+    \begin{algorithmic}[1]
+        \Procedure{DPMaxSum}{$A[1\ldots n]$}
+            \State Let $R[0\ldots n]$ and $M[0\ldots n]$ be an array.
+            \State $M[0] = 0$, $R[0] = 0$
+            \For{$i = 1$ to $n$}
+                \State $M[i] = \max\left\{A[i]\text{,\ }A[i] + M[i-1])\right\}$
+            \EndFor
+            \For{$i = 1$ to $n$}
+                \State $R[j] = \max\left\{M[i]\text{,\ }R[i-1])\right\}$
+            \EndFor
+            \State \textbf{return }$R[n]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+With two for loop of $n$ iteration and constant time operations in each iteration, the running time for \cref{dp_max_sub_sum} is $\mathcal{O}(n)$.
+
+\end{homeworkProblem}

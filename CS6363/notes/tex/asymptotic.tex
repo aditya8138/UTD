@@ -1,0 +1,142 @@
+
+\section{Asymptotic Notation -- big ``O'' notation}
+
+\subsection{Growth of Functions}
+
+The growth of function in Table~\ref{function_list} increase downwards.
+\begin{table}[H]
+\centering
+\caption{Function List}\label{function_list}
+\begin{tabular}{c|l}
+$\log_{10} n$ & binary search \\
+$n$ & input \\
+$n^2$ & pairs \\
+$10^{10}n^{10}$ & \\
+$1.000.1^n$ & \\
+$2^n$ & Binary string of length n \\
+$n!$ & Permutation \\
+\end{tabular}
+\end{table}
+Let $f(n)$, $g(n)$ be function.
+
+\subsection{big ``O'' notation}
+\begin{definition}
+
+$f(n) = \mathcal{O}(g(n))$, if $\exists n_0 \in \mathbb{N}$,
+$c \in \mathbb{R}^+$, s.t. $\forall n \geq n_0$, $f(n) \leq c * g(n)$,
+and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} \ne \infty$, i.e.\ it is $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < k$, for some constant $k$.
+\end{definition}
+
+Table \ref{def_asymptotic_notation} shows the basic definition of all the asymptotic notations.
+\begin{table}[H]
+\centering
+\caption{Definition for all Asymptotic Notation}\label{def_asymptotic_notation}
+\begin{tabular}{c|l|c}
+
+\hline
+$f(n)$ & $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}$ & relation \\
+\hline
+\hline
+$\mathcal{O}(g(n))$ & $\neq \infty$ & $\leq$ \\
+$\Omega(g(n))$  & $\neq \infty$ & $\leq$  \\
+$\Theta(g(n))$  & $= k > 0$ & $=$  \\
+$o(g(n))$  & $= 0$ & $<$  \\
+$\omega(g(n))$  & $= \infty$ & $>$  \\
+\end{tabular}
+\end{table}
+
+\subsection{Asymptotic Relation's feature}
+\begin{theorem}
+Multiplying by positive constant does NOT change asymptotic relations.
+i.e.\ if $f(n) = \mathcal{O}(g(n))$, then $100 * f(n) = \mathcal{O}(g(n))$.
+\end{theorem}
+
+\begin{proof}
+$f(n) = \mathcal{O}(g(n)) \Rightarrow \exists{n_0} \exists c, \forall n \geq n_0, f(n) \leq c*g(n)$,
+
+then, $\exists{n_0}\exists{c'}$, s.t.\ $\forall n \geq n_0$, $100*f(n) \leq c'*g(n) = 100c*g(n)$.
+\end{proof}
+
+Example:
+\begin{align}
+C*2^n & = \Theta(2^n) \\
+(C*2)^n & \neq \Theta(2^n)
+\end{align}
+
+\begin{claim}
+Show: $2n\log(n) - 10n = \Theta(n\log(n))$
+\end{claim}
+
+\begin{proof}
+First show: $2n\log(n) - 10n = \mathcal{O}(n\log(n))$
+
+For $n_0 = 1$, $c = 2$
+
+\[2n\log(n) - 10n \leq 2n\log(n)\]
+
+Now show: $2n\log(n) - 10n = \Omega(n\log(n))$
+
+For $n_0 = 2^10$, $c = 1$,
+
+\[
+\begin{split}
+2n\log(n) - 10n & \geq n\log(n) + n \log(2^{10}) - 10n \\
+& =n \log(n) + 10n - 10n \\
+& =n\log(n) \\
+\end{split}
+\]
+
+$n_0 = 1$ ($n_0 = 2^{10}$) means $n$ is at least $1$ (or $2^{10}$).
+\end{proof}
+
+\begin{corollary}
+$\mathcal{O}(1)$ means \textbf{Any Constant}.
+\end{corollary}
+
+\textbf{Attention}: \emph{Asymptotic notation has limit. It is not applicable for all scenarios}.
+
+\subsection{Properties of $\log(n)$}
+\definition{$n = C^{\log_c{n}}$, $c > 1$, dd $\lg{n} = \log_2{n}$, $\ln{n} = \log_e{n}$.}
+
+\begin{corollary}
+$\forall{a,b} > 1$
+
+\begin{equation}
+\begin{split}
+\log_b(n) & = \frac{\log_a(n)}{\log_a(b)} \\
+\log_b(n) & = \Theta({\log_a(n)}) \\
+\end{split}
+\end{equation}
+
+\end{corollary}
+
+\begin{corollary}
+$\forall{a,b} \in \mathbb{R}$
+
+\begin{equation}
+\begin{split}
+\log(a^n) & = n*\log(a) \\
+\log(a*b) & = \log(a) + \log(b)) \\
+a^{\log(b)} & = b^{\log(a)} \\
+\end{split}
+\end{equation}
+
+\end{corollary}
+
+\textup{\textbf{Note}: $\lg(n)$ is to $n$ as n is to $2^n$.}
+
+\subsection{Something More}
+
+\begin{theorem}
+Let $f(n)$ be a polynomial function, then $\log(f(n)) = \Theta(\log(n))$.
+\end{theorem}
+
+\begin{proof}
+The asymptotic result of $n^2$ and $n^10$ are the same.
+\end{proof}
+
+\begin{definition}
+$\log^*(n) = o(\log\log\log\log\log(n)) = \alpha$.
+\end{definition}
+
+Example: $\lg^*(2^{2^{2^{2^{2}}}}) = 5$.

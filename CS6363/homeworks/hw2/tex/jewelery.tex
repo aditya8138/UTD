@@ -1,0 +1,103 @@
+\begin{homeworkProblem}[Starting A Jewelery Collection]
+
+    Consider how to handle the very first element (jewelery) of $J[1\ldots n]$ with the bag size $S$. 
+\begin{itemize}
+    \item If $A$ is empty, there is no element to be taken, return $0$.
+    \item If the size of the first element is bigger than the bag size, i.e. $V[1] > S$, the first element cannot be taken.
+        \[JCV\footnote{$JCV(J[1\ldots n], S)$ is the max value to achieve in jewelery set $J[1\ldots n]$ with $S$ size bag.}(J[1\ldots n], S) = JCV(J[2\ldots n], S)\]
+    \item If the size of the first element is smaller than the bag size, i.e. $V[1] < S$, the first element can be either taken or thrown out.
+        \[JCV(J[1\ldots n], S) = \max\left\{JCV(J[2\ldots n], S), JCV(J[2\ldots n], S - V[1])\right\}\]
+\end{itemize}
+
+Now to true this in a recursive algorithm, define \textsc{JCollection}$(CurN, CurB)$
+be the maximum value of the set $J[CurN\ldots n]$, with value $V[CurN\ldots n]$,
+size $S[CurN\ldots n]$ and bag size $CurB$. Based on the above observation,
+we have the following.
+
+Assume $V[1\ldots n]$ and $S[1\ldots n]$ defined globally, and $CurN, CurB > 0$.
+\begin{algorithm}[H]
+    \caption{Recursive Solution to Jewelery Collection}\label{recursive_jewelery_collection}
+    \begin{algorithmic}[1]
+        \Procedure{JCollection}{$CurN, CurB$}
+            \If{$CurN > n$ or $CurB < 1$}
+                \State \textbf{return }$0$
+            \EndIf
+            \State $ignore = \text{\textsc{JCollection}}(CurN + 1, CurB)$
+            \State $best = ignore$
+            \If{$S[CurN] < CurB$}
+            \State $include = V[CurN] + \text{\textsc{JCollection}}(CurN + 1, CurB - V[CurN])$
+                \If{$include > ignore$}
+                    \State $best = include$
+                \EndIf
+            \EndIf
+            \State \textbf{return } $best$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+To find the maximum value of $J[1\ldots n]$ with $b$ size bag, we can call \textsc{JCollection}$(1, b)$.
+The correctness of \cref{recursive_jewelery_collection} can be proved by 
+previous observation.
+
+\vspace{1em}
+\noindent
+\textbf{Applying DP:\ }
+\textsc{JCollection}$(CurN, CurB)$ depends on two parameters, the first
+ranging over $\mathcal{O}(n)$ values and the second over $\mathcal{O}(b)$
+values, since they are indices into $J[1\ldots n]$ and the size downgraded
+from $b$ respectively. Hence the above recursive algorithm can be turned
+into a DP algorithm using a 2D array, of total size $\mathcal{O}(nb)$.
+
+\textsc{JCollection}$(CurN, CurB)$ makes at most two recursive calls 
+which are \textsc{JCollection}$(CurN+1, CurB)$ and
+\textsc{JCollection}$(CurN+1, CurB-V[CurN])$.
+In each case, at least one of the two parameters increases and the
+other does not decrease. Therefore, the 2D array can be filled in
+using a pair of nested for loops, the outer one ranging over the
+first parameter and starting at $n$ going down to $1$, and the inner
+one ranging over the second parameter and start at $1$ going up
+to $b$. Ignoreing the time for computing recursive calls, the above
+algorithm runs in $\mathcal{O}(1)$ time. Therefore, if processed
+in the right order, each table entry takes $\mathcal{O}(1)$ time to
+compute and so the total running time is $\mathcal{O}(nb)$.
+
+To simplify the process, add the $n+1$ item with $0$ size and $0$ value
+to the element set. Thus the 2D array is expanded from $C[1\ldots n][1\ldots b]$ to $C[1\ldots n+1][0\ldots b]$.
+Therefore, each cell $C[x][y]$ represent the maximum value when considering the
+$x$-th element with current bag size $y$, i.e. 
+\[C[x][y] = \text{\textsc{JCollection}}(x,y)\]
+
+The dynamic programming solution to the problem is shown in \cref{recursive_jewelery_collection}.
+
+\begin{algorithm}[H]
+    \caption{Dynamic Programming Solution to Jewelery Collection}\label{dp_jewelery_collection}
+    \begin{algorithmic}[1]
+        \Procedure{DPJCollection}{$V[1\ldots n], S[1\ldots n], b$}
+            \State Define $C[1\ldots n+1][0\ldots b]$
+            \For{$i = 1$ to $n+1$}
+                \State $C[i][0] = 0$
+            \EndFor
+            \For{$i = 0$ to $b$}
+                \State $C[n+1][i] = 0$
+            \EndFor
+            \For{$CurN = n$ to $1$}
+                \For{$CurB = 1$ to $b$}
+                    \State $ignore = C[CurN+1][CurB]$
+                    \State $best = ignore$
+                    \If{$S[CurN] < CurB$}
+                        \State $include = V[CurN] + C[CurN+1][CurB-S[CurN]]$
+                        \If{$include > ignore$}
+                            \State $best = include$
+                        \EndIf
+                    \EndIf
+                    \State $C[CurN][CurB] = best$
+                \EndFor
+            \EndFor
+            \State \textbf{return }$C[1][b]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+With two for loop of $n$ and $b$ iterations and constant time operation in each iteration, the running time of \cref{recursive_jewelery_collection} is obviously $\mathcal{O}(nb)$.
+
+\end{homeworkProblem}
