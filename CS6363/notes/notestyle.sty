@@ -1,60 +1,116 @@
 \ProvidesPackage{notestyle}
 
-%
-% This is a borrowed LaTeX template file for lecture notes for CS267,
-% Applications of Parallel Computing, UCBerkeley EECS Department.
-% Now being used for CMU's 10725 Fall 2012 Optimization course
-% taught by Geoff Gordon and Ryan Tibshirani.  When preparing
-% LaTeX notes for this class, please use this template.
-%
-% To familiarize yourself with this template, the body contains
-% some examples of its use.  Look them over.  Then you can
-% run LaTeX on this file.  After you have LaTeXed this file then
-% you can look over the result either by printing it out with
-% dvips or using xdvi. "pdflatex template.tex" should also work.
-%
+%This package doesn’t do anything as long as your syntax is right.
+%Load the package in the first lines of your preamble (even before
+%the \documentclass command). It then checks for obsolete LaTeX
+%packages and outdated commands.
+\RequirePackage[l2tabu, orthodox]{nag}
 
-\setlength{\oddsidemargin}{0.25 in}
-\setlength{\evensidemargin}{-0.25 in}
-\setlength{\topmargin}{-0.6 in}
-\setlength{\textwidth}{6.5 in}
-\setlength{\textheight}{8.5 in}
-\setlength{\headsep}{0.75 in}
-\setlength{\parindent}{0 in}
-\setlength{\parskip}{0.1 in}
+\RequirePackage{tabu}
 
+\RequirePackage[letterpaper,margin=1in]{geometry}
 
-
-%
-% ADD PACKAGES here:
-%
-
-\RequirePackage{graphicx}
 \RequirePackage{fancyhdr}
+
+\RequirePackage{makeidx}
+
 \RequirePackage{extramarks}
+
+%
+% AMS packages.
+%
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amsfonts}
+
 \RequirePackage{tikz}
-\RequirePackage[plain]{algorithm}
+
+%This package introduces the \includegraphics command, which is needed
+%for inserting figures.
+\RequirePackage{graphicx}
+
+\RequirePackage{algorithm}
 \RequirePackage{algpseudocode}
+
 \RequirePackage{listings}
-\RequirePackage{enumitem}
-\RequirePackage{textcomp}
-\RequirePackage{cleveref}
 
 %
-% Time Format Settings
+%Font Settings.
 %
+%\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
+\RequirePackage[scaled=0.8]{DejaVuSansMono} % Use DejaVu Sans Mono as typewriter font.
+
 \RequirePackage[american]{babel}
 \RequirePackage[useregional,% use regional style instead of default ISO format
             showzoneminutes=false,% don't show time zone minutes
             showdow% show the day of week name if supported
            ]{datetime2}
+
+%The microtype package improves the spacing between words and letters.
+%It does a lot more and most people won’t notice the difference.
+%But still, the resulting document will be easier to read and looks
+%better when microtype is loaded. Load this package after fonts,
+%if any, as the package behavior is dependent on this font.
+\RequirePackage{microtype}
+
+\RequirePackage{enumitem}
+
+\RequirePackage{textcomp}
+
+\RequirePackage{booktabs}
+
+
+%As a rule of thumb it should be loaded at the end of the preamble,
+%after all the other packages. A few exceptions exist, such as the
+%cleveref package that is also mentioned in this post. Hence, cleveref
+%should be loaded after hyperref.
+\RequirePackage{hyperref}
+
+%This package introduces the \cref command. When using this command
+%to make cross-references, instead of \ref or \eqref, a word is placed
+%in front of the reference according to the type of reference: fig.
+%for figures, eq. for equations
+\RequirePackage{cleveref}
+
+\usetikzlibrary{automata,positioning}
+
+%
+% Time Format Settings
+%
 % Use standard mappings for the time zones (if supported)
 \DTMlangsetup*{mapzone,zone=standard}
 \selectlanguage{american}
 \DTMsetstyle{en-US}
+
+%Setup hyperref package, and colours for links
+\definecolor{linkcolour}{rgb}{0,0.2,0.5}
+\hypersetup{
+%    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    %pdftitle={Homework},    % title
+    pdfauthor={Hanlin He},     % author
+    %pdfsubject={Subject},   % subject of the document
+    pdfcreator={Hanlin He},   % creator of the document
+    %pdfproducer={Producer}, % producer of the document
+    %pdfkeywords={Algorithm, Homework}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor={1 0 0},
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    plainpages=false,
+    pageanchor=false,       %put an anchor on every page
+}
+
+%
+% Basic Document Settings
+%
 
 % Use these for theorems, lemmas, proofs, etc.
 \theoremstyle{plain} % default
@@ -66,17 +122,10 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-%\newenvironment{Proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
-
-\renewenvironment{proof}{{\bfseries Proof: }}{\qedsymbol}
-
-\newcommand{\BaseCase}{\vspace{0.1in}\underline{Base Case:}\ }
-\newcommand{\InductionStep}{\vspace{0.1in}\underline{Induction step:}\ }
-\newcommand{\InductionConclusion}{\vspace{0.1in}\underline{Conclusion:}\ }
 
 
-\newcommand{\question}{\vspace{0.1in}\textbf{Question:}\ }
-\newcommand{\analysis}{\vspace{0.1in}\textbf{Analysis:}\ }
+\newcommand{\question}{\vspace{0.1in}\noindent \textbf{Question:}\ }
+\newcommand{\analysis}{\vspace{0.1in}\noindent \textbf{Analysis:}\ }
 
 \newcommand{\ProblemDescription}{\vspace{0.1in}\textbf{Problem Description:}\ }
 
@@ -89,3 +138,16 @@
 
 % Useful for algorithms
 \newcommand{\alg}[1]{{\bfseries \footnotesize #1}}
+
+\renewenvironment{proof}{{\vspace{0.1in}\noindent \textbf{Proof:}\qquad}}{\qedsymbol}
+
+\newcommand{\BaseCase}{\vspace{0.1in}\noindent \underline{Base Case:}\qquad  }
+\newcommand{\InductionStep}{\vspace{0.1in}\noindent \underline{Induction step:}\qquad }
+\newcommand{\InductionConclusion}{\vspace{0.1in}\noindent \underline{Conclusion:}\qquad }
+
+\newcommand{\Claim}{\vspace{0.1in}\noindent \textbf{Claim:}\qquad}
+
+% Renew the commit font to texttt.
+\algrenewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \texttt{\footnotesize{#1}}\normalsize{ \(\triangleleft\) }}
+
+\newcommand*{\ProcedureName}[2]{\textsc{#1} (#2)}
