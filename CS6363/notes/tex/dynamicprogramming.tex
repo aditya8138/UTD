@@ -1,7 +1,8 @@
 \section{Dynamic Programming}
 
 \subsection{Rod Cutting}
-%\ProblemDescription
+
+\subsubsection{Description of Problem}
 
 \begin{itemize}
 \item steel rod of length $n$, where $n$ is some integer.
@@ -13,7 +14,8 @@
 Suppose you can cut rod to any integer length for free.
 How much money can you made?
 
-\analysis
+\subsubsection{Analysis}
+
 \begin{itemize}
 \item Consider leftmost cut of optimal solution.
 
@@ -36,7 +38,7 @@ So, the first attempt of the algorithm could be described as \cref{cutting_rod_r
 \EndIf
 \State $q=0$
 \For{$i=1 \text{ to } n$}
-    \State $q = \max\left(q, P[i]+\textsc{CutRod}(n-i)\right)$
+    \State $q = \max\left(q, P[i]+\ProcedureName{CutRod}{n-i}\right)$
 \EndFor
 \State \textbf{return} {$q$}
 \EndProcedure
@@ -57,7 +59,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
 \If{$R[n]$ undefined}
     \State $q=0$
     \For{$i=1 \text{ to } n$}
-        \State $q = \max\left(q, P[i]+\textsc{MemRodCut}(n-i)\right)$
+\State $q = \max\left(q, P[i]+\ProcedureName{MemRodCut}{n-i}\right)$
     \EndFor
     \State $R[n] = q$
 \EndIf
@@ -68,7 +70,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
 
 \emph{Note that $R[1...n]$ is filled in form \underline{left to right}.} It means we can store the result and use it later, which brings us to the dynamic programming version of the algorithm.
 
-\subsubsection{Dynamic Programming Version}
+\subsubsection{Dynamic Programming Version to Solve RodCut}
 \cref{cutting_rod_dp_alg} illustrates the dynamic programming version of the algorithm according to the memoized version \cref{cutting_rod_memoized_alg}.
 \begin{algorithm}[H]
 \caption{Dynamic Programming Version of Solving Cutting Rod Problem}\label{cutting_rod_dp_alg}
@@ -88,7 +90,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
 \end{algorithmic}
 \end{algorithm}
 
-Running time of \cref{cutting_rod_dp_alg}: $T(n) = \mathcal{O}(n^2)$.
+Running time of \cref{cutting_rod_dp_alg}: $T(n) = \bigO{n^2}$.
 
 Note that the process only computes the total number. If we are to know how to cut, we can store the cutting position during the progress.
 
@@ -126,8 +128,9 @@ According to previous examples, we can summarize the general method to solve DP 
 
 \subsection{Longest Increasing Subsequence (LIS)}
 \subsubsection{Description of Problem}
-Input: Array $A[1...n]$ of integers.
-Output: Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}$ for all j.
+\AlgoInput Array $A[1...n]$ of integers.
+
+\AlgoOutput Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}$ for all j.
 
 Warning: Subarray is ``contiguous''. So what is a subsequence?
 \begin{itemize}
@@ -181,11 +184,180 @@ Note that the idea of adding a $A[0]$ maybe useful in many scenarios.
 subsequence in $A[start\ldots n]$, s.t. all elements greater than 
 $A[prev]$.
 
-\analysis
+\observation
+
+The procedure \ProcedureName{LIS}{prev, start} has the following features:
 
 \begin{itemize}
     \item \ProcedureName{LIS}{prev, start} depends on \ProcedureName{LIS}{prev, start + 1}
     \item So need 2D table $B[0\ldots n][1\ldots n+1]$, each entry takes
-        \mathcal{O} time to fill in, and can fill in any ordeer,
-        s.t. $B[\;][start+1]$ filled before $B[\ ][start]$.
+        \bigO{1} time to fill in, and can fill in any ordeer,
+        s.t. $B[\ ][start+1]$ filled before $B[\ ][start]$.
 \end{itemize}
+
+
+\subsubsection{Dynamic Programming Version to Solve LIS}
+\cref{dp_lis_alg} illustrates the dp version to solve LIS problem.
+
+\begin{algorithm}[H]
+\caption{Dynamic Programming Algorithm for LIS Problem}\label{dp_lis_alg}
+\begin{algorithmic}[1]
+\Procedure{LISDP}{$A[1\ldots n]$}
+\State $A[0] = -\infty$
+\State init $B[0\ldots n][1\ldots n+1]$
+\For{$i=0\text{ to }n$}
+    \State $B[i][n+1]=0$
+\EndFor
+\For{$start = n\text{ to  }1$}
+    \For{$prev = start - 1\text{ to }0$}
+        \If{$A[prev] \geq A[start]$}
+            \State $B[prev][start] = B[prev][start + 1]$
+        \Else
+        \State $B[prev][start] = \max\{(B[prev][start + 1], 1 + B[start][start + 1]\}$
+        \EndIf
+    \EndFor
+\EndFor
+\State \textbf{return} $B[0][1]$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The running time for \cref{dp_lis_alg} is the time to fill the table, i.e. \bigO{n^2}.
+
+\subsection{Longest Common Subsequence}
+
+\subsubsection{Description of Problem}
+
+\AlgoInput Character arrays: $A[1\ldots n]$, $B[1\ldots m]$.
+
+\AlgoOutput Find length of longest common subsequence, i.e.
+find length $k$ of longest pair of strings of indices.
+\[1\leq i_1 < i_2 < \ldots < i_k \leq n\]
+and
+\[1 \leq j_1 < j_2 < \ldots < j_k \leq m\]
+s.t. for all $1 \leq l \leq k$, $A[i_l] = B[j_l]$.
+
+Example:
+\begin{itemize}
+    \item A = C G C A A T C C A G G
+    \item B = G A T T A C G A
+\end{itemize}
+
+LCS = G A T C A. 
+
+The sequence is \{2,4,6,8,9\} and \{1,2,3,6,8\}. Note that the sequence may not be unique.
+
+\subsubsection{Analysis}
+
+Handle first element of A and B:
+\begin{itemize}
+    \item if $A$ or $B$ is empty, return $0$;
+    \item if $A[1] \neq B[1]$, then $A[1]$ and $B[1]$ cannot both be used.
+        So should be the best solution from throwing out $A[1]$ or $B[1]$, i.e.
+%        $LCS(A[1\ldots n], B[1\ldots m]) = \max\{1+LCS(A[2\ldots n], B[2\ldots n]), LCS(A[2\ldots n], B[1\ldots m]), LCS(A[1\ldots n], B[2\ldots m])\}$
+
+        \begin{equation}
+            LCS(A[1\ldots n], B[1\ldots m]) = \max\biggl\{
+                        \begin{array}{ll}
+                          LCS(A[2\ldots n], B[1\ldots m]),\\
+                          LCS(A[1\ldots n], B[2\ldots m])
+                        \end{array}
+                    \biggr\}
+        \end{equation}
+%    LCS(A[1\ldots n], B[1\ldots m]) = \max\{& LCS(A[2\ldots n], B[1\ldots m]),\\
+%                                            & LCS(A[1\ldots n], B[2\ldots m])\}
+    \item if $A[1] = B[1]$, then can either match or throw both of them out, i.e
+        \begin{equation}
+            LCS(A[1\ldots n], B[1\ldots m]) = \max\Biggl\{
+                        \begin{array}{ll}
+                          1+LCS(A[2\ldots n], B[2\ldots n]),\\
+                          LCS(A[2\ldots n], B[1\ldots m]),\\
+                          LCS(A[1\ldots n], B[2\ldots m])
+                        \end{array}
+                    \Biggr\}
+        \end{equation}
+%    LCS(A[1\ldots n], B[1\ldots m]) = \max\{& 1+LCS(A[2\ldots n], B[2\ldots n]),\\
+%                                            & LCS(A[2\ldots n], B[1\ldots m]),\\
+%                                            & LCS(A[1\ldots n], B[2\ldots m])\}
+\end{itemize}
+
+Note that if $A[1] = B[1]$, why consider throw them out?
+
+Though without proof, the option is right, but generally,
+the option should be considered.
+
+The algorithm is described in \cref{ori_lcs_alg}.
+\ProcedureName{LCS}{curA, CurB} is the longest common sequence of
+$A[curA \ldots n]$ and $B[curB \ldots m]$.
+\begin{algorithm}[H]
+\caption{Original Algorithm for LCS Problem}\label{ori_lcs_alg}
+\begin{algorithmic}[1]
+    \Procedure{LCS}{$curA, curB$}
+        \If{$curA > n$ or $ curB > m$}
+            \State \textbf{return} $0$
+        \EndIf
+        \State $ignore = \max\{LCS(curA+1, CurB), LCS(CurA, CurB+1)\}$
+        \State $best = ignore$
+        \If{$A[curA] = B[curB]$}
+            \State $include = 1 + LCS(curA+1, curB+1)$
+            \If{$include > ignore$}
+                \State $best = include$
+            \EndIf
+        \EndIf
+        \State \textbf{return} $best$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+To find LCS of $A[1 \ldots n]$, $B[1 \ldots m]$, call \ProcedureName{LCS}{1,1}.
+
+\observation
+
+The procedure \ProcedureName{LCS}{curA, curB} has the following features:
+
+\begin{itemize}
+    \item \ProcedureName{LCS}{curA, curB} depends on two parameters,
+        need a 2D array of total size \bigO{nm}.
+    \item \ProcedureName{LCS}{curA, curB} makes 3 recursive calls.
+        All recursive calls have at least one parameter strictly
+        larger, and none smaller.
+    \item The table can be filled in two nested decreasing for loop.
+\end{itemize}
+
+\subsubsection{Dynamic Programming Version to Solve LCS}
+
+illustrates the DP version to solve LCS problem.
+
+
+\begin{algorithm}[H]
+\caption{Dynamic Programming Algorithm for LCS Problem}\label{dp_lcs_alg}
+\begin{algorithmic}[1]
+    \Procedure{LCSDP}{$A[1 \ldots n], B[1 \ldots m]$}
+        \State Define $C[1 \ldots n+1][1 \ldots m+1]$
+        \For{$i=0\text{ to }n+1$}
+            \State $C[i][m+1]=0$
+        \EndFor
+        \For{$i=0\text{ to }m+1$}
+            \State $C[n+1][i]=0$
+        \EndFor
+        \For{$curA = n\text{ to }1$}
+            \For{$curB = m\text{ to }1$}
+                \State $ignore = \max\{C[curA+1][CurB], C[curA][curB+1]\}$
+                \State $best = ignore$
+                \If{$A[curA] = B[curB]$}
+                    \State $include = 1 + C[curA+1][curB+1]$
+                    \If{$include > ignore$}
+                        \State $best = include$
+                    \EndIf
+                \EndIf
+                \State $C[curA][curB] = best$
+            \EndFor
+        \EndFor
+        \State \textbf{return} $C[1][1]$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The operation to fill the table takes \bigO{1} time, ignoring recursive calls.
+
+So, total time is $\bigO{n\times m\times 1} = \bigO{nm}$.

@@ -22,7 +22,7 @@ Let $f(n)$, $g(n)$ be function.
 \subsection{big ``O'' notation}
 \begin{definition}
 
-$f(n) = \mathcal{O}(g(n))$, if $\exists n_0 \in \mathbb{N}$,
+$f(n) = \bigO{g(n)}$, if $\exists n_0 \in \mathbb{N}$,
 $c \in \mathbb{R}^+$, s.t. $\forall n \geq n_0$, $f(n) \leq c * g(n)$,
 and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} \ne \infty$, i.e.\ it is $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < k$, for some constant $k$.
 \end{definition}
@@ -36,7 +36,7 @@ Table \ref{def_asymptotic_notation} shows the basic definition of all the asympt
 $f(n)$ & $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}$ & relation \\
 \hline
 \hline
-$\mathcal{O}(g(n))$ & $\neq \infty$ & $\leq$ \\
+$\bigO{g(n)}$ & $\neq \infty$ & $\leq$ \\
 $\Omega(g(n))$  & $\neq \infty$ & $\leq$  \\
 $\Theta(g(n))$  & $= k > 0$ & $=$  \\
 $o(g(n))$  & $= 0$ & $<$  \\
@@ -47,11 +47,11 @@ $\omega(g(n))$  & $= \infty$ & $>$  \\
 \subsection{Asymptotic Relation's feature}
 \begin{theorem}
 Multiplying by positive constant does NOT change asymptotic relations.
-i.e.\ if $f(n) = \mathcal{O}(g(n))$, then $100 * f(n) = \mathcal{O}(g(n))$.
+i.e.\ if $f(n) = \bigO{g(n)}$, then $100 * f(n) = \bigO{g(n)}$.
 \end{theorem}
 
 \begin{proof}
-$f(n) = \mathcal{O}(g(n)) \Rightarrow \exists{n_0} \exists c, \forall n \geq n_0, f(n) \leq c*g(n)$,
+$f(n) = \bigO{g(n)} \Rightarrow \exists{n_0} \exists c, \forall n \geq n_0, f(n) \leq c*g(n)$,
 
 then, $\exists{n_0}\exists{c'}$, s.t.\ $\forall n \geq n_0$, $100*f(n) \leq c'*g(n) = 100c*g(n)$.
 \end{proof}
@@ -67,7 +67,7 @@ Show: $2n\log(n) - 10n = \Theta(n\log(n))$
 \end{claim}
 
 \begin{proof}
-First show: $2n\log(n) - 10n = \mathcal{O}(n\log(n))$
+First show: $2n\log(n) - 10n = \bigO{n\log(n)}$
 
 For $n_0 = 1$, $c = 2$
 
@@ -89,7 +89,7 @@ $n_0 = 1$ ($n_0 = 2^{10}$) means $n$ is at least $1$ (or $2^{10}$).
 \end{proof}
 
 \begin{corollary}
-$\mathcal{O}(1)$ means \textbf{Any Constant}.
+$\bigO{1}$ means \textbf{Any Constant}.
 \end{corollary}
 
 \textbf{Attention}: \emph{Asymptotic notation has limit. It is not applicable for all scenarios}.
