@@ -24,13 +24,16 @@
 \RequirePackage{amsfonts}
 
 \RequirePackage{tikz}
+\usetikzlibrary{automata,positioning}
+\tikzset{>=stealth}
+
+\newcommand{\tikzmark}[3][]
+  {\tikz[remember picture, baseline]
+    \node [anchor=base,#1](#2) {#3};}
 
 %This package introduces the \includegraphics command, which is needed
 %for inserting figures.
 \RequirePackage{graphicx}
-
-\RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
 
 \RequirePackage{listings}
 
@@ -38,7 +41,7 @@
 %Font Settings.
 %
 %\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
-\RequirePackage[scaled=0.8]{DejaVuSansMono} % Use DejaVu Sans Mono as typewriter font.
+\RequirePackage[scaled=1]{DejaVuSansMono} % Use DejaVu Sans Mono as typewriter font.
 
 \RequirePackage[american]{babel}
 \RequirePackage[useregional,% use regional style instead of default ISO format
@@ -76,7 +79,9 @@
 %for figures, eq. for equations
 \RequirePackage{cleveref}
 
-\usetikzlibrary{automata,positioning}
+%Load algpseudocode after hyperref, eliminate some unknown warning.
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
 
 %
 % Time Format Settings
@@ -116,36 +121,9 @@
 % Basic Document Settings
 %
 
-% Use these for theorems, lemmas, proofs, etc.
-\theoremstyle{plain} % default
-\newtheorem{theorem}{Theorem}[subsection]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{corollary}[theorem]{Corollary}
-
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-
-
-
-% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
-
-\newcommand*{\question}{\vspace{0.1in}\noindent \textbf{Question:}\ }
-\newcommand*{\analysis}{\vspace{0.1in}\noindent \textbf{Analysis:}\ }
-\newcommand*{\observation}{\vspace{0.1in}\noindent \textbf{Observation:}\ }
-\newcommand*{\Note}{\vspace{0.1in}\noindent \textbf{Note:}\ }
-\newcommand*{\AlgoInput}{\vspace{0.1in}\noindent \textbf{Input:}\ }
-\newcommand*{\AlgoOutput}{\vspace{0.1in}\noindent \textbf{Output:}\ }
-
-\newcommand{\ProblemDescription}{\vspace{0.1in}\textbf{Problem Description:}\ }
-
 % Alias for the Solution section header
-\newcommand{\solution}{\vspace{0.1in}\textbf{\large Solution}}
-\newcommand\E{\mathbb{E}}
 
-% Useful for algorithms
-\newcommand{\alg}[1]{{\bfseries \footnotesize #1}}
+\newcommand{\solution}{\vspace{0.1in}\noindent \textbf{\large Solution}}
 
 \renewenvironment{proof}{{\vspace{0.1in}\noindent \textbf{Proof:}\qquad}}{\qedsymbol}
 
@@ -157,6 +135,7 @@
 
 % Renew the commit font to texttt.
 \algrenewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \texttt{\footnotesize{#1}}\normalsize{ \(\triangleleft\) }}
+\algrenewcommand\Return{\State \algorithmicreturn{} }
 
 \newcommand*{\ProcedureName}[2]{\textsc{#1} \ensuremath{(#2)}}
 
@@ -164,3 +143,32 @@
 % For algorithm analysis.
 %
 \newcommand*{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+% Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{plain} % default
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+% Use these for algorithm analysis.
+\newcommand*{\question}{\vspace{0.1in}\noindent \textbf{Question:}\ }
+\newcommand*{\analysis}{\vspace{0.1in}\noindent \textbf{Analysis:}\ }
+\newcommand*{\observation}{\vspace{0.1in}\noindent \textbf{Observation:}\ }
+\newcommand*{\Note}{\vspace{0.1in}\noindent \textbf{Note:}\ }
+\newcommand*{\AlgoInput}{\vspace{0.1in}\noindent \textbf{Input:}\ }
+\newcommand*{\AlgoOutput}{\vspace{0.1in}\noindent \textbf{Output:}\ }
+\newcommand*{\AlgoExample}{\vspace{0.1in}\noindent \textbf{Example:}\ }
+
+\newcommand{\ProblemDescription}{\vspace{0.1in}\textbf{Problem Description:}\ }
+
+
+
+
+

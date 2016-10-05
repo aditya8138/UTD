@@ -42,7 +42,7 @@ Stupid way.
     \EndIf
   \EndFor
   \If{$count = n$}
-    \State \textbf{return} {$A[i]$}
+    \Return $A[i]$
   \EndIf
 \EndFor
 \EndProcedure
@@ -60,7 +60,7 @@ Sort \& Find.
 \begin{algorithmic}[1]
 \Procedure{FindMax}{}
 \State {$\overline{A} = sort(A)$}
-\State \textbf{return} {$\overline{A}[n]$}
+\Return $\overline{A}[n]$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -81,7 +81,7 @@ Dynamically store the biggest one.
     \State{$current = i$}
   \EndIf
 \EndFor
-\State \textbf{return} {$A[current]$}
+\Return $A[current]$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}

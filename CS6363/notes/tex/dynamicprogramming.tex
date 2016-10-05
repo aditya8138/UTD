@@ -34,13 +34,13 @@ So, the first attempt of the algorithm could be described as \cref{cutting_rod_r
 \begin{algorithmic}[1]
 \Procedure{CutRod}{n}
 \If{$n=0$} \Comment{If the remaining rod length is $0$.}
-    \State \textbf{return} {$0$}
+    \Return $0$
 \EndIf
 \State $q=0$
 \For{$i=1 \text{ to } n$}
     \State $q = \max\left(q, P[i]+\ProcedureName{CutRod}{n-i}\right)$
 \EndFor
-\State \textbf{return} {$q$}
+\Return $q$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -54,7 +54,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
 \begin{algorithmic}[1]
 \Procedure{MemRodCut}{n} \Comment{Globally define $R[1..n]$}
 \If{$n=0$}
-    \State \textbf{return} {$0$}
+    \Return $0$
 \EndIf
 \If{$R[n]$ undefined}
     \State $q=0$
@@ -63,7 +63,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
     \EndFor
     \State $R[n] = q$
 \EndIf
-\State \textbf{return} {$R[n]$}
+\Return $R[n]$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -85,7 +85,7 @@ Running time of \cref{cutting_rod_raw_alg}:$T(n) = n + \sum_{i=0}^{n-i}T(i)$, wh
     \EndFor
     \State $R[i] = q$
 \EndFor
-\State \textbf{return} {$R[n]$}
+\Return $R[n]$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -165,7 +165,7 @@ Note that the idea of adding a $A[0]$ maybe useful in many scenarios.
 \begin{algorithmic}[1]
 \Procedure{LIS}{prev, start} \Comment{$prev < start$}
 \If{$start > n$}
-    \State \textbf{return} {$0$}
+    \Return {$0$}
 \EndIf
 \State $ignore = LIS(prev, start +1)$
 \State best = ignore
@@ -175,13 +175,13 @@ Note that the idea of adding a $A[0]$ maybe useful in many scenarios.
         \State $best = include$
     \EndIf
 \EndIf
-\State \textbf{return} {$best$}
+\Return {$best$}
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
 \ProcedureName{LIS}{prev, start} is the length of longest increasing
-subsequence in $A[start\ldots n]$, s.t. all elements greater than 
+subsequence in $A[start\ldots n]$, s.t. all elements greater than
 $A[prev]$.
 
 \observation
@@ -217,7 +217,7 @@ The procedure \ProcedureName{LIS}{prev, start} has the following features:
         \EndIf
     \EndFor
 \EndFor
-\State \textbf{return} $B[0][1]$
+\Return $B[0][1]$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -238,12 +238,12 @@ and
 s.t. for all $1 \leq l \leq k$, $A[i_l] = B[j_l]$.
 
 Example:
-\begin{itemize}
-    \item A = C G C A A T C C A G G
-    \item B = G A T T A C G A
-\end{itemize}
+\begin{align*}
+    A &= \{\texttt{ C G C A A T C C A G G }\} \\
+    B &= \{\texttt{ G A T T A C G A }\}
+\end{align*}
 
-LCS = G A T C A. 
+LCS = G A T C A.
 
 The sequence is \{2,4,6,8,9\} and \{1,2,3,6,8\}. Note that the sequence may not be unique.
 
@@ -294,7 +294,7 @@ $A[curA \ldots n]$ and $B[curB \ldots m]$.
 \begin{algorithmic}[1]
     \Procedure{LCS}{$curA, curB$}
         \If{$curA > n$ or $ curB > m$}
-            \State \textbf{return} $0$
+            \Return $0$
         \EndIf
         \State $ignore = \max\{LCS(curA+1, CurB), LCS(CurA, CurB+1)\}$
         \State $best = ignore$
@@ -304,7 +304,7 @@ $A[curA \ldots n]$ and $B[curB \ldots m]$.
                 \State $best = include$
             \EndIf
         \EndIf
-        \State \textbf{return} $best$
+        \Return $best$
     \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -326,7 +326,7 @@ The procedure \ProcedureName{LCS}{curA, curB} has the following features:
 
 \subsubsection{Dynamic Programming Version to Solve LCS}
 
-illustrates the DP version to solve LCS problem.
+The DP algorithm to solve LCS problem is showed in \cref{dp_lcs_alg}.
 
 
 \begin{algorithm}[H]
@@ -353,7 +353,7 @@ illustrates the DP version to solve LCS problem.
                 \State $C[curA][curB] = best$
             \EndFor
         \EndFor
-        \State \textbf{return} $C[1][1]$
+        \Return $C[1][1]$
     \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -361,3 +361,143 @@ illustrates the DP version to solve LCS problem.
 The operation to fill the table takes \bigO{1} time, ignoring recursive calls.
 
 So, total time is $\bigO{n\times m\times 1} = \bigO{nm}$.
+
+\subsection{Edit Distance}
+
+\subsubsection{Description of Problem}
+
+\AlgoInput Character arrays: $A[1 \ldots m]$, $B[1 \ldots n]$
+
+\AlgoOutput Edit distance between $A$ and $B$, which is the minimum number
+of characters insertion, deletion and substitution to turn $A$ into $B$.
+
+\AlgoExample For character arrays $A$ and $B$:
+
+\begin{align*}
+    A &= \{\texttt{ F O O D }\} \\
+    B &= \{\texttt{ M O N E Y }\}
+\end{align*}
+
+The edit process is:
+
+\begin{align*}
+    \texttt{F O O D} &\rightarrow \texttt{M O O D} \\
+                     &\rightarrow \texttt{M O N D} \\
+                     &\rightarrow \texttt{M O N E D} \\
+                     &\rightarrow \texttt{M O N E Y}
+\end{align*}
+
+\subsubsection{Analysis}
+
+Consider a better way to display edits:
+
+Place $A$ above $B$, put a gap in $A$ for each insertion, gap in $B$ for
+each deletion, i.e.
+
+\begin{align*}
+    A &= \{\texttt{ F O O \ \ D }\} \\
+    B &= \{\texttt{ M O N E Y }\}
+\end{align*}
+
+Then, the edit distance is the number of columns where characters don't
+match (in an optional alignment).
+
+Let $edit(A, B)$ denotes the edit distance from $A$ to $B$.
+Note that $edit(A, B) = edit(B, A)$.
+
+Another example:
+
+\begin{align*}
+    A &= \{\texttt{A\ L\  G\ O\ R\ \ \ I\ \ \ T\ H\ M }\} \\
+    B &= \{\texttt{A\ L\ \ \ T\ R\ U\  I\  S\ T\ I\ C }\}
+\end{align*}
+
+
+If remove last column from an optimal alignment,
+the remaining must represent the shortest edit sequence
+for remaining substrings.
+
+So now we can recursively define edit distance $edit(A, B)$:
+\begin{itemize}
+    \item if $m = 0$, i.e. $A$ is empty, then $edit(A, B) = n$;
+    \item if $n = 0$, i.e. $B$ is empty, then $edit(A, B) = m$;
+    \item otherwise, $m,n \geq 1$, then look at last column in optimal alignment.
+        There are three cases:
+        \begin{enumerate}[label=\alph*)]
+            \item insertion, i.e. top row empty, which means:
+                \begin{itemize}
+                    \item All of $A$ remains to left;
+                    \item All but last character of $B$ to left;
+                \end{itemize}
+                \[edit(A[1 \ldots m], B[1 \ldots n]) = edit(A[1 \ldots m], B[1 \ldots n-1]) + 1\]
+            \item deletion, i.e. bottom row empty, which means, like insertion:
+                \[edit(A[1 \ldots m], B[1 \ldots n]) = edit(A[1 \ldots m-1], B[1 \ldots n]) + 1\]
+            \item substitution, i.e. both rows non-empty, which means:
+                \[edit(A[1 \ldots m], B[1 \ldots n]) = edit(A[1 \ldots m-1], B[1 \ldots n-1]) + [A[m] \neq B[n]]\]
+                where the condition $[A[m] \neq B[n]]$ is $1$ if true and $0$ if false.
+        \end{enumerate}
+\end{itemize}
+
+The algorithm is described in \cref{ori_edit_distance}.
+$\ProcedureName{Edit}{i, j} = edit(A[1 \ldots i], B[1 \ldots j])$.
+
+\begin{algorithm}[H]
+    \caption{Original Algorithm for Edit Distance}\label{ori_edit_distance}
+    \begin{algorithmic}
+        \Procedure{Edit}{$i,j$}
+            \If{$i = 0$}
+                \Return $j$
+            \EndIf
+            \If{$j = 0$}
+                \Return $i$
+            \EndIf
+            \Return $\min\{\ProcedureName{Edit}{i-1,j}+1,\ProcedureName{Edit}{i,j-1}+1,\ProcedureName{Edit}{i-1,j-1}+[A[i]\neq B[j]]\}$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\observation
+
+The procedure \ProcedureName{Edit}{i,j} has the following features:
+
+\begin{itemize}
+    \item $i$ has $m$ values.
+    \item $j$ has $n$ values.
+    \item store in table of size \bigO{mn}.
+    \item \ProcedureName{Edit}{i,j} depends on three sub-problems,
+        in each case either $i$ or $j$ smaller (and never larger).
+    \item can fill in table with two nested increasing for loop.
+    \item constant time per entry, so \bigO{mn} overall.
+\end{itemize}
+
+\subsubsection{Dynamic Programming Version to Solve Edit Distance Problem}
+
+The DP algorithm to solve Edit Distance problem is showed in \cref{dp_edit_distance}.
+
+\begin{algorithm}[H]
+\caption{Dynamic Programming Algorithm for Edit Distance Problem}\label{dp_edit_distance}
+\begin{algorithmic}[1]
+    \Procedure{EditDP}{$A[i \ldots m], B[i \ldots n]$}
+        \For{$j=0\text{ to }n$}
+            \State $E[0][j]=j$
+        \EndFor
+        \For{$i=0\text{ to }n$}
+            \State $E[i][0]=i$
+        \EndFor
+        \For{$i = 1\text{ to }m$}
+            \For{$j = 1\text{ to }n$}
+                \If{$A[i] = B[j]$}
+                    \State $E[i][j] = \min\{E[i-1][j]+1, E[i][j-1]+1, E[i-1][j-1]\}$
+                \Else
+                    \State $E[i][j] = \min\{E[i-1][j]+1, E[i][j-1]+1, E[i-1][j-1]+1\}$
+                \EndIf
+            \EndFor
+        \EndFor
+        \Return $E[m][n]$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The operation to fill the table takes \bigO{1} time, ignoring recursive calls.
+
+So, total time is obviously \bigO{mn}.
