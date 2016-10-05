@@ -1,0 +1,26 @@
+
+\subsection{Professor's Solution}
+
+\begin{algorithm}[H]
+    \caption{Professor's Solution to Jewelery Collection}\label{recursive_jewelery_collection_pro}
+    \begin{algorithmic}
+        \Procedure{recJewel}{$index, size$}
+            \If{$index > n$ or $size \leq 0$}
+                \Return $0$
+            \EndIf
+            \If{$size - S[index] < 0$}
+                \Return \ProcedureName{recJewel}{index+1,size}
+            \EndIf
+            \Return $\max\{\ProcedureName{recJewel}{index+1, size}, V[index]+\ProcedureName{recJewel}{index+1,size-S[index]}\}$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Meaning:
+
+\ProcedureName{recJewel}{index,size} is max total value can get.
+Using $jewels[index \ldots n]$ when bag size is $size$.
+
+To get the maximum value, call \ProcedureName{recJewel}{1, b}.
+
+The problem is call \href{https://en.wikipedia.org/wiki/Knapsack_problem}{\emph{Knapsack problem}}.

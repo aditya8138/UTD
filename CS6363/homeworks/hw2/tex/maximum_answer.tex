@@ -1,0 +1,29 @@
+\subsection{Professor's Solution}
+
+\begin{algorithm}[H]
+    \caption{Professor's Solution to Maximum Sub-array Sum}\label{recursive_max_sub_sum_pro}
+    \begin{algorithmic}
+        \Procedure{recSum}{$b, index$}
+            \If{$index > n$}
+                \Return $0$
+            \EndIf
+            \If{$b = 1$}
+                \Return $\max\{0, A[index]+\ProcedureName{recSum}{1,index+1}\}$
+            \EndIf
+            \Return $\max\{\ProcedureName{recSum}{0,index+1}, A[index]+\ProcedureName{recSum}{1,index+1}\}$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Meaning:
+
+\begin{itemize}
+    \item \ProcedureName{recSum}{0,index} is max sub-array sum in $A[index\ldots n]$.
+    \item \ProcedureName{recSum}{1,index} is max of $0$ or max sub-array sum where
+        first element is $A[index]$.
+\end{itemize}
+
+$b$ is used to tell next recursion whether the previous element is taken.
+If $b=1$, then the previous element is taken.
+
+To get the maximum sub-array sum of $A[1 \ldots n]$, call \ProcedureName{recSum}{0,1}.
