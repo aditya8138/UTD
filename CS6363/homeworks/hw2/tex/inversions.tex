@@ -45,13 +45,19 @@ According to the observation, the modified \textsc{Merge} is shown as \textsc{Co
             \Else \Comment{$C$ is smaller than $B$, count inversions.}
                 \State $A[Aindex] = C[Cindex]$
                 \State $Cindex++$
-                \State $InversionsCount = InversionsCount + (n - Bindex)$
+                \State $InversionsCount = InversionsCount + $\tikzmark[red]{wrongpoint}{$(n - Bindex)$}%\tikzmark[red]{wrongpoint}{\textbf{Wrong!}}
             \EndIf
         \EndFor
         \State \textbf{return } $InversionsCount$
         \EndProcedure
     \end{algorithmic}
+
+    \begin{tikzpicture}[remember picture,overlay,node distance = 0.5cm]
+        \node[red] (wrongpointdescr) [below=of wrongpoint]{Should be $(n - Bindex + 1)$};
+        \draw[red,->,thick] (wrongpointdescr) to [in=-90,out=90] (wrongpoint);
+    \end{tikzpicture}
 \end{algorithm}
+
 
 In \cref{count_inversion}, there is one For-Loop with only constant time operation
 in each loop. Thus the running time of \textsc{Count\_Inversion} is $\mathcal{O}(n)$.

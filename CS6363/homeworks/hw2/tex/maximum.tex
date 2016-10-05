@@ -17,7 +17,7 @@ There are again two cases for $maxEndAt(i, j)$:
         \[maxEndAt(i, j) = A[j] +maxEndAt(i, j-1)\]
 \end{itemize}
 
-Thus, the recursive algorithm solving the maximum sub-array sum can be described as 
+Thus, the recursive algorithm solving the maximum sub-array sum can be described as
 \cref{recursive_max_sub_sum}.
 
 \begin{algorithm}[H]
@@ -85,7 +85,7 @@ To find the maximum sub-array sum of $A[1\ldots n]$, we can call \textsc{MemMaxS
 \pagebreak
 \noindent
 \textbf{Applying DP:\ }
-According to the previous observation, \textsc{MemMaxSum}$(A[1\ldots n])$ depends on two array 
+According to the previous observation, \textsc{MemMaxSum}$(A[1\ldots n])$ depends on two array
 $R[1\ldots n]$ and $M[1\ldots n]$, each ranging over $\mathcal{O}(n)$ values, and is strictly
 based on previous call. Hence the above recursive algorithm can be turned into a DP
 algorithm using this two array. The array can be filled starting at $1$ and going up to $n$.
@@ -111,5 +111,7 @@ The dynamic programming algorithm is shown in \cref{dp_max_sub_sum}.
 \end{algorithm}
 
 With two for loop of $n$ iteration and constant time operations in each iteration, the running time for \cref{dp_max_sub_sum} is $\mathcal{O}(n)$.
+
+\input{tex/maximum_answer.tex}
 
 \end{homeworkProblem}
