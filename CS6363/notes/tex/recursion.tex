@@ -29,6 +29,124 @@ Not your problem! Handled by the recursion fairy.
 
 \question How long until the world end?
 
-\solution
+\subsubsection{Analysis}
+A small hint: not consider the smallest first, but the largest first.
 
+In order to move the largest disk:
+\begin{itemize}
+    \item $dst$ has to be empty.
+    \item $src$ has only largest one.
+    \item $tmp$ has $n-1$ disks sorted.
+\end{itemize}
 
+So we must:
+\begin{enumerate}
+    \item move $n-1$ disks from $src$ to $tmp$\tikzmark{hanoi1}{.}
+    \item move largest from $src$ to $dst$\tikzmark{hanoi2}{.}
+    \item move $n-1$ disk from $tmp$ to $dst$\tikzmark{hanoi3}{.}
+
+    \begin{tikzpicture}[remember picture,overlay,node distance = 3cm]
+        \node (hanoi12descr) [right =of hanoi2]{Don't know how to do.};
+        \node (hanoi12descrdescr) [below =1cm of hanoi12descr]{\textbf{Don't think about it!!}};
+        \draw[red,->,thick] (hanoi1) to [in=-180,out=0] (hanoi12descr);
+        \draw[blue,->,thick] (hanoi3) to [in=-180,out=0] (hanoi12descr);
+        \draw[purple,->,thick] (hanoi12descr) to [in=90,out=-90] (hanoi12descrdescr);
+    \end{tikzpicture}
+\end{enumerate}
+
+Don't think about how to move $n-1$ disks, recursion fairy will do it.
+
+\begin{algorithm}[h]
+    \caption{Recursive Hanoi}\label{rec_hanoi}
+    \begin{algorithmic}
+        \Procedure{Hanoi}{$n, src, dst, tmp$}
+            \If{$n>0$}
+                \State \ProcedureName{Hanoi}{n-1, src, tmp, dst}
+                \State Move disk $n$ from $src$ to $dst$.
+                \State \ProcedureName{Hanoi}{n-1, tmp, dst, src}
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+How many moves in \cref{rec_hanoi} ?
+
+Let $T(n)$ be the total moves for $n$ disks.
+\begin{align*}
+    T(0) &= 0 \\
+    T(1) &= 1 \\
+    T(n) &= T(n-1) + 1 + T(n-1) \\
+         &= 2T(n-1) + 1
+\end{align*}
+
+``Solve'' the recurrence.
+
+\begin{tikzpicture}[level/.style={sibling distance=50mm/#1}]
+\node [circle,draw] (z){$n$}
+  child {node [circle,draw] (a) {$n-1$}
+    child {node [circle,draw] (b) {$n-2$}
+      child {node {$\vdots$}
+        child {node [circle,draw] (d) {$1$}}
+        child {node [circle,draw] (e) {$1$}}
+      }
+      child {node {$\vdots$}}
+    }
+    child {node [circle,draw] (g) {$n-2$}
+      child {node {$\vdots$}}
+      child {node {$\vdots$}}
+    }
+  }
+  child {node [circle,draw] (j) {$n-1$}
+    child {node [circle,draw] (k) {$n-2$}
+      child {node {$\vdots$}}
+      child {node {$\vdots$}}
+    }
+  child {node [circle,draw] (l) {$n-2$}
+    child {node {$\vdots$}}
+    child {node (c){$\vdots$}
+      child {node [circle,draw] (o) {$1$}}
+      child {node [circle,draw] (p) {$1$}
+        child [grow=right] {node (q) {$=$} edge from parent[draw=none]
+        child [grow=right] {node (q) {$\mathcal{O}_{k=n}(2^k)$} edge from parent[draw=none]
+            child [grow=up] {node (r) {$\vdots$} edge from parent[draw=none]
+            child [grow=up] {node (s) {$\mathcal{O}_2(2^2)$} edge from parent[draw=none]
+                child [grow=up] {node (t) {$\mathcal{O}_1(2^1)$} edge from parent[draw=none]
+                  child [grow=up] {node (u) {$\mathcal{O}_0(2^0)$} edge from parent[draw=none]}
+                }
+              }
+            }
+            child [grow=down] {node (v) {$\bigO{n \cdot \lg n}$}edge from parent[draw=none]}
+          }
+        }
+      }
+    }
+  }
+};
+\path (a) -- (j) node [midway] {+};
+\path (b) -- (g) node [midway] {+};
+\path (k) -- (l) node [midway] {+};
+\path (k) -- (g) node [midway] {+};
+\path (d) -- (e) node [midway] {+};
+\path (o) -- (p) node [midway] {+};
+\path (o) -- (e) node (x) [midway] {$\cdots$}
+  child [grow=down] {
+  node (y) {\bigO{\displaystyle\sum_{i = 0}^k 2^i}}
+    edge from parent[draw=none]
+  };
+\path (q) -- (r) node [midway] {+};
+\path (s) -- (r) node [midway] {+};
+\path (s) -- (t) node [midway] {+};
+\path (s) -- (l) node [midway] {=};
+\path (t) -- (u) node [midway] {+};
+\path (z) -- (u) node [midway] {=};
+\path (j) -- (t) node [midway] {=};
+\path (y) -- (x) node [midway] {$\Downarrow$};
+\path (v) -- (y) node [midway] {$\Leftrightarrow$};
+    %node (w) [midway] {\bigO{\displaystyle\sum_{i = 0}^k n} = \bigO{k \cdot n}};
+\path (q) -- (v) node [midway] {=};
+\path (e) -- (x) node [midway] {+};
+\path (o) -- (x) node [midway] {+};
+\path (y) -- (v) node [midway] {$=$};
+%\path (v) -- (w) node [midway] {$\Leftrightarrow$};
+\path (r) -- (c) node [midway] {$\cdots$};
+\end{tikzpicture}

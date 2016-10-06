@@ -12,9 +12,13 @@
 
 \RequirePackage{fancyhdr}
 
+\RequirePackage[titles]{tocloft}
+
 \RequirePackage{makeidx}
 
 \RequirePackage{extramarks}
+
+\RequirePackage{pdfpages}
 
 %
 % AMS packages.
@@ -142,7 +146,7 @@
 %
 % For algorithm analysis.
 %
-\newcommand*{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+\newcommand*{\bigO}[1]{\ensuremath{\mathcal{O}\left(#1\right)}}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 

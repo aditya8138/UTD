@@ -130,7 +130,7 @@ According to previous examples, we can summarize the general method to solve DP 
 \subsubsection{Description of Problem}
 \AlgoInput Array $A[1...n]$ of integers.
 
-\AlgoOutput Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}$ for all j.
+\AlgoOutput Longest subsequence of indices, $1 \leq i_1 < i_2 < ... < i_k < n$, s.t. $A[i_j] < A[i_{j+1}]$ for all j.
 
 Warning: Subarray is ``contiguous''. So what is a subsequence?
 \begin{itemize}
@@ -501,3 +501,92 @@ The DP algorithm to solve Edit Distance problem is showed in \cref{dp_edit_dista
 The operation to fill the table takes \bigO{1} time, ignoring recursive calls.
 
 So, total time is obviously \bigO{mn}.
+
+\subsection{Longest Convex Subsequence}
+
+\subsubsection{Description of Problem}
+
+\AlgoInput Array $A[1\ldots n]$ of integers.
+
+\AlgoOutput Longest subsequence of indices,
+\[1 \leq i_1 < i_2 < ... < i_k < n\]
+s.t. $2\times A[i_j] < A[i_{j-1}] + A[i_{j+1}]$ for all j.
+
+\subsubsection{Analysis}
+If consider $A[i]$ as current element, whether choose it or throw it depends on its
+next element. Thus, consider $A[i+1]$ as current element.
+
+\begin{algorithm}[h]
+    \caption{Recursive Algorithm for Longest Convex Subsequence}\label{ori_lxs_alg}
+    \begin{algorithmic}[1]
+        \Procedure{LXS}{$preprev, prev, cur$}
+            \If{$cur > n$}
+                \Return $0$
+            \EndIf
+            \State $ignore = $\ProcedureName{LXS}{\tikzmark[red]{point1}{\underline{$preprev, prev$}}, \tikzmark[blue]{point2}{\underline{$cur+1$}}}
+            \State $best = ignore$
+            \If{$preprev = -1$ or $A[cur] > 2\times A[prev] - A[preprev]$}
+                \State $include = 1 + \ProcedureName{LXS}{prev, cur, cur+1}$
+                \If{$include>ignore$}
+                    \State $best = include$
+                \EndIf
+            \EndIf
+            \Return $best$
+        \EndProcedure
+    \end{algorithmic}
+    
+    \begin{tikzpicture}[remember picture,overlay,node distance = 1cm]
+        \node[red] (point1descr) [above right =of point1]{Does not change.};
+        \draw[red,->,thick] (point1descr) to [in=45,out=-135] (point1);
+        \node[blue] (point2descr) [right =of point2]{Consider next element.};
+        \draw[blue,->,thick] (point2descr) to [in=-30,out=-150] (point2);
+    \end{tikzpicture}
+\end{algorithm}
+
+Call \ProcedureName{LXS}{-1,-1,1} will get the longest convex sequence.
+
+There are three parameter with $n$ size, so the table is \bigO{n^3} size.
+
+Each entry require \bigO{1} time to fill, so the total running time is \bigO{n^3}.
+
+The third parameter $cur$ is always strictly larger, so the outer for loop
+should be a decreasing for loop for $cur$. The inner two for loop is irrelevant.
+
+\subsection{Professor's note on LIS/LCS/LXS/SCS}
+
+\includepdf[pages=-]{lis.pdf}
+\includepdf[pages=-]{lxs.pdf}
+
+\subsection{Summary}
+
+Quote from professor:
+
+\begin{quote}
+
+When solving the DP problem on the exam ask yourself:
+
+\begin{quote}
+``What is the minimal amount of information needed to
+determine whether I can take the current element as the
+next element in the subsequence?''
+\end{quote}
+
+For the longest convex subsequence I need to know what the
+previous two elements in the subsequence were. Shortest
+common super-sequence was even easier, as there is no
+requirement imposed by earlier elements. In both problems
+we then try all options of taking or not taking the current
+element(s) and return the best result.
+
+\end{quote}
+
+For increasing/decreasing in the For-Loop, look for the parameter(s)
+that is strictly increasing or decreasing.
+\begin{itemize}
+    \item If only one is increasing/decreasing, then the outer For-Loop should
+        be decreasing/increasing about that parameter.
+        The other For-Loop is irrelevant (for example the inner two For-Loop in LXS).
+    \item If both parameter is increasing/decreasing, then two For-Loop should
+        both be decreasing/increasing about its parameter. Which For-Loop
+        is the outer one is irrelevant (for example the two For-Loop in SCS).
+\end{itemize}
