@@ -16,6 +16,7 @@
 Not your problem! Handled by the recursion fairy.
 
 \subsection{Tower of Hanoi}
+\subsubsection{Description of Problem}
 \begin{itemize}
     \item 3 pegs, which hold n distinct sized disks.
     \item initially $tmp$, $dst$ empty and $src$ has all disks sorted.
@@ -80,73 +81,94 @@ Let $T(n)$ be the total moves for $n$ disks.
 \end{align*}
 
 ``Solve'' the recurrence.
+\[\sum_{l=1}^n 2^{l-1} = 2^n - 1\]
 
-\begin{tikzpicture}[level/.style={sibling distance=50mm/#1}]
-\node [circle,draw] (z){$n$}
-  child {node [circle,draw] (a) {$n-1$}
-    child {node [circle,draw] (b) {$n-2$}
-      child {node {$\vdots$}
-        child {node [circle,draw] (d) {$1$}}
-        child {node [circle,draw] (e) {$1$}}
-      }
-      child {node {$\vdots$}}
-    }
-    child {node [circle,draw] (g) {$n-2$}
-      child {node {$\vdots$}}
-      child {node {$\vdots$}}
-    }
-  }
-  child {node [circle,draw] (j) {$n-1$}
-    child {node [circle,draw] (k) {$n-2$}
-      child {node {$\vdots$}}
-      child {node {$\vdots$}}
-    }
-  child {node [circle,draw] (l) {$n-2$}
-    child {node {$\vdots$}}
-    child {node (c){$\vdots$}
-      child {node [circle,draw] (o) {$1$}}
-      child {node [circle,draw] (p) {$1$}
-        child [grow=right] {node (q) {$=$} edge from parent[draw=none]
-        child [grow=right] {node (q) {$\mathcal{O}_{k=n}(2^k)$} edge from parent[draw=none]
-            child [grow=up] {node (r) {$\vdots$} edge from parent[draw=none]
-            child [grow=up] {node (s) {$\mathcal{O}_2(2^2)$} edge from parent[draw=none]
-                child [grow=up] {node (t) {$\mathcal{O}_1(2^1)$} edge from parent[draw=none]
-                  child [grow=up] {node (u) {$\mathcal{O}_0(2^0)$} edge from parent[draw=none]}
-                }
-              }
-            }
-            child [grow=down] {node (v) {$\bigO{n \cdot \lg n}$}edge from parent[draw=none]}
-          }
-        }
-      }
-    }
-  }
-};
-\path (a) -- (j) node [midway] {+};
-\path (b) -- (g) node [midway] {+};
-\path (k) -- (l) node [midway] {+};
-\path (k) -- (g) node [midway] {+};
-\path (d) -- (e) node [midway] {+};
-\path (o) -- (p) node [midway] {+};
-\path (o) -- (e) node (x) [midway] {$\cdots$}
-  child [grow=down] {
-  node (y) {\bigO{\displaystyle\sum_{i = 0}^k 2^i}}
-    edge from parent[draw=none]
-  };
-\path (q) -- (r) node [midway] {+};
-\path (s) -- (r) node [midway] {+};
-\path (s) -- (t) node [midway] {+};
-\path (s) -- (l) node [midway] {=};
-\path (t) -- (u) node [midway] {+};
-\path (z) -- (u) node [midway] {=};
-\path (j) -- (t) node [midway] {=};
-\path (y) -- (x) node [midway] {$\Downarrow$};
-\path (v) -- (y) node [midway] {$\Leftrightarrow$};
-    %node (w) [midway] {\bigO{\displaystyle\sum_{i = 0}^k n} = \bigO{k \cdot n}};
-\path (q) -- (v) node [midway] {=};
-\path (e) -- (x) node [midway] {+};
-\path (o) -- (x) node [midway] {+};
-\path (y) -- (v) node [midway] {$=$};
-%\path (v) -- (w) node [midway] {$\Leftrightarrow$};
-\path (r) -- (c) node [midway] {$\cdots$};
+\subsection{Binary Search}
+
+\AlgoInput Given a value $val$, and sorted aray $A[1 \ldots n]$.
+
+\AlgoOutput Is $val$ contained in $A$?
+
+\begin{algorithm}[H]
+\caption{Binary Search Algorithm}\label{bianry_search}
+\begin{algorithmic}[1]
+\Procedure{Bin}{$val, low, high$}
+  \If{$high < low$}
+    \Return Not Found
+  \EndIf
+  \State $mid = \big\lfloor\frac{high + low}{2}\big\rfloor$
+  \If{$val < A[mid]$}
+    \Return \ProcedureName{Bin}{val, low, mid-1}
+  \EndIf
+  \If{$val > A[mid]$}
+    \Return \ProcedureName{Bin}{val,mid+1,high}
+  \EndIf
+  \Return $mid$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+To find whether $val$ is contained in $A[1\ldots n]$, call \ProcedureName{Bin}{val,1,n}.
+
+Let $m = high - low + 1$,
+
+\begin{align}
+T(m) & \leq \max\bigg\{T\Big(\Big\lfloor\frac{m-1}{2}\Big\rfloor\Big)\tikzmark{floorceil},
+                       T\Big(\Big\lceil\frac{m-1}{2}\Big\rceil\Big)\bigg\}
+                       + \Theta(1)\\
+     & \leq T\big(\frac{m}{2}\big) + \Theta(1) \\
+T(m) & = T\big(\frac{m}{2}\big) + 1 \\
+T(m) & = \Theta(1) \text{ for } m = \Theta(1) \tikzmark{notesont}{ }
+    \begin{tikzpicture}[remember picture,overlay,node distance = 2cm]
+        \node (floorceildescr) [below right =of floorceil, text width=5cm]{\footnotesize{Floor and Ceilings has differences in constant time.}};
+        \node (notesontdescr) [below right=1cm and 2cm of notesont, text width=6cm]{\footnotesize{A constant size problem should has a constant solution.}};
+        \draw[red,->,thick] (floorceil) to [in=-180,out=-90] (floorceildescr);
+        \draw[red,->,thick] (notesont) to [in=-180,out=0] (notesontdescr);
+    \end{tikzpicture}
+\end{align}
+
+To think the running time in another way:
+
+\begin{align*}
+T(m) &= T\Big(\frac{m}{2}\Big) + 1 \\
+     &= T\Big(\frac{m}{2\times 2}\Big) + 1 + 1 \\
+     &= T\Big(\frac{m}{2\times 2\times 2}\Big) + 1 + 1 + 1
+\end{align*}
+
+Counting the number of times divide by 2 to get to 1, i.e.
+
+\[\frac{m}{2^x} = 1 \rightarrow m = 2^x \rightarrow x = \lg{m}\]
+
+
+\subsection{Maximum Sub-array Sum}
+
+\subsubsection{Description of Problem}
+
+\AlgoInput Given an unsorted array $A[1 \ldots n]$ of integers,
+including both negative and positive number.
+
+\AlgoOutput $\displaystyle\max_{i\leq j}\bigg\{\sum_{k=i}^j{A[k]}, 0\bigg\}$.
+
+\subsubsection{Analysis}
+
+\textbf{The Naive Solution}
+
+Let $W[i][j] = \displaystyle\sum_{k=i}^j{A[k]}$ for $i \leq j$.
+Return $\max\{0, \max\{W[i][j]\}\}$.
+The running time of this brute force solution is$T(n) = \displaystyle\sum_{j=1}^n{\sum_{i=1}^j{(j-i+1)}} = \Theta(n^3)$
+
+\noindent\textbf{Think Recursively!}
+
+Let $maxSum(i,j)$ be the maximum sub-array sum in $A[1 \ldots n]$ or $0$.
+The solution is $maxSum(1,n)$.\tikzmark{notesonmaxsum}{ }
+\begin{tikzpicture}[remember picture, overlay, node distance = 2cm]
+    \node (notesonmaxsumdescr) [below right=0.3cm and 3cm of notesonmaxsum, text width=10cm]{\footnotesize{Can we express $maxSum(1,n)$ in term of $maxSum(1,n-1)$?}};
+    \draw[red,->,thick] (notesonmaxsum) to [in=-180,out=0] (notesonmaxsumdescr);
 \end{tikzpicture}
+
+There are two cases:
+
+\begin{itemize}
+  \item todo.
+  \item todo.
+\end{itemize}
