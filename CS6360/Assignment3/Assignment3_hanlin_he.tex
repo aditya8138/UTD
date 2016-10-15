@@ -1,0 +1,65 @@
+\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{homework}
+\usepackage{tikz-er2}
+
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+
+\newcommand{\hmwkTitle}{Homework\ \#3 }
+\DTMsavetimestamp{DueDate}{2016-10-16T23:59:59-06:00}
+\newcommand{\hmwkClass}{CS 6360.003}
+\newcommand{\hmwkClassName}{Database Design}
+\newcommand{\hmwkClassInstructor}{Nurcan Yuruk}
+\newcommand{\hmwkAuthorName}{Hanlin He}
+\newcommand{\hmwkAuthorNetID}{hxh160630}
+\newcommand{\hmwkAuthorUTDEmail}{\href{mailto:hanlin.he@utdallas.edu}{hanlin.he@utdallas.edu}}
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ \hmwkAuthorUTDEmail}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\pagebreak
+
+\begin{homeworkProblem}[Design an ER schema diagram for a sport league.]
+
+\begin{figure}[!htb]
+  \includestandalone[width=\textwidth]{nba}%     without .tex extension
+  \caption{ER Diagram for NBA League}
+  \label{fig:tikz:nba}
+\end{figure}
+
+Assumption:
+
+\begin{itemize}
+    \item A .
+\end{itemize}
+
+\end{homeworkProblem}
+\end{document}

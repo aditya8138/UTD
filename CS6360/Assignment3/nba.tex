@@ -1,0 +1,49 @@
+% Tikz File 'mytikz.tex'
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{tikz-er2}
+
+\begin{document}
+\begin{tikzpicture}[node distance=6em, every edge/.style={link}]
+    \node[entity] (team) {Team};
+    \node[attribute] (team_id) [left=2em of team] {\key{Team ID}} edge (team);
+    \node[attribute] (team_name) [above left of=team] {Name} edge (team);
+    \node[attribute] (abbrev) [above of=team] {Abbrev} edge (team);
+    \node[attribute] (city) [below left of=team] {City} edge (team);
+
+    \node[relationship] (playfor) [below= 6em of team] {Play For} edge [total] node[auto,swap,very near start] {1}  (team);
+
+    \node[weak entity] (contract) [left=4em of playfor] {Contract} edge [total] node[auto,swap,very near end] {1} (playfor);
+    \node[attribute] (contract_no) [left= 1em of contract] {\wkey{Contract No.}} edge (contract);
+    \node[attribute] (contract_start_year) [above left=4em and 1em of contract] {Start Year} edge (contract);
+    \node[attribute] (contract_end_year) [above left=1em and 3em of contract] {End Year} edge (contract);
+    \node[attribute] (play_salary) [below left=1em and 3em of contract] {Salary} edge (contract);
+
+    \node[entity] (player) [below=8em of playfor] {Player} edge node[auto,swap,very near end] {18} (playfor);
+    \node[attribute] (player_id) [above left of=player] {\key{Player ID}} edge (player);
+    \node[attribute] (birthday) [left=0.2em of player_id] {Birthday} edge(player);
+    \node[attribute] (player_name) [left=3em of player] {Name} edge(player);
+    \node[attribute] (player_fname) [below left=1em and 3em of player_name] {Fname} edge (player_name);
+    \node[attribute] (player_lname) [above left=1em and 3em of player_name] {Lname} edge (player_name);
+    \node[attribute] (player_mini) [left=3em of player_name] {Minit} edge (player_name);
+    \node[attribute] (height) [below left of=player] {Height} edge (player);
+    \node[attribute] (weight) [left of=height] {Weight} edge (player);
+
+    \node(compete)[right= 8em of team]{  };
+    \node[relationship] (compete_as_host) [above= 1em of compete] {Compete as Host} edge node[auto,near start] {1} (team);
+    \node[relationship] (compete_as_guest) [below= 1em of compete] {Compete as Guest} edge node[auto,swap,near start] {1} (team);
+
+
+    \node[entity] (game) [right= 8em of compete] {Game} edge[total] node[auto,near end] {N} (compete_as_host) edge[total] node[auto,swap,near end] {N} (compete_as_guest);
+    \node[derived attribute] (host_team_score) [above=3em of game] {Host Team Score} edge (game);
+    \node[derived attribute] (guest_team_score) [above right=2em and 3em of game] {Guest Team Score} edge (game);
+    \node[attribute] (game_id) [right=3em of game] {\key{Game ID}} edge (game);
+    \node[attribute] (game_date) [below right=2em and 2em of game] {Game Date} edge (game);
+
+
+    \node[relationship] (play_in) at (player -| game) {Play In} edge  node[auto,swap,very near start] {N} (player) edge node[auto,swap,very near start] {M} (game);
+    \node[attribute] (points) [below left of=play_in] {Points} edge (play_in);
+    \node[multi attribute] (position) [below right of=play_in] {Position} edge (play_in);
+    \node[attribute] (minutes) [right=2em of play_in] {Minutes Played} edge(play_in);
+\end{tikzpicture}
+\end{document}
