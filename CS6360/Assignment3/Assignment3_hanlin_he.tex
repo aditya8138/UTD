@@ -47,7 +47,8 @@
 
 \pagebreak
 
-\begin{homeworkProblem}[Design an ER schema diagram for a sport league.]
+\begin{homeworkProblem}
+Entity-Relation diagram for NBA is shown in \cref{fig:tikz:nba}.
 
 \begin{figure}[!htb]
   \includestandalone[width=\textwidth]{nba}%     without .tex extension
@@ -58,8 +59,23 @@
 Assumption:
 
 \begin{itemize}
-    \item A .
+    \item A team can have contract with at most 18 players and must have at least 5 players in the team.
+    \item For each game, there is a host team and a guest team.
+    \item A player can play multiple positions in one game.
+    \item The result of the game can be calculated by summing up the players' score of that team in that game.
 \end{itemize}
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+\begin{figure}[!htb]
+  \includestandalone[width=\textwidth]{museum}%     without .tex extension
+  \caption{ER Diagram for Museum}
+  \label{fig:tikz:museum}
+\end{figure}
 
 \end{homeworkProblem}
 \end{document}
