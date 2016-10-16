@@ -1,0 +1,75 @@
+% Tikz File 'museum.tex'
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{tikz-er2}
+
+\begin{document}
+\begin{tikzpicture}[node distance=6em, every edge/.style={link}]
+    \node[entity] (art_objects) {ART OBJECTS};
+    \node[attribute] (idno) [left=4em of art_objects] {IDNo} edge (art_objects);
+    \node[attribute] (year) [above left=1em and 4em of art_objects] {Year} edge (art_objects);
+    \node[attribute] (title) [above left=3em and 1em of art_objects] {Title} edge (art_objects);
+    \node[attribute] (description) [above = 4em of art_objects] {Description} edge (art_objects);
+    \node[attribute] (country_culture) [above right=2.5em and 1em of art_objects] {Country Culture} edge (art_objects);
+    \node[attribute] (origin) [above=1em of country_culture] {Origin} edge (country_culture);
+    \node[attribute] (period) [above right=1em and 1em of country_culture] {Period} edge (country_culture);
+
+    \node[relationship] (create_by) [right=5em of art_objects] {Create By} edge (art_objects);
+
+    \node[entity] (artist) [right=5em of create_by] {Artist} edge (create_by);
+    \node[attribute] (artist_name) [above right=10em and 3em of artist] {Name} edge (artist);
+    \node[attribute] (artist_dateborn) [above right=7em and 4.5em of artist] {DateBorn} edge (artist);
+    \node[attribute] (artist_datedied) [above right=4em and 5.5em of artist] {DateDied} edge (artist);
+    \node[attribute] (artist_country_of_origin) [above right=1em and 6em of artist] {CountryOfOrigin} edge (artist);
+    \node[attribute] (artist_period) [right=6em of artist] {Period} edge (artist);
+    \node[attribute] (artist_mainstyle) [below right=0.5em and 6em of artist] {MainStyle} edge (artist);
+    \node[attribute] (artist_description) [below right=3.5em and 4em of artist] {Description} edge (artist);
+
+    \node[specialization] (type) [below = 5em of art_objects] {d} edge (art_objects);
+    \node[entity] (sculpture) [below =5em of type] {SCULPTURE/STATUE} edge node {$\bigcup$}(type);
+    \node[attribute] (sculpture_material) [below left=6em and 1.5em of sculpture] {Material} edge (sculpture);
+    \node[attribute] (sculpture_height) [below left= 5em and -4.5em of sculpture] {Height} edge (sculpture);
+    \node[attribute] (sculpture_weight) [below right= 5em and -4.5em of sculpture] {Weight} edge (sculpture);
+    \node[attribute] (sculpture_style) [below right= 3em and -0.5em of sculpture] {Style} edge (sculpture);
+
+    \node[entity] (painting) [left=4em of sculpture] {PAINTING} edge node [rotate=-45] {$\bigcup$}(type);
+    \node[attribute] (painttype) [below left of=painting] {PaintType} edge (painting);
+    \node[attribute] (paint_material) [below of=painting] {Material} edge (painting);
+    \node[attribute] (paint_style) [below right of=painting] {Style} edge (painting);
+
+    \node[entity] (other) [right=4em of sculpture] {OTHER} edge node [rotate=45] {$\bigcup$} (type);
+    \node[attribute] (other_type) [below of=other] {Type} edge (other);
+    \node[attribute] (other_style) [below right of=other] {Style} edge (other);
+
+    \node[specialization] (belong_type) [below right= 8em and 25em of type] {d} edge (art_objects);
+
+
+    \node[entity] (permanent_collection) [below right=12em and 3em of belong_type] {PERMANENT COLLECTION} edge node {$\bigcup$} (belong_type);
+    \node[attribute] (date_acquired) [below left=4em and -2em of permanent_collection] {DateAcquired} edge (permanent_collection);
+    \node[attribute] (Cost) [left=2em of permanent_collection] {Cost} edge (permanent_collection);
+
+    \node[specialization] (display_status) [below=8em of permanent_collection] {d} edge (permanent_collection);
+    \node[entity] (on_display) [below left=3em and 2em of display_status] {On Display} edge node {$\bigcup$} (display_status);
+    \node[entity] (stored) [below right=3em and 2em of display_status] {Stored} edge node {$\bigcup$} (display_status);
+
+    \node[relationship] (display_on) [left=10em of on_display] {Display On} edge (on_display);
+    \node[entity] (exhibitions) [left=6em of display_on] {EXHIBITIONS} edge (display_on);
+    \node[attribute] (exhibition_name) [above left=1em and 2em of exhibitions] {\key{Name}} edge (exhibitions);
+    \node[attribute] (exhibition_start_date) [left=2em of exhibitions] {Start Date} edge (exhibitions);
+    \node[attribute] (exhibition_end_date) [below left=1em and 2em of exhibitions] {End Date} edge (exhibitions);
+
+    \node[entity] (borrowed_collection) [left=23em of permanent_collection] {BORROWED} edge node [rotate=70] {$\bigcup$} (belong_type);
+    \node[attribute] (borrowed_from) [below left=1.5em and 0em of borrowed_collection] {Borrow from} edge (borrowed_collection);
+    \node[attribute] (date_borrowed) [below of=borrowed_collection] {DateBorrowed} edge (borrowed_collection);
+    \node[attribute] (date_returned) [below right=1.5em and 0em of borrowed_collection] {DateReturned} edge (borrowed_collection);
+
+    \node[entity] (other_collection) [below=40em of sculpture] {OTHER COLLECTION};
+    \node[attribute] (other_collection_name) [left=2em of other_collection] {\key{Name}} edge (other_collection);
+    \node[attribute] (other_collection_type) [below left=2em and 2em of other_collection] {Type} edge (other_collection);
+    \node[attribute] (other_collection_description) [below =2em of other_collection] {Description} edge (other_collection);
+    \node[attribute] (other_collection_address) [below right=2em and 2em of other_collection] {Address} edge (other_collection);
+    \node[attribute] (other_collection_phone) [below right=2em and 10em of other_collection] {Phone} edge (other_collection);
+    \node[attribute] (other_collection_contact) [right=4em of other_collection] {ContactPerson} edge (other_collection);
+
+\end{tikzpicture}
+\end{document}
