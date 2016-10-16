@@ -20,6 +20,7 @@ Tikz library]
 \tikzstyle{every relationship} = []
 \tikzstyle{every link} = []
 \tikzstyle{every isa} = []
+\tikzstyle{every specialization} = []
 
 \tikzstyle{link} = [>=triangle 60, draw, thick, every link]
 
@@ -54,6 +55,10 @@ Tikz library]
                    shape border rotate=-90,
                    draw, black, very thick, minimum size=3em,
                    every isa]
+
+\tikzstyle{specialization} = [circle,
+                   draw, black, very thick, minimum size=3em,
+                   every specialization]
 
 % for text un key attributes
 \newcommand{\key}[1]{\underline{#1}}
