@@ -1,0 +1,122 @@
+% Tikz File 'museum.tex'
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{tikz-er2}
+
+\begin{document}
+
+\begin{tikzpicture}
+    % RELATIONS
+    \node (bankn) {\textbf{BANK}};
+    \node [relation=3,
+            below=2em of bankn.west,
+            anchor=west] (bank) {
+            \nodepart{one} \key{Code}
+                \nodepart{two} Name
+                    \nodepart{three} Addr
+        };
+
+    \node [below=6em of bankn.west, anchor=west]
+        (accountn) {\textbf{ACCOUNT}};
+    \node [relation=4,
+            below=2em of accountn.west,
+            anchor=west] (account) {
+            \nodepart{one} \key{Acct\_no}
+                \nodepart{two} Balance
+                    \nodepart{three} Type
+                       % \nodepart{four} Customer\_SSN
+                            \nodepart{four} Branch\_No
+        };
+
+    \node [below=6em of accountn.west, anchor=west]
+        (loann) {\textbf{LOAN}};
+    \node [relation=4,
+            below=2em of loann.west,
+            anchor=west] (loan) {
+            \nodepart{one} \key{Loan\_no}
+                \nodepart{two} Amount
+                    \nodepart{three} Type
+                        %\nodepart{four} Customer\_SSN
+                            \nodepart{four} Branch\_No
+        };
+
+    \node [below=6em of loann.west, anchor=west]
+        (customern) {\textbf{CUSTOMER}};
+    \node [relation=4,
+            below=2em of customern.west,
+            anchor=west] (customer) {
+            \nodepart{one} \key{SSN}
+                \nodepart{two} Name
+                    \nodepart{three} Phone
+                        \nodepart{four} Addr
+        };
+
+    \node [below=6em of customern.west, anchor=west]
+        (branchn) {\textbf{BRANCH}};
+    \node [relation=3,
+            below=2em of branchn.west,
+            anchor=west] (branch) {
+            \nodepart{one} \key{Code}
+                \nodepart{two} \key{Branch\_no}
+                    \nodepart{three} Addr
+        };
+
+    \node [below=6em of branchn.west, anchor=west]
+        (loanofcustomern) {\textbf{LOAN\_OF\_CUSTOMER}};
+    \node [relation=2,
+            below=3em of loanofcustomern.west,
+            anchor=west] (loanofcustomer) {
+            \nodepart{one} \key{Loan\_no}
+                \nodepart{two} \key{Customer\_SSN}
+        };
+
+    \node [below=6em of loanofcustomern.west, anchor=west]
+        (accountofcustomern) {\textbf{ACCOUNT\_OF\_CUSTOMER}};
+    \node [relation=2,
+            below=3em of accountofcustomern.west,
+            anchor=west] (accountofcustomer) {
+            \nodepart{one} \key{Acct\_no}
+                \nodepart{two} \key{Customer\_SSN}
+        };
+
+    \draw[relation_arrow] (loan.four south) |-
+        ($(branch.two south) + (0.2,-0.3)$) -|
+        ($(branch.two south) + (0.2,0)$);
+
+    \draw[relation_arrow] (account.four south) --
+        ++(0,-0.4) -|
+        ($(account.four east) + (0.5,-2)$) |-
+        ($(branch.three south) + (0,-0.45)$) -|
+        ($(branch.two south) + (-0.2,0)$);
+
+    \draw[relation_arrow] (branch.one south) --
+        ++(0,-0.6) -|
+        ($(account.four east) + (1,0)$) |-
+        ($(bank.one south) + (0,-0.6)$) -|
+        ($(bank.one south) + (0,0)$);
+
+    \draw[relation_arrow] (loanofcustomer.one south) --
+        ++(0,-0.4) -|
+        ($(loanofcustomer.one south) + (-2,0)$) |-
+        ($(loan.one south) + (0,-0.6)$) -|
+        ($(loan.one south) + (0,0)$);
+    \draw[relation_arrow] (loanofcustomer.two north) --
+        ++(0,0.3) -|
+        ($(loanofcustomer.one north) + (-1.5,0.4)$) |-
+        ($(customer.one south) + (-0.1,-0.4)$) -|
+        ($(customer.one south) + (-0.1,0)$);
+
+    \draw[relation_arrow] (accountofcustomer.one south) --
+        ++(0,-0.4) -|
+        ($(accountofcustomer.one south) + (-2.5,0)$) |-
+        ($(account.one south) + (0,-0.6)$) -|
+        ($(account.one south) + (0,0)$);
+    \draw[relation_arrow] (accountofcustomer.two north) --
+        ++(0,0.4) -|
+        ($(accountofcustomer.two north) + (3.5,0.4)$) |-
+        ($(branch.one south) + (-1,-0.8)$) -|
+        ($(customer.one south) + (-1,-0.6)$) |-
+        ($(customer.one south) + (0,-0.6)$) -|
+        ($(customer.one south) + (0.1,0)$);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,102 @@
+% Tikz File 'salesa.tex'
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{tikz-er2}
+
+\begin{document}
+
+\begin{tikzpicture}
+    % RELATIONS
+    \node (salespersonn) {\textbf{SALESPERSON}};
+    \node [relation=2,
+            below=2em of salespersonn.west,
+            anchor=west] (salesperson) {
+            \nodepart{one} \key{Sid}
+                \nodepart{two} Name
+        };
+
+    \node [below=6em of salespersonn.west, anchor=west]
+        (customern) {\textbf{CUSTOMER}};
+    \node [relation=5,
+            below=2em of customern.west,
+            anchor=west] (customer) {
+            \nodepart{one} \key{SSN}
+                \nodepart{two} Name
+                    \nodepart{three} State
+                        \nodepart{four} Street
+                            \nodepart{five} City
+        };
+
+    \node [below=6em of customern.west, anchor=west]
+        (salen) {\textbf{SALE}};
+    \node [relation=4,
+            below=2em of salen.west,
+            anchor=west] (sale) {
+            \nodepart{one} \key{Salespersonn\_Sid}
+                \nodepart{two} \key{Customer\_SSN}
+                    \nodepart{three} \key{Vehicle\_IN}
+                        \nodepart{four} Date
+        };
+
+    \draw[relation_arrow] (sale.two north) -- ++(0,0.4)
+        |- ($(sale.one north) + (0,1)$)
+        -| (customer.one south);
+
+    \draw[relation_arrow] (sale.one south) -- ++(0,-0.4)
+        -| ($(salesperson.one south) + (-1,-0.4)$)
+        -| (salesperson.one south);
+
+
+    %specialization for 8A
+
+    \node [below=6em of salen.west, anchor=west]
+        (vehiclen) {\textbf{VEHICLE}};
+    \node [relation=3,
+            below=3em of vehiclen.west,
+            anchor=west] (vehicle) {
+            \nodepart{one} \key{Vin}
+                \nodepart{two} Model
+                    \nodepart{three} Price
+        };
+
+    \draw[relation_arrow] (sale.three south)  |- ($(vehicle.one north) + (0,0.4)$)
+        -- (vehicle.one north);
+
+    \node [below=7em of vehiclen.west, anchor=west]
+        (carn) {\textbf{CAR}};
+    \node [relation=2,
+            below=2em of carn.west,
+            anchor=west] (car) {
+            \nodepart{one} \key{Vin}
+                \nodepart{two} Engine\_size
+        };
+    \node [below=6em of carn.west, anchor=west]
+        (truckn) {\textbf{TRUCK}};
+    \node [relation=2,
+            below=2em of truckn.west,
+            anchor=west] (truck) {
+            \nodepart{one} \key{Vin}
+                \nodepart{two} Tonnage
+        };
+    \node [below=6em of truckn.west, anchor=west]
+        (suvn) {\textbf{SUV}};
+    \node [relation=2,
+            below=2em of suvn.west,
+            anchor=west] (suv) {
+            \nodepart{one} \key{Vin}
+                \nodepart{two} No\_seats
+        };
+
+    \draw[relation_arrow] (car.one south) |- ($(car.one south) + (-0.6,-0.5)$)
+        |- ($(vehicle.one south) + (0,-0.6)$)
+        -- ($(vehicle.one south) + (0,0)$);
+    \draw[relation_arrow] (truck.one south) |- ($(truck.one south) + (-1,-0.5)$)
+        |- ($(vehicle.one south) + (-0.2,-0.4)$)
+        -- ($(vehicle.one south) + (-0.2,0)$);
+    \draw[relation_arrow] (suv.one south) |- ($(suv.one south) + (4,-0.5)$)
+        |- ($(vehicle.one south) + (0.2,-0.6)$)
+        -- ($(vehicle.one south) + (0.2,0)$);
+
+\end{tikzpicture}
+
+\end{document}

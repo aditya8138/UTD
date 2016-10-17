@@ -11,7 +11,7 @@
     \node[attribute] (abbrev) [above of=team] {Abbrev} edge (team);
     \node[attribute] (city) [below left of=team] {City} edge (team);
 
-    \node[relationship] (playfor) [below= 6em of team] {Play For} edge [total] node[auto,swap,very near start] {1}  (team);
+    \node[relationship] (playfor) [below= 6em of team] {Play For} edge [total] node[auto,swap,very near start] {1} (team);
 
     \node[weak entity] (contract) [left=4em of playfor] {Contract} edge [total] node[auto,swap,very near end] {1} (playfor);
     \node[attribute] (contract_no) [left= 1em of contract] {\wkey{Contract No.}} edge (contract);
