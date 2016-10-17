@@ -10,7 +10,7 @@ Tikz library]
 \RequirePackage{tikz}
 \RequirePackage[normalem]{ulem}  % for the dashed underline
 
-\usetikzlibrary{shapes.geometric,positioning}
+\usetikzlibrary{shapes,positioning,calc,arrows}
 \usetikzlibrary{arrows}
 \usetikzlibrary{fit}
 
@@ -71,3 +71,23 @@ Tikz library]
   \markoverwith{\kern.15em
   \vtop{\kern\ULdepth \hrule width .3em}%
   \kern.15em}\ULon}
+
+
+% for database schema
+\colorlet{lightgray}{gray!30}
+
+\tikzstyle{relation} = []
+
+\tikzstyle{relation} = [rectangle split,
+                        rectangle split horizontal,
+                        rectangle split parts=#1,
+                        rectangle split part align=base,
+                        rectangle split part fill={lightgray!50},
+                        draw,
+                        thick,
+                        %anchor=center,
+                        align=center,
+                        text height=3mm,
+                        text centered]
+
+\tikzstyle{relation_arrow} = [-latex,thick]
