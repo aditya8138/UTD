@@ -16,7 +16,7 @@
 
     \node[relationship] (create_by) [right=5em of art_objects] {Create By} edge [total] node[auto,swap, near start] {N} (art_objects);
 
-    \node[entity] (artist) [right=5em of create_by] {Artist} edge node[auto,swap, near end] {M} (create_by);
+    \node[entity] (artist) [right=5em of create_by] {Artist} edge node[auto,swap, near end] {1} (create_by);
     \node[attribute] (artist_name) [above right=10em and 3em of artist] {Name} edge (artist);
     \node[attribute] (artist_dateborn) [above right=7em and 4.5em of artist] {DateBorn} edge (artist);
     \node[attribute] (artist_datedied) [above right=4em and 5.5em of artist] {DateDied} edge (artist);
@@ -50,7 +50,7 @@
     \node[specialization] (belong_type) [below right= 8em and 28em of type] {d} edge [total] (art_objects);
 
 
-    \node[entity] (permanent_collection) [below right=12em and 3em of belong_type] {PERMANENT COLLECTION} edge node [rotate=35] {$\bigcup$} (belong_type);
+    \node[entity] (permanent_collection) [below right=12em and -2em of belong_type] {PERMANENT COLLECTION} edge node [rotate=25] {$\bigcup$} (belong_type);
     \node[attribute] (date_acquired) [below left=4em and -2em of permanent_collection] {DateAcquired} edge (permanent_collection);
     \node[attribute] (Cost) [left=2em of permanent_collection] {Cost} edge (permanent_collection);
 
@@ -64,7 +64,7 @@
     \node[attribute] (exhibition_start_date) [left=2em of exhibitions] {Start Date} edge (exhibitions);
     \node[attribute] (exhibition_end_date) [below left=1em and 2em of exhibitions] {End Date} edge (exhibitions);
 
-    \node[entity] (borrowed_collection) [left=23em of permanent_collection] {BORROWED} edge node [rotate=-56] {$\bigcup$} (belong_type);
+    \node[entity] (borrowed_collection) [left=16em of permanent_collection] {BORROWED} edge node [rotate=-56] {$\bigcup$} (belong_type);
     \node[attribute] (borrowed_from) [below left=1.5em and 0em of borrowed_collection] {Borrow from} edge (borrowed_collection);
     \node[attribute] (date_borrowed) [below of=borrowed_collection] {DateBorrowed} edge (borrowed_collection);
     \node[attribute] (date_returned) [below right=1.5em and 0em of borrowed_collection] {DateReturned} edge (borrowed_collection);

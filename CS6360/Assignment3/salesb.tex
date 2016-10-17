@@ -62,7 +62,7 @@
         -| ($(salesperson.one south) + (0.2,0)$);
 
     \node [below=6em of carn.west, anchor=west]
-        (saletruckn) {\textbf{TRUCK\_   SALE}};
+        (saletruckn) {\textbf{TRUCK\_SALE}};
     \node [relation=4,
             below=2em of saletruckn.west,
             anchor=west] (saletruck) {
@@ -80,7 +80,7 @@
             \nodepart{one} \key{Vin}
                 \nodepart{two} Model
                     \nodepart{three} Price
-                        \nodepart{four} Engine\_size
+                        \nodepart{four} Tonnage
         };
     \draw[relation_arrow] (saletruck.three south) |- ($(truck.one north) + (0,0.4)$)
         -- (truck.one north);
@@ -94,7 +94,7 @@
         -| ($(salesperson.one south) + (0,0)$);
 
     \node [below=6em of truckn.west, anchor=west]
-        (salesuvn) {\textbf{SUV\_   SALE}};
+        (salesuvn) {\textbf{SUV\_SALE}};
     \node [relation=4,
             below=2em of salesuvn.west,
             anchor=west] (salesuv) {
@@ -112,7 +112,7 @@
             \nodepart{one} \key{Vin}
                 \nodepart{two} Model
                     \nodepart{three} Price
-                        \nodepart{four} Engine\_size
+                        \nodepart{four} No\_seats
         };
     \draw[relation_arrow] (salesuv.three south) |- ($(suv.one north) + (0,0.4)$)
         -- (suv.one north);

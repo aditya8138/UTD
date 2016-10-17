@@ -18,7 +18,7 @@
 
     \node [below=6em of bankn.west, anchor=west]
         (accountn) {\textbf{ACCOUNT}};
-    \node [relation=4,
+    \node [relation=5,
             below=2em of accountn.west,
             anchor=west] (account) {
             \nodepart{one} \key{Acct\_no}
@@ -26,11 +26,12 @@
                     \nodepart{three} Type
                        % \nodepart{four} Customer\_SSN
                             \nodepart{four} Branch\_No
+                                \nodepart{five} Bank\_Code
         };
 
     \node [below=6em of accountn.west, anchor=west]
         (loann) {\textbf{LOAN}};
-    \node [relation=4,
+    \node [relation=5,
             below=2em of loann.west,
             anchor=west] (loan) {
             \nodepart{one} \key{Loan\_no}
@@ -38,6 +39,7 @@
                     \nodepart{three} Type
                         %\nodepart{four} Customer\_SSN
                             \nodepart{four} Branch\_No
+                                \nodepart{five} Bank\_Code
         };
 
     \node [below=6em of loann.west, anchor=west]
@@ -61,7 +63,7 @@
                     \nodepart{three} Addr
         };
 
-    \node [below=6em of branchn.west, anchor=west]
+    \node [below=8em of branchn.west, anchor=west]
         (loanofcustomern) {\textbf{LOAN\_OF\_CUSTOMER}};
     \node [relation=2,
             below=3em of loanofcustomern.west,
@@ -82,16 +84,25 @@
     \draw[relation_arrow] (loan.four south) |-
         ($(branch.two south) + (0.2,-0.3)$) -|
         ($(branch.two south) + (0.2,0)$);
+    \draw[relation_arrow] (loan.five south) |-
+        ($(branch.one south) + (0.2,-0.6)$) -|
+        ($(branch.one south) + (0.2,0)$);
 
     \draw[relation_arrow] (account.four south) --
-        ++(0,-0.4) -|
-        ($(account.four east) + (0.5,-2)$) |-
+        ++(0,-0.6) -|
+        ($(account.five east) + (0.5,-2)$) |-
         ($(branch.three south) + (0,-0.45)$) -|
         ($(branch.two south) + (-0.2,0)$);
 
-    \draw[relation_arrow] (branch.one south) --
-        ++(0,-0.6) -|
-        ($(account.four east) + (1,0)$) |-
+    \draw[relation_arrow] (account.five south) --
+        ++(0,-0.4) -|
+        ($(account.five east) + (1  ,-2)$) |-
+        ($(branch.three south) + (0,-0.8)$) -|
+        ($(branch.one south) + (0,0)$);
+
+    \draw[relation_arrow] ($(branch.one south) + (-0.2,0)$) --
+        ++(-0,-1) -|
+        ($(account.five east) + (1.5,0)$) |-
         ($(bank.one south) + (0,-0.6)$) -|
         ($(bank.one south) + (0,0)$);
 
@@ -114,7 +125,7 @@
     \draw[relation_arrow] (accountofcustomer.two north) --
         ++(0,0.4) -|
         ($(accountofcustomer.two north) + (3.5,0.4)$) |-
-        ($(branch.one south) + (-1,-0.8)$) -|
+        ($(branch.one south) + (-1,-1.4)$) -|
         ($(customer.one south) + (-1,-0.6)$) |-
         ($(customer.one south) + (0,-0.6)$) -|
         ($(customer.one south) + (0.1,0)$);

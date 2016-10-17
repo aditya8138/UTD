@@ -12,7 +12,7 @@
     \node [relation=8,
             below=2em of artobject.west,
             anchor=west] (artobjectsch) {
-            \nodepart{one} \key{IDNo}
+            \nodepart{one} \ \ \key{IDNo}\ \ \
                 \nodepart{two} Year
                     \nodepart{three} Title
                         \nodepart{four} Description
@@ -22,7 +22,7 @@
                                         \nodepart{eight} Artist
         };
 
-    \node [below=6em of artobject.west,
+    \node [below=8em of artobject.west,
             anchor=west] (painting) {\textbf{PAINTING}};
     \node [relation=4,
             below=2em of painting.west,
@@ -34,10 +34,10 @@
         };
 
     \node [below=5em of painting.west,
-            anchor=west] (sculpturestatue) {\textbf{SCULPTURE\_STATUE}};
+            anchor=west] (sculpture) {\textbf{SCULPTURE}};
     \node [relation=5,
-            below=2em of sculpturestatue.west,
-            anchor=west] (sculpturestatuesch) {
+            below=2em of sculpture.west,
+            anchor=west] (sculpturesch) {
             \nodepart{one} \key{IDNo}
                 \nodepart{two} Material
                     \nodepart{three} Height
@@ -45,7 +45,19 @@
                             \nodepart{five} Style
         };
 
-    \node [below=5em of sculpturestatue.west,
+    \node [below=5em of sculpture.west,
+            anchor=west] (statue) {\textbf{STATUE}};
+    \node [relation=5,
+            below=2em of statue.west,
+            anchor=west] (statuesch) {
+            \nodepart{one} \key{IDNo}
+                \nodepart{two} Material
+                    \nodepart{three} Height
+                        \nodepart{four} Weight
+                            \nodepart{five} Style
+        };
+
+    \node [below=5em of statue.west,
             anchor=west] (other) {\textbf{OTHER}};
     \node [relation=3,
             below=2em of other.west,
@@ -125,31 +137,31 @@
 
 % FOREIGN KEYS
 
-    \draw[relation_arrow] (paintingsch.one south) --
-        ++(0,-0.4) -|
-        ($(paintingsch.one south) + (-1,0)$) |-
-        ($(artobjectsch.one south) + (0,-0.8)$) -|
-        ($(artobjectsch.one south) + (0.3,0)$);
-    \draw[relation_arrow] (sculpturestatuesch.one south) --
-        ++(0,-0.4) -|
-        ($(sculpturestatuesch.one south) + (-1.1,0)$) |-
-        ($(artobjectsch.one south) + (0,-0.7)$) -|
-        ($(artobjectsch.one south) + (0.2,0)$);
-    \draw[relation_arrow] (othersch.one south) --
-        ++(0,-0.4) -|
-        ($(othersch.one south) + (-1.2,0)$) |-
-        ($(artobjectsch.one south) + (0,-0.6)$) -|
-        ($(artobjectsch.one south) + (0.1,0)$);
-    \draw[relation_arrow] ($(permanentcollectionsch.one south) + (-0.1,0)$) --
-        ++(0,-0.4) -|
-        ($(permanentcollectionsch.one south) + (-1.3,0)$) |-
-        ($(artobjectsch.one south) + (0,-0.5)$) -|
-        ($(artobjectsch.one south) + (0,0)$);
-    \draw[relation_arrow] (borrowedsch.one south) --
-        ++(0,-0.4) -|
-        ($(borrowedsch.one south) + (-1.4,0)$) |-
-        ($(artobjectsch.one south) + (-0.1,-0.4)$) -|
-        ($(artobjectsch.one south) + (-0.1,0)$);
+    \draw[relation_arrow] (paintingsch.one south)
+        |- ($(paintingsch.one south) + (-1,-0.5)$)
+        |- ($(artobjectsch.one south) + (0.5,-1.4)$)
+        -- ($(artobjectsch.one south) + (0.5,0)$);
+    \draw[relation_arrow] (sculpturesch.one south)
+        |- ($(sculpturesch.one south) + (-1.5,-0.5)$)
+        |- ($(artobjectsch.one south) + (0.3,-1.2)$)
+        -- ($(artobjectsch.one south) + (0.3,0)$);
+    \draw[relation_arrow] (statuesch.one south)
+        |- ($(statuesch.one south) + (-2,-0.5)$)
+        |- ($(artobjectsch.one south) + (0.1,-1)$)
+        -- ($(artobjectsch.one south) + (0.1,0)$);
+    \draw[relation_arrow] (othersch.one south)
+        |- ($(othersch.one south) + (-2.5,-0.5)$)
+        |- ($(artobjectsch.one south) + (-0.1,-0.8)$)
+        -- ($(artobjectsch.one south) + (-0.1,0)$);
+    \draw[relation_arrow] ($(permanentcollectionsch.one south) + (-0.1,0)$)
+        |- ($(permanentcollectionsch.one south) + (-3,-0.5)$)
+        |- ($(artobjectsch.one south) + (-0.3,-0.6)$)
+        -- ($(artobjectsch.one south) + (-0.3,0)$);
+    \draw[relation_arrow] (borrowedsch.one south)
+        |- ($(borrowedsch.one south) + (-3.5,-0.5)$)
+        |- ($(artobjectsch.one south) + (-0.5,-0.4)$)
+        -- ($(artobjectsch.one south) + (-0.5,0)$);
+
     \draw[relation_arrow] ($(displayonsch.two north) + (0.5,0)$) --
         ++(0,0.8) -|
         ($(exhibitionssch.one south) + (0,-0.33)$) -|
@@ -165,6 +177,11 @@
         ($(artistsch.one north) + (0,0.4)$) -|
         ($(artistsch.one north) + (0,0)$);
 
+
+% notes
+        %\node[blue] (notefordisplaya) [right =of permanentcollectionsch.four east];
+        \node[blue] (notefordisplayb) [above right=5em and 0em of permanentcollectionsch.four east, , text width=4cm]{Add a type attribute to illustrate this specialization};
+        \draw[blue,->,thick] (notefordisplayb) to [in=90,out=-120] (permanentcollectionsch.four north);
 \end{tikzpicture}
 
 \end{document}

@@ -75,19 +75,32 @@ Assumption:
 Entity-Relation diagram for museum is shown in \cref{museum_er}.
 
 \begin{figure}[!htb]
-  \includestandalone[width=\textwidth]{museum}%     without .tex extension
-  \caption{ER Diagram for Museum}
-  \label{museum_er}
+    \includestandalone[width=\textwidth]{museum}%     without .tex extension
+    \caption{ER Diagram for Museum}
+    \label{museum_er}
 \end{figure}
 
+\pagebreak
+
+Assumption:
+
+\begin{itemize}
+    \item A art object is created by one artist, so the cardinality ratio for ARTIST in Create By relation is 1.
+    \item All art objects in the museum will be created by an artist in the database, so for ART OBJECT has total participation in Create By relation.
+    \item Other collection is the object museum interact with, so there is no relation between OTHER COLLECTION and other entity.
+\end{itemize}
+
 \end{homeworkSubProblem}
+
+\pagebreak
+
 \begin{homeworkSubProblem}
 
 The database schema for ER-diagram in\cref{museum_er} is shown in \cref{museum_schema}.
 
 \begin{figure}[!htb]
 \centering
-  \includestandalone[height=7in]{museum_schema}%     without .tex extension
+  \includestandalone[height=7.2in]{museum_schema}%     without .tex extension
   \caption{Database Schema for Museum}
   \label{museum_schema}
 \end{figure}
@@ -107,6 +120,8 @@ The database schema for bank is shown in \cref{bank_schema}.
 \end{figure}
 
 \end{homeworkProblem}
+
+\pagebreak
 
 \begin{homeworkProblem}
 \begin{homeworkSubProblem}[Use 8A]
