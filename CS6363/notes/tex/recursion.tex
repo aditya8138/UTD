@@ -169,6 +169,160 @@ The solution is $maxSum(1,n)$.\tikzmark{notesonmaxsum}{ }
 There are two cases:
 
 \begin{itemize}
-  \item todo.
-  \item todo.
+    \item $maxSum(1, n)$ does not include $A[n]$
+        \[maxSum(1, n) = maxSum(1, n-1)\]
+    \item $maxSum(1, n)$ does include $A[n]$
+        \[maxSum(1, n) = maxEndAt(1, n)\]
 \end{itemize}
+
+$maxEndAt(i, j)$ is the maximum sub-array sum in $A[i, j]$ restricted to include $A[j]$.
+
+Here comes the recursive version algorithm to solve this problem, showing in .
+
+\begin{algorithm}[H]
+\caption{Recursive Solution for Maximum Sub-Array Sum Problem}\label{recur_max_sub_sum}
+\begin{algorithmic}[1]
+\Procedure{maxSum}{$i, j$}
+  \If{$j < i$}
+    \Return $0$
+  \EndIf
+  \State $x = $\ProcedureName{maxEndAt}{i, j}
+  \Return $\max\{x, \ProcedureName{maxSum}{i, j-1}\}$
+\EndProcedure
+\Procedure{maxEndAt}{$i, j$}
+    \If{$j < i$}
+        \Return $0$
+    \EndIf
+    \Return $\max\{A[n], A[n] + \ProcedureName{maxEndAt}{i, j-1}\}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The running time for \ProcedureName{maxEndAt}{i, j} is $T(n) = T(n-1) + \Theta(1) = \Theta(n)$.
+Accordingly, the running time for \ProcedureName{maxSum}{i, j} is
+\begin{align*}
+    T(m) &= T(m-1) + \Theta(m) \\
+         &= T(m-1) + m \\
+         &= \sum_{k=1}^m k \\
+         &= \Theta(m^2) \\
+\end{align*}
+
+Can we do better?
+
+Yes, use Divide and Conquer.
+
+\subsubsection{Applying Divide \& Conquer on Max Sub-Array Sum Problem}
+
+The key point of D\&C is try to get problem size down quickly.
+
+\begin{algorithm}[H]
+    \caption{Divide \& Conquer Solution for Maximum Sub-Array Sum Problem}\label{dc_max_sub_sum}
+\begin{algorithmic}[1]
+\Procedure{DCMaxSum}{$i, j$}
+  \If{$j < i$}
+    \Return $0$
+  \EndIf
+  \State $mid = \left\lfloor \frac{i + j}{2} \right\rfloor$
+  \Return $\max\{\ProcedureName{maxSum}{i, mid}, \ProcedureName{maxSum}{mid, j}, \ProcedureName{maxGoFrom}{i, mid} + \ProcedureName{maxGoFrom}{mid, j}\}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+If goes cross, must include $A[mid]$ and $A[mid+1]$.
+
+The running time for \cref{dc_max_sub_sum} is
+\[T(m) = 2T\big(\frac{m}{2}\big) + m\]
+in which $m = j - i + 1$.
+
+\begin{table}[!htb]
+    \caption{Comparison Between Previous Two Method}
+
+    \begin{minipage}{.65\linewidth}
+
+        \centering
+        \begin{tikzpicture}
+        \Tree
+        [.\node(root) {$n$};
+                [.$\frac{n}{2}$
+                    [.$\frac{n}{4}$ ]
+                    [.$\frac{n}{4}$ ]
+                ]
+                [.\node(1level) {$\frac{n}{2}$};
+                    [.$\frac{n}{4}$ ]
+                    [.\node(2level) {$\frac{n}{4}$}; ]
+                ]
+            ]
+
+            \node[right = 1cm of 2level] (2levelnote) {$n$};
+            \node (1levelnote) at (1level -| 2levelnote) {$n$};
+            \node (rootnote) at (root -| 2levelnote) {$n$};
+            \path (2levelnote) -- (2level) node [midway] {$\Longrightarrow$};
+            \path (1levelnote) -- (1level) node [midway] {$\Longrightarrow$};
+            \path (rootnote) -- (root) node [midway] {$\Longrightarrow$};
+        \end{tikzpicture}
+
+        \justifying
+        At each level, the running time sum is $n$.
+
+        There are $\log n$ level in total.
+
+        Thus, total running time is $\Theta(n\log n)$.
+
+    \end{minipage}%
+    \vline
+    \begin{minipage}{.35\linewidth}
+        \centering
+        \begin{tikzpicture}
+            \Tree
+            [.\node(root) {$n$};
+                [.\node(1level) {$n-1$};
+                    [.\node(2level) {$n-2$}; ]
+                ]
+            ]
+
+            \node[right = 1cm of 2level] (2levelnote) {$n$};
+            \node (1levelnote) at (1level -| 2levelnote) {$n-1$};
+            \node (rootnote) at (root -| 2levelnote) {$n-2$};
+            \path (2levelnote) -- (2level) node [midway] {$\Longrightarrow$};
+            \path (1levelnote) -- (1level) node [midway] {$\Longrightarrow$};
+            \path (rootnote) -- (root) node [midway] {$\Longrightarrow$};
+        \end{tikzpicture}
+
+        \justifying
+        \begin{align*}
+            T(m) &= T(m-1) + \Theta(m) \\
+                 &= \sum_{k=1}^m k \\
+                 &= \Theta(m^2) \\
+        \end{align*}
+    \end{minipage}%
+\end{table}
+
+Can we do better?
+
+The divide \& conquer solution constantly calculate the \ProcedureName{maxEndAt}{i, j}.
+Memoizing the result leads to the dynamic programming solution as shown in next section.
+
+\subsection{Solving Recurrence}
+
+Fail-safe method for any recurrence:
+\begin{quote}
+    Guess solution and prove correct with induction.
+\end{quote}
+The subtle point is: need to make the right guess!
+
+Example: Tower of Hanoi, $T(n) = 2T(n-1) + 1$, $T(1) = 1$.
+
+\Claim $T(n) = 2^n -1$
+
+\begin{proof}
+
+    \BaseCase $T(1) = 2^1 -1 = 1$, true.
+
+    \InductionStep Assume $T(m) = 2^m - 1$, for $m < n$.
+
+    \[T(n) = 2T(n-1) + 1 = 2\times (2^{n-1} -1) + 1 = 2^n - 1\]
+
+    Hold true for $n$.
+
+    \InductionConclusion $T(n) = 2^n - 1$.
+\end{proof}
