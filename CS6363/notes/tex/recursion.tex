@@ -303,6 +303,7 @@ The divide \& conquer solution constantly calculate the \ProcedureName{maxEndAt}
 Memoizing the result leads to the dynamic programming solution as shown in next section.
 
 \subsection{Solving Recurrence}
+\subsubsection{Basic Idea}
 
 Fail-safe method for any recurrence:
 \begin{quote}
@@ -310,7 +311,7 @@ Fail-safe method for any recurrence:
 \end{quote}
 The subtle point is: need to make the right guess!
 
-Example: Tower of Hanoi, $T(n) = 2T(n-1) + 1$, $T(1) = 1$.
+\AlgoExample  Tower of Hanoi, $T(n) = 2T(n-1) + 1$, $T(1) = 1$.
 
 \Claim $T(n) = 2^n -1$
 
@@ -326,3 +327,71 @@ Example: Tower of Hanoi, $T(n) = 2T(n-1) + 1$, $T(1) = 1$.
 
     \InductionConclusion $T(n) = 2^n - 1$.
 \end{proof}
+
+\subsubsection{Typical Proving Method}
+\AlgoExample maxSubArraySum, $T(n) = 2T(n/2) + \Theta(n)$.
+
+\Claim $T(n) = \Theta(n \log n)$
+
+\begin{proof}
+    Still using induction, only show the induction phase below.
+
+    Replace original statement with:
+    \[T(n) = 2T(n/2) + n\]
+
+    First, prove $T(n) \leq c \times n \log n$.
+    \begin{align*}
+        T(n) &= 2T\big(\frac{n}{2}\big) + n \\
+             &\leq 2\times c \times \frac{n}{2} \times \log\big(\frac{n}{2}\big) + n \\
+             &= c \times n \times \log(n-1) + n \\
+             &= c \times n \times \log n + n(1-c) \\
+             &= n\log n \text{ for } c = 1
+    \end{align*}
+
+    Then, prove $T(n) \geq c \times n \log n$. The same as previous one.
+\end{proof}
+
+\Note The constant in $T(n) = \bigO{n\log n}$ muse be specified.
+And in $T(n) = c\times n\log n - bn$, sometimes $bn$ need to guess.
+
+\subsubsection{Generalizing: Recursion Tree Method}
+Generalize the equation $T(n) = T(n/2) + n$ to
+\begin{equation}\label{main_recur_tree_eq}
+    T(n) = a T\big(\frac{n}{b}\big) + f(n)
+\end{equation}
+where $a,b \geq 1$. The recursion tree for \cref{main_recur_tree_eq} is shown in \cref{main_recur_tree}.
+
+\begin{figure}[H]
+    \caption{Generalize Recursion Tree}\label{main_recur_tree}
+\begin{tikzpicture}
+    \Tree
+    [.\node(root) {$f(n)$};
+        [.$f\big(\frac{n}{b}\big)$
+            [.\node[n] {$\ldots$};
+                [.\node(ilevel) {$f\big(\frac{n}{b^i}\big)$}; ]
+                \edge[n]; [.\node[n]{ }; ]
+            ]
+            [.\node[n] {$\ldots$}; ]
+        ]
+        [.\node(1level) {$f\big(\frac{n}{b}\big)$};
+        ]
+    ]
+
+    \node[right = 2cm of 1level] (1levelnote) {$\displaystyle af\big(\frac{n}{b}\big)$};
+    \node (ilevelnote) at (ilevel -| 1levelnote) {$\displaystyle a^if\big(\frac{n}{b^i}\big)$};
+    \node (rootnote) at (root -| 1levelnote) {$f(n)$};
+    \path (ilevelnote) -- (ilevel) node [very near start] {$\xRightarrow{\text{level sum}}$};
+    \path (1levelnote) -- (1level) node [midway] {$\xRightarrow{\text{level sum}}$};
+    \path (rootnote) -- (root) node [near start] {$\xRightarrow{\text{level sum}}$};
+\end{tikzpicture}
+\end{figure}
+
+\observation 
+
+\begin{itemize}
+    \item Level sum:  $\displaystyle a^i f\big(\frac{n}{b^i}\big)$
+    \item Depth:      $\log_b n$
+    \item Number of Leaves:    $a^{\log_b n}$
+\end{itemize}
+
+In total: $T(n) = \displaystyle \sum_{i=1}^{\log_b n} a^if\big(\frac{n}{b^i}\big)$, which often like a geometric series.
