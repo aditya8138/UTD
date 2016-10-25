@@ -386,7 +386,7 @@ where $a,b \geq 1$. The recursion tree for \cref{main_recur_tree_eq} is shown in
 \end{tikzpicture}
 \end{figure}
 
-\observation 
+\observation
 
 \begin{itemize}
     \item Level sum:  $\displaystyle a^i f\big(\frac{n}{b^i}\big)$
@@ -395,3 +395,79 @@ where $a,b \geq 1$. The recursion tree for \cref{main_recur_tree_eq} is shown in
 \end{itemize}
 
 In total: $T(n) = \displaystyle \sum_{i=1}^{\log_b n} a^if\big(\frac{n}{b^i}\big)$, which often like a geometric series.
+
+Look at the ratio of successive level sums:
+
+\begin{equation}
+    \cfrac{a^{i+1}f(\frac{n}{b^{i+1}})}{a^if(\frac{n}{b^i})}
+    = a \times \frac{f(\frac{n}{b^{i+1}})}{f(\frac{n}{b^{i+1}})}
+    =
+    \begin{cases}
+        > 1 \text{, then sum determined by the number of leaves.}\\
+        < 1 \text{, then sum determined by root.} \\
+        = 1 \text{, then sum determined by the depth or root.}\\
+    \end{cases}
+\end{equation}
+
+A Special Case is that, $f(n) = n^c$, i.e. $f(n)$ is polynomial.
+\begin{equation}\label{master_theorem}
+    a \times \frac{f(\frac{n}{b^{i+1}})}{f(\frac{n}{b^{i+1}})}
+    = a \times \frac{(\frac{n}{b^{i+1}})^c}{(\frac{n}{b^i})^c}
+    = \frac{a}{b^c}
+    =
+    \begin{cases}
+        > 1\text{, if } a>b^c\text{, then } T(n) = a^{\log_b n} = n^{\log_b a}\\
+        < 1\text{, if } a<b^c\text{, then } T(n) = n^c\\
+        = 1\text{, if } a=b^c\text{, then } T(n) = n^c\log_b n \\
+    \end{cases}
+\end{equation}
+
+The \cref{master_theorem} is called the Master Theorem.
+
+\subsubsection{More Examples: \texorpdfstring{$T(n)=\sqrt{n}T(\sqrt{n})+n$}{T(n)=sqrt(n)T(sqrt(n))+n}}
+
+\begin{figure}[H]
+    \caption{Recursion Tree for \texorpdfstring{$T(n)=\sqrt{n}T(\sqrt{n})+n$}{T(n)=sqrt(n)T(sqrt(n))+n}}\label{recur_tree_example1}
+\begin{tikzpicture}
+    \Tree
+    [.\node(root) {$n$};
+        \edge node [midway](notepoint) {  }; [.$n^{\frac{1}{2}}$
+            [.\node(2level) {$n^{\frac{1}{4}}$}; ]
+                \edge[n]; [.\node[n]{$\ldots$}; ]
+        ]
+        [.\node(1level) {$n^{\frac{1}{2}}$};
+            \edge[n]; [.\node[n]{$\ldots$}; ]
+            \edge[n]; [.\node[n]{  }; ]
+        ]
+    ]
+
+    \node[above left= 2em and 2em of notepoint] (note) {There are $n^{\frac{1}{2}}$ sub-nodes.};
+    \draw[red,->,thick] (notepoint) to [in=-45,out=-225] (note);
+    \node[right = 2cm of 1level] (1levelnote) {$(n^{\frac{1}{2}})\times n^{\frac{1}{2}} = n$};
+    \node (2levelnote) at (2level -| 1levelnote) {$\big[(n^{\frac{1}{2}})\times (n^{\frac{1}{4}})\big]\times (n^{\frac{1}{4}}) = n$};
+    \node (rootnote) at (root -| 1levelnote) {$n$};
+    \path (2levelnote) -- (2level) node [very near start] {$\xRightarrow{\text{level sum}}$};
+    \path (1levelnote) -- (1level) node [midway] {$\xRightarrow{\text{level sum}}$};
+    \path (rootnote) -- (root) node [near start] {$\xRightarrow{\text{level sum}}$};
+\end{tikzpicture}
+\end{figure}
+
+\observation
+
+Level sums: $\displaystyle \bigg(\prod_{i=1}^l n^{\frac{1}{2^i}}\bigg)\times \frac{1}{2^i} = n^{\displaystyle\bigg(\sum_{i=1}^l \frac{1}{2^i}\bigg) + \frac{1}{2^l}} = n^1$
+
+Equal level sum, then what we need to know is the depth.
+So the question turns to:
+
+How many times apply $\sqrt{ n }$ (root function) until get to constant size?
+\begin{align*}
+    & n^{\frac{1}{2^i}} = c \\
+    &\Rightarrow\frac{1}{2^i}\log n = \log c \\
+    &\Rightarrow \log n = 2^i \log c \\
+    &\Rightarrow \log\log n = i \log 2 + \log\log c \\
+    &\Rightarrow i = \Theta(\log\log n) \\
+\end{align*}
+
+In total, the running time would be: $T(n) = \Theta(n\log\log n)$.
+
+
