@@ -1,0 +1,97 @@
+\section{Greedy Algorithm}
+
+\subsection{Greedy in a Glance}
+
+Greedy Algorithm is repeatedly taking locally optimal step in
+hopes reaching global optimal solution.
+
+Often Greedy is WRONG!
+
+So we should assume greedy is wrong, unless proven otherwise.
+
+However, if we can prove greedy works in some circumstance,
+it would be a simple and fast solution in most cases.
+
+\subsection{Greedy Class Scheduling}
+\subsubsection{Description of Problem}
+
+Target: On given day of week, we want to take as many classes as possible.
+Constraint: We cannot take two classes whose times overlap.
+
+\AlgoInput Given $S[1 \ldots n]$ and $F[1 \ldots n]$, which 
+\[S[i] = \text{start time of class} i \]
+\[F[i] = \text{finish time of class} i \]
+
+\AlgoOutput Select largest subset $X \subseteq \{1 \ldots n \}$,
+s.t. for $i \neq j \in X$ either $S[i] > F[j]$ or $S[j] > F[i]$.
+
+\subsubsection{Analysis}
+Recursive approach: consider class 1.
+\[B_4 = \{ i | 2 \leq i \leq n \text{ and } F[i] < S[1] \}\]
+\[L_8 = \{ i | 2 \leq i \leq n \text{ and } S[i] > F[1] \}\]
+
+DP approach: \bigO{n} running time.
+
+But we can do better with greedy: Pick class which finishes first.
+
+In other word, the algorithm is:
+\begin{quote}
+    Scan classes in increasing order of finishing time.
+    Each time encounter non-conflicting class, select it.
+\end{quote}
+as described in \cref{greedy_class_scheduling}.
+
+\begin{algorithm}[H]
+    \caption{Greedy Solution for Class Scheduling}\label{greedy_class_scheduling}
+    \begin{algorithmic}[1]
+        \Procedure{GreedySchedule}{$S[1 \ldots n]$, $F[1 \ldots n]$}
+            \State Sort $F$ and permute $S$ to match.
+            \State $count = 1$
+            \State $X[count] = 1$ \Comment{$X[1 \ldots n]$}
+            \For{$i = 2 \text{ to } n$}
+                \If{$S[i] > F[X[count]]$}
+                    \State $count = count + 1$
+                    \State $X[count] = i$
+                \EndIf
+            \EndFor
+            \Return $X[1 \ldots count]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Running time: $\Theta(n \log n) \rightarrow $ sorting running time.
+
+\subsubsection{Proof}
+Note that there may be many optimal solutions.
+And Greedy produces unique solution.
+So we cannot argue any optimal solution looks like greedy.
+
+\begin{lemma}
+At least one optimal solution include class that finishes first.
+\end{lemma}
+
+\begin{proof}
+    Let $f$ be class that finishes first, $X$ be an optimal set of classes.
+    If $f \in X$ then lemma proven.
+    Otherwise, $f \notin X$. Let $g$ be class in $X$ that finishes first.
+    Since $f$ finishes before $g$, $f$ cannot conflict with any class in $X \setminus \{g\}$
+
+    Thus $X^\prime = X \cup \{f\} \setminus \{g\}$ is a valid solution with max size and contain $f$.
+\end{proof}
+
+\begin{theorem}
+    Greedy schedule is optimal.\footnote{Can be proved using induction}
+\end{theorem}
+
+\begin{proof}
+    Let $f$ be class that finishes first. $L$ is set that starts after $f$ finishes.
+    Best schedule containing $f$ is optimal. This best schedule must be optimal on $L$.
+    $L$ is strictly smaller set of classes, so can apply induction.
+\end{proof}
+
+\subsection{General Prove Method for Greedy Algorithm: Exchange Argument}
+\begin{enumerate}
+    \item Assume there is a optimal solution other than greedy algorithm.
+    \item Fine the ``first'' difference between it and greedy algorithm.
+    \item Argue can exchange optimal choice for greedy one, without degrading solution value.
+\end{enumerate}
