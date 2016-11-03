@@ -95,3 +95,65 @@ At least one optimal solution include class that finishes first.
     \item Fine the ``first'' difference between it and greedy algorithm.
     \item Argue can exchange optimal choice for greedy one, without degrading solution value.
 \end{enumerate}
+
+\subsection{Huffman Codes}
+\subsubsection{Description of Problem}
+\AlgoInput Given an alphabet $\Sigma$.
+
+\AlgoOutput A binary code for $\Sigma$ maps
+every $x \in \Sigma$ to a unique binary string.
+
+
+\AlgoExample
+Fixed length codes: Map $\Sigma$ to strings all having same length.
+
+Given Alphabet: $\Sigma = \{a, b, c, d, e, f\}$
+
+Frequency for each character $F = \{45, 13, 12, 16, 9, 5\}$.
+
+\begin{align*}
+    a &= 000 & b &= 001 & c &= 010 \\
+    d &= 011 & e &= 100 & f &= 101
+\end{align*}
+
+\begin{figure}[H]
+    \caption{Binary Code Tree for Fixed Length Codes}
+    \centering
+\begin{tikzpicture}[every tree node/.style={draw=none}, level distance=1.5cm, sibling distance=1cm]
+    \Tree [.100
+        \edge node [auto, swap] {0}; [.86
+            \edge node [auto, swap] {0}; [.58
+                \edge node [auto, swap] {0}; [.45
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{a}; ]
+                ]
+                \edge node [auto] {1}; [.13
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{b}; ]
+                ]
+            ]
+            \edge node [auto] {1}; [.28
+                \edge node [auto, swap] {0}; [.12
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{c}; ]
+                ]
+                \edge node [auto] {1}; [.16
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{d}; ]
+                ]
+            ]
+        ]
+        \edge node [auto] {1}; [.14
+            \edge node [auto, swap] {0}; [.14
+                \edge node [auto, swap] {0}; [.9
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{e}; ]
+                ]
+                \edge node [auto] {1}; [.5
+                    \edge[n] node{$\Uparrow$}; [.\node[n]{f}; ]
+                ]
+            ]
+            \edge[n]; [.\node[n]{ }; ]
+        ]
+    ]
+\end{tikzpicture}
+\par
+\end{figure}
+
+The length of coded files:
+\[3 \times 45 + 3 \times 13 + 3 \times 12 + 3 \times 14 + 3 \times 16 + 3 \times 9 + 3 \times 5\]
