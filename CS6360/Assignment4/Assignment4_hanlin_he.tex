@@ -1,0 +1,202 @@
+\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{homework}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+
+\newcommand{\hmwkTitle}{Homework\ \#4 }
+\DTMsavetimestamp{DueDate}{2016-11-06T23:59:59-06:00}
+\newcommand{\hmwkClass}{CS 6360.003}
+\newcommand{\hmwkClassName}{Database Design}
+\newcommand{\hmwkClassInstructor}{Nurcan Yuruk}
+\newcommand{\hmwkAuthorName}{Hanlin He}
+\newcommand{\hmwkAuthorNetID}{hxh160630}
+\newcommand{\hmwkAuthorUTDEmail}{\href{mailto:hanlin.he@utdallas.edu}{hanlin.he@utdallas.edu}}
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ \hmwkAuthorUTDEmail}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\pagebreak
+
+\begin{homeworkProblem}
+Let
+\begin{align*}
+    F_1 &= \{A \rightarrow C, AC \rightarrow D, E \rightarrow AD, EC \rightarrow DH, DE \rightarrow CH\} \\
+    F_2 &= \{A \rightarrow CD, E \rightarrow AH\}
+\end{align*}
+
+For each attributes set on the left side of $F_1$, calculates its closure with respect to $F_2$:
+\begin{align*}
+    \{A\}^+ &= \text{A, C, D} \quad \text{including $C$ in $F_1$}\\
+    \{AC\}^+ &= \text{A, C, D} \quad \text{including $D$ in $F_1$}\\
+    \{E\}^+ &= \text{A, C, D, H} \quad \text{including $A, D$ in $F_1$}\\
+    \{EC\}^+ &= \text{A, C, D, E, H} \quad \text{including $D, H$ in $F_1$}\\
+    \{DE\}^+ &= \text{A, C, D, E, H} \quad \text{including $C, H$ in $F_1$}\\
+\end{align*}
+
+Thus, $F_2$ covers $F_1$.
+
+Respectively,consider the attributes sets on the left side of $F_2$:
+\begin{align*}
+    \{A\}^+ &= \text{A, C, D} \quad \text{including $C, D$ in $F_2$} \\
+    \{E\}^+ &= \text{A, C, D, E, H} \quad \text{including $A, H$ in $F_2$} \\
+\end{align*}
+
+Thus, $F_1$ covers $F_2$.
+
+Hence, $F_1$ is equivalent to $F_2$.
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+    Based on Algorithm 16.2(a), it is easy to see that
+    \begin{align*}
+        \{AD\}^+ &= \{A,B,C,D,E,F,G,H,I,J\} \\
+        \{DG\}^+ &= \{A,B,C,D,E,F,G,H,I,J\}
+    \end{align*}
+
+    So $\{AD\}$ and $\{DG\}$ are candidate keys of relation $R$, $\{A, D, G\}$ is the prime attribute. Let $\{AD\}$ be the primary key.
+    \begin{align*}
+        \{A\}^+ &= \{A, I\}\\
+        \{D\}^+ &= \{D\}
+    \end{align*}
+
+    Apparently, only one attribute is partially functional dependent on keys,
+    which is $I$ with functional dependency $A \rightarrow I$.
+
+    So the following relation would be in 2NF:
+    \begin{align*}
+        R_1& : \{\underline{A}, B, C, \underline{D}, E, F, G, H, J\}\\
+        R_2& : \{\underline{A}, I\}
+    \end{align*}
+
+    $R_2$ is obviously in 3NF,
+    consider the functional dependencies in $R_1$.
+    \begin{itemize}
+        \item $FD_1: \{AB \rightarrow C\}$, $AB$ is not a superkey of $R_1$,
+            and $C$ is not a prime attribute,
+            thus violates the general definition of 3NF.
+        \item $FD_2: \{BD \rightarrow EF\}$, $BD$ is not a superkey of $R_1$,
+            and $EF$ is not prime attributes,
+            thus violates the general definition of 3NF.
+        \item $FD_3: \{AD \rightarrow GH\}$, $AD$ is a superkey of $R_1$,
+            thus does not violate the general definition of 3NF.
+        \item $FD_4: \{GD \rightarrow ABH\}$, $GD$ is a superkey of $R_1$,
+            thus does not violate the general definition of 3NF.
+        \item $FD_5: \{H \rightarrow J\}$, $H$ is a non-prime attribute,
+            and $J$ is another non-prime attribute,
+            thus violates the general definition of 3NF.
+    \end{itemize}
+
+    So we could decompose $R_1$ based on $FD_1$, $FD_2$ and $FD_5$ to achieve 3NF.
+
+    The final relations in 3NF are:
+    \begin{align*}
+        R_1& : \{\underline{A}, B, \underline{D}, G, H\}\\
+        R_2& : \{\underline{A}, I\}\\
+        R_3& : \{\underline{A}, \underline{B}, C\}\\
+        R_4& : \{\underline{B}, \underline{D}, E, F\}\\
+        R_5& : \{\underline{H}, J\}\\
+    \end{align*}
+
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+    \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
+        \item Consider the right side of the functional dependencies.
+            The original functional dependencies turns into:
+            \begin{itemize}
+                \item $AB \rightarrow C$
+                \item $AB \rightarrow D$
+                \item $AB \rightarrow E$
+                \item $C \rightarrow B$
+                \item $C \rightarrow D$
+                \item $CD \rightarrow E$
+                \item $DE \rightarrow B$
+            \end{itemize}
+        \item Consider the left side of the functional dependencies.
+            \begin{itemize}
+                \item $CD \rightarrow E$ can be replaced with $C \rightarrow E$ because $C \rightarrow D$.
+            \end{itemize}
+        \item Consider the redundancy of the functional dependencies.
+            \begin{itemize}
+                \item $AB \rightarrow C$ and $C \rightarrow D$, so $AB \rightarrow D$ is redundant.
+                \item $AB \rightarrow E$ and $C \rightarrow E$, so $AB \rightarrow E$ is redundant.
+                \item $C \rightarrow D$, $C \rightarrow E$ and $DE \rightarrow B$, so $C \rightarrow B$ is redundant.
+            \end{itemize}
+        \item Hence, the minimal cover would be:
+            $\displaystyle\left\{
+                    \begin{array}{rcl}
+                        AB &\rightarrow& C \\
+                        C &\rightarrow& DE \\
+                        DE &\rightarrow& B
+                    \end{array}
+            \right\}$
+    \end{enumerate}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+    \begin{homeworkSubProblem}
+        \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
+            \item Set $K = R = \{A,B,C,D,E,F,G,H,I,J\}$.
+            \item Remove $A$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $F \rightarrow A$.\\
+                $K = \{B,C,D,E,F,G,H,I,J\}$ is still a superkey.
+            \item Remove $B$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $H \rightarrow B$.\\
+                $K = \{C,D,E,F,G,H,I,J\}$ is still a superkey.
+            \item Remove $C$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $FI \rightarrow C$.\\
+                $K = \{D,E,F,G,H,I,J\}$ is still a superkey.
+            \item Remove $D$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow D$.\\
+                $K = \{E,F,G,H,I,J\}$ is still a superkey.
+            \item Remove $E$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $FI \rightarrow E$.\\
+                $K = \{F,G,H,I,J\}$ is still a superkey.
+            \item Remove $F$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow F$.\\
+                $K = \{G,H,I,J\}$ is still a superkey.
+            \item Remove $G$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow G$.\\
+                $K = \{H,I,J\}$ is still a superkey.
+            \item Remove $H$ from $K$, $K^+ = \{I,J\}$. \\
+                $K = \{I,J\}$ is no longer a superkey, so $H$ cannot be removed.
+            \item Remove $I$ from $K$, $K^+ = \{B,G,H,J\}$. \\
+                $K = \{H,J\}$ is no longer a superkey, so $J$ cannot be removed.
+            \item Remove $J$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow FI \rightarrow J$.\\
+                $K = \{H,I\}$ is a superkey, and cannot be divided any more.\\
+                Thus $\{H, I\}$ is a candidate key.
+            \item Repeat above operations in different deletion order. It is easy to get that:$\{F,I\}^+ = \{A,B,C,D,E,F,G,H,I,J\}$
+                $K = \{F,I\}$ is a superkey, and cannot be divided any more.\\
+                Thus $\{F, I\}$ is also a candidate key.
+        \end{enumerate}
+        In conclusion, $\{F, H, I\}$ are the prime attributes of relation $R$.
+
+    \end{homeworkSubProblem}
+
+    \begin{homeworkSubProblem}
+
+    \end{homeworkSubProblem}
+\end{homeworkProblem}
+\end{document}
