@@ -196,7 +196,75 @@ Hence, $F_1$ is equivalent to $F_2$.
     \end{homeworkSubProblem}
 
     \begin{homeworkSubProblem}
+        Based on the general definition of 3NF:
+        \begin{itemize}
+            \item $FD_1: FI \rightarrow EHJC$ forms a 3NF relation since $FI$ is a superkey of relation$R$.
+            \item $FD_2: H \rightarrow GB$ violates the 3NF general definition since neither is $H$ a superkey nor $GB$ prime attributes for relation $R$.
+            \item $FD_3: F \rightarrow EA$ violates the 3NF general definition since neither is $F$ a superkey nor $EA$ prime attributes for relation $R$.
+            \item $FD_4: HI \rightarrow FGD$ forms a 3NF relation since $HI$ is a superkey of relation$R$.
+            \item $FD_5: A \rightarrow C$ violates the 3NF general definition since neither is $A$ a superkey nor $C$ prime attributes for relation $R$.
+        \end{itemize}
 
+        Thus, we can decompose the relation $R$ directly into the following based on $FD_2$, $FD_3$ and $FD_5$:
+        \begin{align*}
+            R_1& : \{D, \underline{F}, H, \underline{I}, J\} & \text{Remaining attribute in R}\\
+            R_2& : \{B, G, \underline{H}\} & \text{Decomposition based on $FD_2: H \rightarrow GB$}\\
+            R_3& : \{A, E, \underline{F}\} & \text{Decomposition based on $FD_3: F \rightarrow EA$}\\
+            R_5& : \{\underline{A}, C\} & \text{Decomposition based on $FD_5: A \rightarrow C$}\\
+        \end{align*}
     \end{homeworkSubProblem}
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+Based on Algorithm 16.6, first calculate the minimal cover.
+    \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
+        \item Consider the right side of the functional dependencies.
+            The original functional dependencies is already right side minimal:
+            \begin{itemize}
+                \item $FG \rightarrow E$
+                \item $HI \rightarrow E$
+                \item $F \rightarrow G$
+                \item $FE \rightarrow H$
+                \item $H \rightarrow I$
+            \end{itemize}
+        \item Consider the left side of the functional dependencies.
+            \begin{itemize}
+                \item $FG \rightarrow E$ can be replaced with $F \rightarrow E$ because $F \rightarrow G$.
+                \item $HI \rightarrow E$ can be replaced with $H \rightarrow E$ because $H \rightarrow I$.
+                \item $FE \rightarrow H$ can be replaced with $F \rightarrow H$ because $F \rightarrow E$ (from previous conclusion).
+            \end{itemize}
+            So now the functional dependencies turn into:
+            \begin{itemize}
+                \item $F \rightarrow E$
+                \item $H \rightarrow E$
+                \item $F \rightarrow G$
+                \item $F \rightarrow H$
+                \item $H \rightarrow I$
+            \end{itemize}
+        \item Consider the redundancy of the functional dependencies.
+            \begin{itemize}
+                \item $F \rightarrow H$ and $H \rightarrow E$, so $F \rightarrow E$ is redundant.
+            \end{itemize}
+            So now the functional dependencies turn into minimal cover:
+            $\displaystyle\left\{
+                    \begin{array}{rcl}
+                        H &\rightarrow& E \\
+                        F &\rightarrow& G \\
+                        F &\rightarrow& H \\
+                        H &\rightarrow& I \\
+                    \end{array}
+            \right\}$
+
+            $F$ is a candidate key of the relation $R$.
+    \end{enumerate}
+
+Then, for each left-hand-side X, form the relation:
+        \begin{align*}
+            R_1& : \{E, \underline{H}, I\} \\
+            R_2& : \{\underline{F}, G, H\} \\
+        \end{align*}
+
+The key $F$ is contained in $R_2$ and there is no redundant relation.
+Hence the result is the 3NF relations with dependency preservation and non-additive join property.
 \end{homeworkProblem}
 \end{document}
