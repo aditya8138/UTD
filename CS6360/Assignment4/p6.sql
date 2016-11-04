@@ -1,0 +1,24 @@
+CREATE OR REPLACE PROCEDURE
+  UpdateSalary25 AS
+CURSOR SalesEmployeeSSN IS
+SELECT EMPLOYEE."SSN"
+FROM EMPLOYEE, DEPARTMENT
+WHERE EMPLOYEE."DNO" = DEPARTMENT."DNO"
+    AND DEPARTMENT."DNAME" = 'Sales';
+thisSSN EMPLOYEE."SSN"%TYPE;
+BEGIN
+    OPEN SalesEmployeeSSN;
+    LOOP
+        FETCH SalesEmployeeSSN INTO thisSSN;
+        EXIT WHEN (SalesEmployeeSSN%NOTFOUND);
+        UPDATE EMPLOYEE SET Salary = Salary * 1.25
+        WHERE SSN = thisSSN;
+    END LOOP;
+    CLOSE SalesEmployeeSSN;
+END;
+/
+BEGIN
+  UPDATESALARY25();
+--rollback;
+END;
+/
