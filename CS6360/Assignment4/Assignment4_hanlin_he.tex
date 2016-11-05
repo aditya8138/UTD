@@ -187,7 +187,7 @@ Hence, $F_1$ is equivalent to $F_2$.
             \item Remove $J$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow FI \rightarrow J$.\\
                 $K = \{H,I\}$ is a superkey, and cannot be divided any more.\\
                 Thus $\{H, I\}$ is a candidate key.
-            \item Repeat above operations in different deletion order. It is easy to get that:$\{F,I\}^+ = \{A,B,C,D,E,F,G,H,I,J\}$
+            \item Repeat above operations in different deletion order. It is easy to get that:\[\{F,I\}^+ = \{A,B,C,D,E,F,G,H,I,J\}\]
                 $K = \{F,I\}$ is a superkey, and cannot be divided any more.\\
                 Thus $\{F, I\}$ is also a candidate key.
         \end{enumerate}
@@ -210,7 +210,7 @@ Hence, $F_1$ is equivalent to $F_2$.
             R_1& : \{D, \underline{F}, H, \underline{I}, J\} & \text{Remaining attribute in R}\\
             R_2& : \{B, G, \underline{H}\} & \text{Decomposition based on $FD_2: H \rightarrow GB$}\\
             R_3& : \{A, E, \underline{F}\} & \text{Decomposition based on $FD_3: F \rightarrow EA$}\\
-            R_5& : \{\underline{A}, C\} & \text{Decomposition based on $FD_5: A \rightarrow C$}\\
+            R_4& : \{\underline{A}, C\} & \text{Decomposition based on $FD_5: A \rightarrow C$}\\
         \end{align*}
     \end{homeworkSubProblem}
 \end{homeworkProblem}
