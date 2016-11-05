@@ -1,4 +1,4 @@
-\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+\documentclass[11pt,letterpaper,titlepage,en-US]{article}
 
 \usepackage{basicstyle}
 \usepackage{homework}
@@ -74,7 +74,7 @@ Thus, $F_1$ covers $F_2$.
 Hence, $F_1$ is equivalent to $F_2$.
 
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     Based on Algorithm 16.2(a), it is easy to see that
     \begin{align*}
@@ -127,7 +127,7 @@ Hence, $F_1$ is equivalent to $F_2$.
     \end{align*}
 
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
         \item Consider the right side of the functional dependencies.
@@ -161,7 +161,7 @@ Hence, $F_1$ is equivalent to $F_2$.
             \right\}$
     \end{enumerate}
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     \begin{homeworkSubProblem}
         \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
@@ -214,7 +214,7 @@ Hence, $F_1$ is equivalent to $F_2$.
         \end{align*}
     \end{homeworkSubProblem}
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
 Based on Algorithm 16.6, first calculate the minimal cover.
     \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
@@ -268,9 +268,47 @@ The key $F$ is contained in $R_2$ and there is no redundant relation.
 Hence the result is the 3NF relations with dependency preservation and non-additive join property.
 \end{homeworkProblem}
 
-
+\pagebreak
 \begin{homeworkProblem}
 \lstset{language=SQL}
-\lstinputlisting{p6.sql}
+\lstset{
+ morekeywords={LOOP}
+}
+\lstdefinestyle{customSQL}{
+    %belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=lines,
+    %xleftmargin=10pt,
+    language=SQL,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{gray!80!black},
+    stringstyle=\color{orange},
+    morekeywords={
+        LOOP,
+        replace,
+        procedure,
+        cursor,
+        begin,
+        open,
+        end,
+        close,
+        is,
+        fetch,
+        if,
+        declare
+    }
+}
+\lstinputlisting[style=customSQL]{p6.sql}
+\end{homeworkProblem}
+
+\pagebreak
+\begin{homeworkProblem}
+\lstinputlisting[style=customSQL]{p7.sql}
 \end{homeworkProblem}
 \end{document}
