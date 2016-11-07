@@ -1,0 +1,48 @@
+\begin{homeworkProblem}[Counting Paths]
+
+For any node $s$, let $PC(s,t)$ denote the paths count
+from $s$ to $t$. If $G$ is a dag, this function satisfies
+the recurrence:
+\begin{equation}
+PC(s,t) = \left\{
+    \begin{array}{ll}
+        1 & \text{ if } s = t \\
+        0 & \text{ if $s$ is a sink. } \\
+        \sum_{s \rightarrow v} PC(v,t) & \text{ otherwise. }\\
+    \end{array}
+    \right.
+\end{equation}
+where $\sum_{s \rightarrow v} PC(v,t)$ is the sum of $PC(v,t)$
+for all edges $s \rightarrow v$. In particular, if $s$
+is a sink but not equal to $t$, then $PC(s,t) = 0$,
+since there is no path from $s$ to $t$.
+
+The dependency graph for this recurrence is the input graph
+$G$ itself: subproblem $PC(u,t)$ depends on subproblem
+$PC(v,t)$ if and only if $u \rightarrow v$ is en edge in $G$.
+Thus we can evaluate this recursive function in \bigO{V + E}
+time by performing a depth-first-search of $G$, starting at $s$.
+
+The algorithm is shown is \cref{counting_path},
+in which $PC[s]$ denote the paths count from $s$ to $t$.
+
+\begin{algorithm}[H]
+\caption{Counting Paths Algorithm}\label{counting_path}
+\begin{algorithmic}[1]
+    \Procedure{CountingPaths}{$s,t$}
+        \If{$s = t$}
+            \Return $1$
+        \EndIf
+        \If{$PC[s]$ is undefined}
+            \State $PC[s] = 0$
+            \Comment{Initially, whether $t$ is reachable from $s$ is unknown.}
+            \For{each edge $s \rightarrow v$}
+            \Comment{If $s$ is a sink, this For-Loop is skipped.}
+                \State $PC[s] = PC[s] + \ProcedureName{CountingPaths}{v,t}$
+            \EndFor
+        \EndIf
+    \Return $PC[s]$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\end{homeworkProblem}

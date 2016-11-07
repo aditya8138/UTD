@@ -1,0 +1,40 @@
+\begin{homeworkProblem}[Fractional Jewelry Collection]
+
+    \begin{homeworkSubProblem}
+
+Each time, take the whole jewelry with the largest $V[i]/S[i]$ value,
+until the bag's space is insufficient for the next whole jewelry.
+And then, cut the next largest $V[i]/S[i]$ value jewelry to fit
+the remaining bag's space and take it. As a result, the total value
+in the bag will be optimal.
+
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}
+
+\begin{proof}
+Divide the bag into $b$ units with each unit size of $1$.
+
+Assume each unit is the minimal size to fill,
+and each time we cut a piece of one jewelry of a unit size
+to put in the bag. Putting a whole jewelry into the bag equals
+to putting all its pieces with unit size into the bag.
+
+Based on the description of part a, 
+each time we put a piece into the bag, its value
+must be the largest among the remaining jewelry pieces,
+since the pieces with bigger value has already been taken.
+
+Assume there is a optimal solution other than the greedy solution
+described in part a. Then, there is a unit size jewelry piece different
+in the choosing order,
+and its value should be larger than the piece chosen in the greedy
+solution. However, all jewelry with larger value has already been taken
+in the greedy solution. Thus, it cause a contradiction.
+
+In conclusion, the greedy solution described in part a is optimal.
+\end{proof}
+
+\end{homeworkSubProblem}
+
+\end{homeworkProblem}
