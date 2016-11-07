@@ -19,6 +19,5 @@ END;
 /
 BEGIN
   UPDATESALARY25();
---rollback;
 END;
 /

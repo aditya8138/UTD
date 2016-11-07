@@ -1,4 +1,4 @@
-\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+\documentclass[11pt,letterpaper,titlepage,en-US]{article}
 
 \usepackage{basicstyle}
 \usepackage{homework}
@@ -74,7 +74,7 @@ Thus, $F_1$ covers $F_2$.
 Hence, $F_1$ is equivalent to $F_2$.
 
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     Based on Algorithm 16.2(a), it is easy to see that
     \begin{align*}
@@ -127,7 +127,7 @@ Hence, $F_1$ is equivalent to $F_2$.
     \end{align*}
 
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
         \item Consider the right side of the functional dependencies.
@@ -161,7 +161,7 @@ Hence, $F_1$ is equivalent to $F_2$.
             \right\}$
     \end{enumerate}
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
     \begin{homeworkSubProblem}
         \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
@@ -187,7 +187,7 @@ Hence, $F_1$ is equivalent to $F_2$.
             \item Remove $J$ from $K$, $K^+ = \{A,B,C,D,E,F,G,H,I,J\}$, since $HI \rightarrow FI \rightarrow J$.\\
                 $K = \{H,I\}$ is a superkey, and cannot be divided any more.\\
                 Thus $\{H, I\}$ is a candidate key.
-            \item Repeat above operations in different deletion order. It is easy to get that:$\{F,I\}^+ = \{A,B,C,D,E,F,G,H,I,J\}$
+            \item Repeat above operations in different deletion order. It is easy to get that:\[\{F,I\}^+ = \{A,B,C,D,E,F,G,H,I,J\}\]
                 $K = \{F,I\}$ is a superkey, and cannot be divided any more.\\
                 Thus $\{F, I\}$ is also a candidate key.
         \end{enumerate}
@@ -210,11 +210,11 @@ Hence, $F_1$ is equivalent to $F_2$.
             R_1& : \{D, \underline{F}, H, \underline{I}, J\} & \text{Remaining attribute in R}\\
             R_2& : \{B, G, \underline{H}\} & \text{Decomposition based on $FD_2: H \rightarrow GB$}\\
             R_3& : \{A, E, \underline{F}\} & \text{Decomposition based on $FD_3: F \rightarrow EA$}\\
-            R_5& : \{\underline{A}, C\} & \text{Decomposition based on $FD_5: A \rightarrow C$}\\
+            R_4& : \{\underline{A}, C\} & \text{Decomposition based on $FD_5: A \rightarrow C$}\\
         \end{align*}
     \end{homeworkSubProblem}
 \end{homeworkProblem}
-
+\pagebreak
 \begin{homeworkProblem}
 Based on Algorithm 16.6, first calculate the minimal cover.
     \begin{enumerate}[label=\textbf{Step {\arabic*}}, leftmargin=2cm]
@@ -268,9 +268,47 @@ The key $F$ is contained in $R_2$ and there is no redundant relation.
 Hence the result is the 3NF relations with dependency preservation and non-additive join property.
 \end{homeworkProblem}
 
-
+\pagebreak
 \begin{homeworkProblem}
 \lstset{language=SQL}
-\lstinputlisting{p6.sql}
+\lstset{
+ morekeywords={LOOP}
+}
+\lstdefinestyle{customSQL}{
+    %belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=lines,
+    %xleftmargin=10pt,
+    language=SQL,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{gray!80!black},
+    stringstyle=\color{orange},
+    morekeywords={
+        LOOP,
+        replace,
+        procedure,
+        cursor,
+        begin,
+        open,
+        end,
+        close,
+        is,
+        fetch,
+        if,
+        declare
+    }
+}
+\lstinputlisting[style=customSQL]{p6.sql}
+\end{homeworkProblem}
+
+\pagebreak
+\begin{homeworkProblem}
+\lstinputlisting[style=customSQL]{p7.sql}
 \end{homeworkProblem}
 \end{document}
