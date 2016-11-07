@@ -54,19 +54,19 @@ Let
 
 For each attributes set on the left side of $F_1$, calculates its closure with respect to $F_2$:
 \begin{align*}
-    \{A\}^+ &= \text{A, C, D} \quad \text{including $C$ in $F_1$}\\
-    \{AC\}^+ &= \text{A, C, D} \quad \text{including $D$ in $F_1$}\\
-    \{E\}^+ &= \text{A, C, D, H} \quad \text{including $A, D$ in $F_1$}\\
-    \{EC\}^+ &= \text{A, C, D, E, H} \quad \text{including $D, H$ in $F_1$}\\
-    \{DE\}^+ &= \text{A, C, D, E, H} \quad \text{including $C, H$ in $F_1$}\\
+    \{A\}^+ &= \{\text{A, C, D}\} \quad \text{including $C$ in $F_1$}\\
+    \{AC\}^+ &= \{\text{A, C, D}\} \quad \text{including $D$ in $F_1$}\\
+    \{E\}^+ &= \{\text{A, C, D, H}\} \quad \text{including $A, D$ in $F_1$}\\
+    \{EC\}^+ &= \{\text{A, C, D, E, H}\} \quad \text{including $D, H$ in $F_1$}\\
+    \{DE\}^+ &= \{\text{A, C, D, E, H}\} \quad \text{including $C, H$ in $F_1$}\\
 \end{align*}
 
 Thus, $F_2$ covers $F_1$.
 
-Respectively,consider the attributes sets on the left side of $F_2$:
+Respectively, consider the attributes sets on the left side of $F_2$:
 \begin{align*}
-    \{A\}^+ &= \text{A, C, D} \quad \text{including $C, D$ in $F_2$} \\
-    \{E\}^+ &= \text{A, C, D, E, H} \quad \text{including $A, H$ in $F_2$} \\
+    \{A\}^+ &= \{\text{A, C, D}\} \quad \text{including $C, D$ in $F_2$} \\
+    \{E\}^+ &= \{\text{A, C, D, E, H}\} \quad \text{including $A, H$ in $F_2$} \\
 \end{align*}
 
 Thus, $F_1$ covers $F_2$.
@@ -152,13 +152,13 @@ Hence, $F_1$ is equivalent to $F_2$.
                 \item $C \rightarrow D$, $C \rightarrow E$ and $DE \rightarrow B$, so $C \rightarrow B$ is redundant.
             \end{itemize}
         \item Hence, the minimal cover would be:
-            $\displaystyle\left\{
+            \[\left\{
                     \begin{array}{rcl}
                         AB &\rightarrow& C \\
                         C &\rightarrow& DE \\
                         DE &\rightarrow& B
                     \end{array}
-            \right\}$
+            \right\}\]
     \end{enumerate}
 \end{homeworkProblem}
 \pagebreak
@@ -198,11 +198,11 @@ Hence, $F_1$ is equivalent to $F_2$.
     \begin{homeworkSubProblem}
         Based on the general definition of 3NF:
         \begin{itemize}
-            \item $FD_1: FI \rightarrow EHJC$ forms a 3NF relation since $FI$ is a superkey of relation$R$.
-            \item $FD_2: H \rightarrow GB$ violates the 3NF general definition since neither is $H$ a superkey nor $GB$ prime attributes for relation $R$.
-            \item $FD_3: F \rightarrow EA$ violates the 3NF general definition since neither is $F$ a superkey nor $EA$ prime attributes for relation $R$.
-            \item $FD_4: HI \rightarrow FGD$ forms a 3NF relation since $HI$ is a superkey of relation$R$.
-            \item $FD_5: A \rightarrow C$ violates the 3NF general definition since neither is $A$ a superkey nor $C$ prime attributes for relation $R$.
+            \item $FD_1: FI \rightarrow EHJC$ does not violate the 3NF general definition since $FI$ is a superkey of relation $R$.
+            \item $FD_2: H \rightarrow GB$ violates the 3NF general definition since neither is $H$ a superkey nor are $GB$ prime attributes for relation $R$.
+            \item $FD_3: F \rightarrow EA$ violates the 3NF general definition since neither is $F$ a superkey nor are $EA$ prime attributes for relation $R$.
+            \item $FD_4: HI \rightarrow FGD$ does not violate the 3NF general definition since $HI$ is a superkey of relation $R$.
+            \item $FD_5: A \rightarrow C$ violates the 3NF general definition since neither is $A$ a superkey nor is $C$ a prime attribute for relation $R$.
         \end{itemize}
 
         Thus, we can decompose the relation $R$ directly into the following based on $FD_2$, $FD_3$ and $FD_5$:
@@ -246,14 +246,14 @@ Based on Algorithm 16.6, first calculate the minimal cover.
                 \item $F \rightarrow H$ and $H \rightarrow E$, so $F \rightarrow E$ is redundant.
             \end{itemize}
             So now the functional dependencies turn into minimal cover:
-            $\displaystyle\left\{
+            \[\left\{
                     \begin{array}{rcl}
                         H &\rightarrow& E \\
                         F &\rightarrow& G \\
                         F &\rightarrow& H \\
                         H &\rightarrow& I \\
                     \end{array}
-            \right\}$
+            \right\}\]
 
             $F$ is a candidate key of the relation $R$.
     \end{enumerate}

@@ -21,7 +21,7 @@ BEGIN
     LOOP
         FETCH BOOK_INFO INTO thisRow;
         EXIT WHEN (BOOK_INFO%NOTFOUND);
-        IF (to_date(thisRow."Date_out",'DD-MON-YY') > to_date(SYSDATE,'DD-MON-YY') - 30
+        IF(to_date(thisRow."Date_out",'DD-MON-YY') > to_date(SYSDATE,'DD-MON-YY') - 30
             AND thisRow."Return_date" IS NULL) THEN
           DBMS_OUTPUT.PUT_LINE('Book Title: ' || thisRow."Title" );
           DBMS_OUTPUT.PUT_LINE('Borrower Name: ' ||thisRow."Name");
