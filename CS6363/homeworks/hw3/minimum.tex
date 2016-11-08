@@ -128,7 +128,99 @@ minimum weight feedback edge set can be defined as \cref{min_feedback_edge_set}:
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Update MST]
-to-do
+Removing $e$ in the MST $T$ induces a bi-partition,
+and $e$ would be the lightest edge that
+joins the two components.
+Let $A$ and $B$ be those two components.
+
+If the weight of $e$ is increased to $e^\prime$, then
+\begin{enumerate}[label=\textsc{Step {\arabic*} \ }, leftmargin=2.5cm]
+    \item Remove $e^\prime$ from $T$.
+    \item Find the lightest edge $l$ that connect
+        $A$ and $B$ among
+        $e^\prime$ and the rest undecided edges.
+    \item Add $l$ to $T$, the new tree $T^\prime$
+        is the MST for $G^\prime$.
+\end{enumerate}
+
+We could modify the \textsc{Borvka's} algorithm,
+so that in the beginning,
+set $F$ as $T \setminus \{e\}$.
+The rest of the algorithm remain the same.
+
+The modified Borvka's algorithm is defined as \cref{modified_borvka}:
+
+\begin{algorithm}[h]
+    \caption{Modified Borvka's Algorithm}\label{modified_borvka}
+    \begin{algorithmic}[1]
+        \Procedure{ModifiedBorvka}{$V,E,T^\prime$}
+            \State $F = T^\prime$
+            \Comment{$T^\prime$ is the parameter passed in as $T \setminus \{e\}$}
+            \State $count = \ProcedureName{CountAndLabel}{F}$
+            \Comment{The rest part is the same as original algorithm.}
+            \While{$count > 1$}
+                \State \ProcedureName{AddAllSafeEdges}{E,F,count}
+                \State $count = \ProcedureName{CountAndLabel}{F}$
+            \EndWhile
+            \Return $F$
+        \EndProcedure
+        \State
+        \Procedure{AddAllSafeEdges}{$E,F,count$}
+            \For{$i = 1 \text{ to } count$}
+                \State $S[i] = NULL$
+            \EndFor
+            \For{each edge $uv \in E$}
+                \If{$label(u) \neq label(v)$}
+                    \If{$weight(uv) < w(S[label(u)])$}
+                        \State $S[label(u)] = uv$
+                    \EndIf
+                    \If{$weight(uv) < w(S[label(v)])$}
+                        \State $S[label(v)] = uv$
+                    \EndIf
+                \EndIf
+            \EndFor
+            \For{$i = 1 \text{ to } count$}
+                \If{$S[i] \neq NULL$}
+                    \State add $S[i]$ to $F$
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+To use the modified Borvka's algorithm, the wrapper
+algorithm can be defined as \cref{mst_for_g_prime}.
+
+\begin{algorithm}[h]
+    \caption{Algorithm to Compute MST for $G^\prime$ Using Modified Borvka's Algorithm}\label{mst_for_g_prime}
+    \begin{algorithmic}[1]
+        \Procedure{FindNewMST}{$e, newWeight$}
+            \State $T^\prime = T \setminus e$
+            \Comment{Remove $e$ from $T$.}
+            \State $weight(e) = newWeight$
+            \Comment{Set $e$ to its new weight.}
+            \Return \ProcedureName{ModifiedBorvka}{V,E,T^\prime}
+            \Comment{Pass $T^\prime$ to the modified Borvka's algorithm.}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\vspace{0.1in}\noindent\textbf{Running Time Analysis:}
+
+\begin{itemize}
+    \item \ProcedureName{CountAndLabel}{F} takes \bigO{|E|} time,
+        since $F$ has \bigO{|E|} edge.
+    \item \ProcedureName{AddAllSafeEdges}{E,F,count} takes
+        \bigO{|E|+|V|} time.
+    \item While-loop's actual iterations count is $1$,
+        since only one edge $e$ was removed from $T$,
+        there are only two component in $F$,
+        i.e. $count = 2$.
+\end{itemize}
+
+In conclusion, the total running time is \bigO{|E|+|V|}.
+
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
