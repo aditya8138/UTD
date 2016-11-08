@@ -1,3 +1,135 @@
 \begin{homeworkProblem}[Minimum Spanning Tree Problem]
+
+\begin{homeworkSubProblem}[Maximum Weight Spanning Tree]
+Modify the MST Algorithms that when consider safe edge,
+take the maximum-weight edge with exactly one endpoint
+in that component. The result will be the maximum weight
+spanning tree.
+Take Kruskal's Algorithm as an example:
+
+\begin{quote}
+    Modified \textsc{Kruskal}: Scan all edges in decreasing
+    weight order; if an edge is safe (which means the
+    maximum-weight edge with exactly one endpoint in that
+    component), add it to $F$.
+\end{quote}
+
+Since the algorithm examine the edges in order from heaviest
+to lightest, any edge been examined is safe if and only if its
+endpoints are in different components of the forest $F$. To prove
+this, suppose the edge $e$ joins two components $A$ and $B$ but is
+not safe. Then there must be a heavier edge $e^\prime$ with
+the same endpoint in $A$, which should have been examined
+in the previous steps.
+Hence result in contradiction, since previously examined edge
+always has both endpoints in the same component of $F$.
+
+By using the Union Find data structure, the modified
+Kruskal's algorithm can be defined as \cref{max_kruskal}:
+
+\begin{algorithm}[H]
+    \caption{Modified Kruskal's Algorithm to Compute Maximum Weight Spanning Tree}\label{max_kruskal}
+    \begin{algorithmic}[1]
+        \Procedure{MaxKruskal}{$V, E$}
+            \State sort $E$ by decreasing weight order
+            \State $F = (V, \emptyset)$
+            \For{each vertex $v \in V$}
+                \ProcedureName{MakeSet}{v}
+            \EndFor
+            \For{$i = 1 \text{ to }|E|$}
+            \State $uv = i\text{th \textbf{heaviest} edge in } E$
+                \If{$\ProcedureName{Find}{u} \neq \ProcedureName{Find}{v}$}
+                    \State \ProcedureName{Union}{u, v}
+                    \State add $uv$ to $F$
+                \EndIf
+            \EndFor
+            \Return $F$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+The modified Kruskal's algorithm performs \bigO{E}
+\ProcedureName{Find}{} operations, two for each edge
+in the graph, and \bigO{V} \ProcedureName{Union}{}
+operations, one for each edge in the maximum weight
+spanning tree. Based on the operation time of Union Find,
+other than sorting, this algorithm's running is
+approximately \bigO{E \alpha(V)}. Plus \bigO{E \log V}
+sorting time, the total algorithm running time is
+\bigO{E \log V}, i.e. \bigO{m\log n}.
+
+\end{homeworkSubProblem}
+
+\pagebreak
+
+\begin{homeworkSubProblem}[Minimum Feedback Edge Set]
+Based on the definition, if a spanning tree $T$ is generated
+from the graph $G$, then, all the remaining edges and the
+remaining edges only will be in the feedback edge set $F$, i.e.
+$F = G \setminus T$ is the feedback edge set.
+
+\Claim If $T$ is a Maximum Weight Spanning Tree, then
+$F = G \setminus T$ is the minimum weight feedback edge set.
+
+\begin{proof}
+Take the modified Kruskal's algorithm as an example to
+compute the Maximum Weight Spanning Tree.
+
+Let $e$ be an edge in $F$.
+Suppose $e$ is not the minimum choice in the minimum
+feedback edge set.
+Then there would be an edge $t$, which join two components
+$A$ and $B$, and with a lighter weight than $e$,
+that if we add $e$ to $T$, $e$ and $t$ will be in the same cycle.
+In another word, $e$ should join the same two components
+$A$ and $B$.
+Hence result in contradiction, since previously examined
+edge always has the heaviest weight, unless marked useless.
+If only $e$ and $t$ is possible edges to choose when connecting
+components $A$ and $B$, the heavier edge $e$ will be chosen.
+
+Thus, edges in $F$ will be the minimum choice.
+$F$ is the minimum weight feedback edge set.
+\end{proof}
+
+Based on the argument above, the algorithm to compute
+minimum weight feedback edge set can be defined as \cref{min_feedback_edge_set}:
+
+\begin{algorithm}[H]
+    \caption{Algorithm for Computing Minimum Weight Feedback Edge Set}\label{min_feedback_edge_set}
+    \begin{algorithmic}[1]
+        \Procedure{MinFES}{$V,E$}
+            \State $T = \ProcedureName{MaxSpanningTree}{V,E}$
+            \Comment{Use algorithm to compute the MaxST $T$}
+            \Return$F = E \setminus T$
+            \Comment{The set-theoretic difference between $E$ and the MaxST $T$ is the result}
+        \EndProcedure
+        \Procedure{MaxSpanningTree}{$V,E$}
+            \State\Comment{This algorithm to compute Maximum Spanning Tree could be any algorithm that go the job.}
+            \Return \ProcedureName{MaxKruskal}{V,E}\Comment{For example, \ProcedureName{MaxKruskal}{V,E} will do.}
+        \EndProcedure
+        \Procedure{MaxKruskal}{$V, E$}\Comment{The same as \cref{max_kruskal}}
+            \State sort $E$ by decreasing weight order
+            \State $F = (V, \emptyset)$
+            \For{each vertex $v \in V$}
+                \ProcedureName{MakeSet}{v}
+            \EndFor
+            \For{$i = 1 \text{ to }|E|$}
+            \State $uv = i\text{th \textbf{heaviest} edge in } E$
+                \If{$\ProcedureName{Find}{u} \neq \ProcedureName{Find}{v}$}
+                    \State \ProcedureName{Union}{u, v}
+                    \State add $uv$ to $F$
+                \EndIf
+            \EndFor
+            \Return $F$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[Update MST]
 to-do
+\end{homeworkSubProblem}
+
 \end{homeworkProblem}
+
