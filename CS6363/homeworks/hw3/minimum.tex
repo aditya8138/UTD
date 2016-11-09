@@ -49,8 +49,8 @@ Kruskal's algorithm can be defined as \cref{max_kruskal}:
 \end{algorithm}
 
 The modified Kruskal's algorithm performs \bigO{E}
-\ProcedureName{Find}{} operations, two for each edge
-in the graph, and \bigO{V} \ProcedureName{Union}{}
+\textsc{Find} operations, two for each edge
+in the graph, and \bigO{V} \textsc{Union}{}
 operations, one for each edge in the maximum weight
 spanning tree. Based on the operation time of Union Find,
 other than sorting, this algorithm's running is
@@ -108,7 +108,7 @@ minimum weight feedback edge set can be defined as \cref{min_feedback_edge_set}:
             \State\Comment{This algorithm to compute Maximum Spanning Tree could be any algorithm that go the job.}
             \Return \ProcedureName{MaxKruskal}{V,E}\Comment{For example, \ProcedureName{MaxKruskal}{V,E} will do.}
         \EndProcedure
-        \Procedure{MaxKruskal}{$V, E$}\Comment{The same as \cref{max_kruskal}}
+        \Procedure{MaxKruskal}{$V, E$}\Comment{This procedure is the same as \cref{max_kruskal}}
             \State sort $E$ by decreasing weight order
             \State $F = (V, \emptyset)$
             \For{each vertex $v \in V$}
