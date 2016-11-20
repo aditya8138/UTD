@@ -1,0 +1,41 @@
+\begin{homeworkProblem}
+
+    \tikzset{
+        n/.style={draw,circle}
+        every tree node/.append style={inner ysep=+0pt,outer ysep=+0pt,minimum size=+0pt}
+    }
+        \begin{tikzpicture}
+            \Tree [.$\pi_{Lname, Fname, Pname, Hours}$
+                [.$\bowtie_{E.Ssn = W.Essn}$
+                    [.$\pi_{Lname,Fname,Ssn}$
+                        [.$\rho_{Salary > 80000}$
+                            [.\node[n]{EMPLOYEE}; ]
+                        ]
+                    ]
+                    [.$\pi_{Essn,Hour,Pname}$
+                        [.$\bowtie_{P.Pnumber=W.Pno}$ 
+                            [.$\pi_{Essn,Pno,Hour}$
+                                [.$\rho_{Hour > 30}$
+                                    [.WORK\_ON ]
+                                ]
+                            ]
+                            [.$\pi_{Pnumber,Pname}$
+                                [.$\bowtie_{P.Dnum = D.Dnumber}$
+                                    [.$\pi_{Pnumber,Dnum,Pname}$
+                                        [.$\rho_{Plocation='Chicago'}$
+                                            [.PROJECT ]
+                                        ]
+                                    ]
+                                    [.$\pi_{Dnumber}$
+                                        [.$\rho_{\text{Mgr\_start\_date} \geq \text{'1/1/2009'}}$ 
+                                            [.DEPARTMENT ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        \end{tikzpicture}
+\end{homeworkProblem}

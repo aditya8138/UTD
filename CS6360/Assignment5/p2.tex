@@ -1,0 +1,171 @@
+\begin{center}
+\begin{tikzpicture}
+
+  \btreeinodetwo{root1}{24}{75};
+  \xyshift{-50mm}{-20mm}{\btreeinodetwo{sn1}{10}{16}};
+  \xyshift{-00mm}{-20mm}{\btreeinodetwo{sn2}{41}{50}};
+  \xyshift{50mm}{-20mm}{\btreeinodetwo{sn3}{82}{90}};
+
+  \xyshift{-72mm}{-40mm}{\btreelnodefour{n11}{2}{5}{7}{9}}
+  \xyshift{-54mm}{-40mm}{\btreelnodethree{n12}{10}{11}{14}}
+  \xyshift{-36mm}{-40mm}{\btreelnodefour{n13}{16}{18}{20}{21}}
+
+  \xyshift{-18mm}{-40mm}{\btreelnodefive{n21}{24}{26}{30}{33}{35}}
+  \xyshift{-0mm}{-40mm}{\btreelnodefour{n22}{41}{42}{45}{47}}
+  \xyshift{18mm}{-40mm}{\btreelnodefour{n23}{50}{65}{70}{72}}
+
+  \xyshift{36mm}{-40mm}{\btreelnodefour{n31}{75}{78}{80}{81}}
+  \xyshift{54mm}{-40mm}{\btreelnodethree{n32}{82}{83}{86}}
+  \xyshift{72mm}{-40mm}{\btreelnodethree{n33}{90}{92}{93}}
+
+  \btreelinknorth{root1-1}{sn1-3}
+  \btreelinknorth{root1-2}{sn2-2}
+  \btreelinknorth{root1-3}{sn3-1}
+
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn1-\x}{n1\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn2-\x}{n2\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn3-\x}{n3\x} }
+
+\end{tikzpicture}
+\end{center}
+\begin{center} \scalebox{2}{$\Downarrow $} \end{center}
+\begin{center}
+\begin{tikzpicture}
+
+  \btreeinodetwo{root1}{24}{75};
+  \xyshift{-50mm}{-20mm}{\btreeinodetwo{sn1}{10}{16}};
+  \xyshift{-00mm}{-20mm}{\btreeinodetwo{sn2}{41}{50}};
+  \xyshift{50mm}{-20mm}{\btreeinodetwo{sn3}{82}{90}};
+
+  \xyshift{-72mm}{-40mm}{\btreelnodefour{n11}{2}{5}{7}{9}}
+  \xyshift{-54mm}{-40mm}{\btreelnodethree{n12}{10}{11}{14}}
+  \xyshift{-36mm}{-40mm}{\btreelnodefour{n13}{16}{18}{20}{21}}
+
+  \xyshift{-18mm}{-40mm}{\btreelnodesix{n21}{24}{26}{28}{30}{33}{35}}
+  \xyshift{-0mm}{-40mm}{\btreelnodefour{n22}{41}{42}{45}{47}}
+  \xyshift{18mm}{-40mm}{\btreelnodefour{n23}{50}{65}{70}{72}}
+
+  \xyshift{36mm}{-40mm}{\btreelnodefour{n31}{75}{78}{80}{81}}
+  \xyshift{54mm}{-40mm}{\btreelnodethree{n32}{82}{83}{86}}
+  \xyshift{72mm}{-40mm}{\btreelnodethree{n33}{90}{92}{93}}
+
+  \btreelinknorth{root1-1}{sn1-3}
+  \btreelinknorth{root1-2}{sn2-2}
+  \btreelinknorth{root1-3}{sn3-1}
+
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn1-\x}{n1\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn2-\x}{n2\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn3-\x}{n3\x} }
+
+\end{tikzpicture}
+\end{center}
+\begin{center} \scalebox{2}{$\Downarrow $} \end{center}
+\begin{center}
+\begin{tikzpicture}
+
+  \btreeinodetwo{root1}{24}{75};
+  \xyshift{-50mm}{-20mm}{\btreeinodetwo{sn1}{10}{16}};
+  \xyshift{-00mm}{-20mm}{\btreeinodethree{sn2}{30}{41}{50}};
+  \xyshift{50mm}{-20mm}{\btreeinodetwo{sn3}{82}{90}};
+
+  \xyshift{-81mm}{-40mm}{\btreelnodefour{n11}{2}{5}{7}{9}}
+  \xyshift{-63mm}{-40mm}{\btreelnodethree{n12}{10}{11}{14}}
+  \xyshift{-45mm}{-40mm}{\btreelnodefour{n13}{16}{18}{20}{21}}
+
+  \xyshift{-27mm}{-40mm}{\btreelnodethree{n21}{24}{26}{28}}
+  \xyshift{-9mm}{-40mm}{\btreelnodethree{n22}{30}{33}{35}}
+  \xyshift{9mm}{-40mm}{\btreelnodefour{n23}{41}{42}{45}{47}}
+  \xyshift{27mm}{-40mm}{\btreelnodefour{n24}{50}{65}{70}{72}}
+
+  \xyshift{45mm}{-40mm}{\btreelnodefour{n31}{75}{78}{80}{81}}
+  \xyshift{63mm}{-40mm}{\btreelnodethree{n32}{82}{83}{86}}
+  \xyshift{81mm}{-40mm}{\btreelnodethree{n33}{90}{92}{93}}
+
+  \btreelinknorth{root1-1}{sn1-3}
+  \btreelinknorth{root1-2}{sn2}
+  \btreelinknorth{root1-3}{sn3-1}
+
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn1-\x}{n1\x} }
+  \foreach \x in {1,2,...,4} { \btreelinknorth{sn2-\x}{n2\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn3-\x}{n3\x} }
+
+\end{tikzpicture}
+\end{center}
+\begin{center} \scalebox{2}{$\Downarrow $} \end{center}
+\begin{center}
+\begin{tikzpicture}
+
+  \btreeinodethree{root1}{24}{41}{75};
+  \xyshift{-50mm}{-20mm}{\btreeinodetwo{sn1}{10}{16}};
+  \xyshift{-15mm}{-20mm}{\btreeinodeone{sn2}{30}};
+  \xyshift{15mm}{-20mm}{\btreeinodeone{sn3}{50}};
+  \xyshift{50mm}{-20mm}{\btreeinodetwo{sn4}{82}{90}};
+
+  \xyshift{-81mm}{-40mm}{\btreelnodefour{n11}{2}{5}{7}{9}}
+  \xyshift{-63mm}{-40mm}{\btreelnodethree{n12}{10}{11}{14}}
+  \xyshift{-45mm}{-40mm}{\btreelnodefour{n13}{16}{18}{20}{21}}
+
+  \xyshift{-27mm}{-40mm}{\btreelnodethree{n21}{24}{26}{28}}
+  \xyshift{-9mm}{-40mm}{\btreelnodethree{n22}{30}{33}{35}}
+
+  \xyshift{9mm}{-40mm}{\btreelnodefour{n31}{41}{42}{45}{47}}
+  \xyshift{27mm}{-40mm}{\btreelnodefour{n32}{50}{65}{70}{72}}
+
+  \xyshift{45mm}{-40mm}{\btreelnodefour{n41}{75}{78}{80}{81}}
+  \xyshift{63mm}{-40mm}{\btreelnodethree{n42}{82}{83}{86}}
+  \xyshift{81mm}{-40mm}{\btreelnodethree{n43}{90}{92}{93}}
+
+  \btreelinknorth{root1-1}{sn1-3}
+  \btreelinknorth{root1-2}{sn2}
+  \btreelinknorth{root1-3}{sn3}
+  \btreelinknorth{root1-4}{sn4-1}
+
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn1-\x}{n1\x} }
+  \foreach \x in {1,2} { \btreelinknorth{sn2-\x}{n2\x} }
+  \foreach \x in {1,2} { \btreelinknorth{sn3-\x}{n3\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn4-\x}{n4\x} }
+
+\end{tikzpicture}
+\end{center}
+\begin{center} \scalebox{2}{$\Downarrow $} \end{center}
+\begin{center}
+\begin{tikzpicture}
+
+  \btreeinodeone{root0}{41};
+
+  \xyshift{-25mm}{-20mm}{\btreeinodeone{root1}{24}};
+  \xyshift{25mm}{-20mm}{\btreeinodeone{root2}{75}};
+
+  \xyshift{-50mm}{-40mm}{\btreeinodetwo{sn1}{10}{16}};
+  \xyshift{-15mm}{-40mm}{\btreeinodeone{sn2}{30}};
+  \xyshift{15mm}{-40mm}{\btreeinodeone{sn3}{50}};
+  \xyshift{50mm}{-40mm}{\btreeinodetwo{sn4}{82}{90}};
+
+  \xyshift{-81mm}{-55mm}{\btreelnodefour{n11}{2}{5}{7}{9}}
+  \xyshift{-63mm}{-55mm}{\btreelnodethree{n12}{10}{11}{14}}
+  \xyshift{-45mm}{-55mm}{\btreelnodefour{n13}{16}{18}{20}{21}}
+
+  \xyshift{-27mm}{-55mm}{\btreelnodethree{n21}{24}{26}{28}}
+  \xyshift{-9mm}{-55mm}{\btreelnodethree{n22}{30}{33}{35}}
+
+  \xyshift{9mm}{-55mm}{\btreelnodefour{n31}{41}{42}{45}{47}}
+  \xyshift{27mm}{-55mm}{\btreelnodefour{n32}{50}{65}{70}{72}}
+
+  \xyshift{45mm}{-55mm}{\btreelnodefour{n41}{75}{78}{80}{81}}
+  \xyshift{63mm}{-55mm}{\btreelnodethree{n42}{82}{83}{86}}
+  \xyshift{81mm}{-55mm}{\btreelnodethree{n43}{90}{92}{93}}
+
+  \foreach \x in {1,2} { \btreelinknorth{root0-\x}{root\x} }
+
+  \btreelinknorth{root1-1}{sn1-3}
+  \btreelinknorth{root1-2}{sn2}
+  \btreelinknorth{root2-1}{sn3}
+  \btreelinknorth{root2-2}{sn4-1}
+
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn1-\x}{n1\x} }
+  \foreach \x in {1,2} { \btreelinknorth{sn2-\x}{n2\x} }
+  \foreach \x in {1,2} { \btreelinknorth{sn3-\x}{n3\x} }
+  \foreach \x in {1,2,...,3} { \btreelinknorth{sn4-\x}{n4\x} }
+
+\end{tikzpicture}
+\end{center}
