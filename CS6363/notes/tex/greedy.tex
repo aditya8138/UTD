@@ -264,5 +264,28 @@ Huffman codes is optimal.
 \begin{proof}
 Assume $F[1]$, $F[2]$ is least frequent. Define $F[n+1] = F[1] + F[2]$.
 
-Let $T^\prime = $
+Let $T^\prime$ be the Huffman tree on $F[3 \ldots n+1]$,
+$T$ be the Huffman tree on $F[1 \ldots n]$ obtained from $T^\prime$ by
+replacing $n+1$ with $1$ and $2$.
+
+For any prefix tree $\overline{T}$ obtained from any $\overline{T^\prime}$
+on $F[3 \ldots n+1]$ by replacing $n+1$ with $1$ and $2$ can prove
+\[Cost(\overline{T}) = Cost(\overline{T^\prime}) + F[1] + F[2]\]
+
+\noindent Use Induction:
+
+\BaseCase For one or two characters, Huffman is optimal.
+Now want to prove Huffman tree $T$ is optimal.
+
+\InductionStep Assume $T^\prime$ is an optimal tree, then
+$Cost(\overline{T}) = Cost(\overline{T^\prime}) + F[1] + F[2]$,
+which means minimizing $Cost(\overline{T})$ is equivalent
+to minimizing $Cost(\overline{T^\prime})$.
+
+$T$ is optimal among trees on $\Sigma[1 \ldots n]$ obtained by an expanding $n+1$
+node to $1$ and $2$ from an optimal tree on $F[3 \ldots n+1]$.
+
+In conclusion, Huffman is optimal.
 \end{proof}
+
+Greedy Ends Here.
