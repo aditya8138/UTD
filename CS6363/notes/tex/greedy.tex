@@ -156,4 +156,113 @@ Frequency for each character $F = \{45, 13, 12, 16, 9, 5\}$.
 \end{figure}
 
 The length of coded files:
-\[3 \times 45 + 3 \times 13 + 3 \times 12 + 3 \times 14 + 3 \times 16 + 3 \times 9 + 3 \times 5\]
+\begin{align*}
+    &3 \times 45 + 3 \times 13 + 3 \times 12 + 3 \times 14 + 3 \times 16 + 3 \times 9 + 3 \times 5 \\
+    &= \sum F[i] \times depth(i)
+\end{align*}
+
+
+What if the codes is not fixed length?
+
+\begin{align*}
+    a &= 0 & b &= 101 & c &= 100 \\
+    d &= 111 & e &= 1101 & f &= 1100
+\end{align*}
+
+\begin{figure}[H]
+    \caption{Binary Code Tree for Not Fixed Length Codes}
+    \centering
+\begin{tikzpicture}[every tree node/.style={draw=none}, level distance=1.5cm, sibling distance=1cm]
+    \Tree [.100
+        \edge node [auto, swap] {0}; [.45
+            \edge[n] node {$\Uparrow$}; [.\node[n]{a}; ]
+        ]
+        \edge node [auto] {1}; [.55
+            \edge node [auto, swap] {0}; [.25
+                \edge node [auto, swap] {0}; [.12
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{c}; ]
+                ]
+                \edge node [auto] {1}; [.13
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{b}; ]
+                ]
+            ]
+            \edge node [auto] {1}; [.30
+                \edge node [auto, swap] {0}; [.14
+                    \edge node [auto, swap] {0}; [.5
+                        \edge[n] node {$\Uparrow$}; [.\node[n]{f}; ]
+                    ]
+                    \edge node [auto] {1}; [.9
+                        \edge[n] node {$\Uparrow$}; [.\node[n]{e}; ]
+                    ]
+                ]
+                \edge node [auto] {1}; [.16
+                    \edge[n] node {$\Uparrow$}; [.\node[n]{d}; ]
+                ]
+            ]
+        ]
+    ]
+\end{tikzpicture}
+\end{figure}
+
+The length of coded files:
+\begin{align*}
+    & 1 \times 45 + 3 \times 13 + 3 \times 12 + 3 \times 16 + 4 \times 9 + 4 \times 5 \\
+    &= 224
+\end{align*}
+
+Note that, in order to decode, the codes need to be prefix-free, i.e. no code word
+is a prefix of another, which means characters must at leaves.
+
+So here comes the greedy algorithm: Huffman Codes.
+
+\subsubsection{Definition}
+
+\AlgoInput Alphabet $\Sigma$ of size $n$ and the frequency array $F[1 \ldots n]$,
+$F[i]$ is the frequency of character $\Sigma[i]$.
+
+\AlgoOutput Find a prefix free tree, s.t. $\displaystyle\sum{F[i]\times depth(i)}$ minimized.
+
+\vspace{0.1in}
+\noindent \textbf{Huffman Algorithm:} Recursively merge two least frequent.
+
+\subsubsection{Analysis}
+
+\begin{claim}
+    Huffman's Algorithm is optimal.
+\end{claim}
+
+\observation Optimal code trees are full binary tree (gbt\footnote{Definition is in homework 1.}).
+In other word, leaf at maximum depth has a sibling.
+
+\begin{lemma}
+    Let $x$ and $y$ be two least frequent characters. There is an optimal tree
+    where $x,y$ are siblings.
+\end{lemma}
+
+\begin{proof} Let $T$ be an optimal tree of depth $d$.
+
+By observation, there are siblings $a$, $b$ at depth $d$.
+If $a = x$ and $b = y$, then proved.
+
+Let $T^\prime$ be the tree obtained by swapping $x$ and $a$.
+
+Then the depth of $x$ increased by $d - depth(x,T) = z$, and
+the depth of $a$ decreased by $z$, so,
+\[Cost(T^\prime) = Cost(T) - (F[a]-F[x])\times z\]
+where $x$ was least frequent. Thus
+\[F[a] -F[x] \geq 0 \Rightarrow Cost(T^\prime) \leq Cost(T)\]
+
+Based on assumption, $T$ is a optimal tree, so $Cost(T) \leq Cost(T^\prime)$.
+
+Hence, $T$ equals to $T^\prime$
+\end{proof}
+
+\begin{theorem}
+Huffman codes is optimal.
+\end{theorem}
+
+\begin{proof}
+Assume $F[1]$, $F[2]$ is least frequent. Define $F[n+1] = F[1] + F[2]$.
+
+Let $T^\prime = $
+\end{proof}
