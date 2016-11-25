@@ -325,6 +325,7 @@ as shown in \cref{algo:wrapperGenericTraverse}.
 \end{enumerate}
 
 \subsection{Depth First Search}
+\subsubsection{Formal Definition}
 The Formal definition of DFS is shown in \cref{algo:formalDFS}.
 \begin{algorithm}[H]
     \caption{Formal Definition of DFS}\label{algo:formalDFS}
@@ -363,7 +364,8 @@ all vertices in $v$'s component.
     \end{algorithmic}
 \end{algorithm}
 
-
+\subsubsection{Count and Label Components}
+DFS Algorithm can be modified to count and label all the components.
 \begin{algorithm}[H]
 \caption{Count and Label the Components}\label{algo:countlabel}
     \begin{algorithmic}[1]
@@ -388,3 +390,68 @@ all vertices in $v$'s component.
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+\subsubsection{Pre/Post Order Traverse of Binary Tree}
+
+Originally, the definition are:
+\begin{itemize}
+    \item Pre-order: visit, recursive call on left, recursive call on right.
+    \item Post-order: recursive call on left, recursive call on right, visit.
+\end{itemize}
+
+Consider the problem in the view of DFS:
+\begin{itemize}
+    \item Pre-order: vertices put on stack;
+    \item Post-order: vertices taken off from stack.
+\end{itemize}
+
+A modified algorithm is shown in \cref{algo:DFSprepost}
+\begin{algorithm}[H]
+    \caption{Pre/Post Order Based on DFS}\label{algo:DFSprepost}
+    \begin{algorithmic}[1]
+        \Procedure{DFSAll}{$G$}
+            \State $clock = 0$
+            \For{all $v \in V$}
+                \If{$v$ is unmarked.}
+                    \State\ProcedureName{DFS}{v}
+                \EndIf
+            \EndFor
+        \EndProcedure
+        \Procedure{DFS}{$v$}
+            \State Mark $v$.
+            \State \ProcedureName{Previsit}{v}
+            \For{each edge $vw$}
+                \If{$w$ is unmarked.}
+                    \State\ProcedureName{PreVisit}{w}
+                \EndIf
+            \EndFor
+            \State\ProcedureName{PostVisit}{v}
+        \EndProcedure
+        \Procedure{PreVisit}{$v$}
+            \State $pre(v) = clock$
+            \State $clock = clock + 1$
+        \EndProcedure
+        \Procedure{PostVisit}{$v$}
+            \State $post(v) = clock$
+            \State $clock = clock - 1$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Directed Graphs and Reachability}
+\begin{itemize}
+    \item For undirected graph, \ProcedureName{DFS}{v} explores the component of $v$.
+    \item For directed graph, it is trickier.
+        \begin{itemize}
+            \item For $v,u$ in directed graph, $u$ is reachable from $v$,
+                if directed path from $v$ to $u$.
+            \item Let \ProcedureName{Reach}{v} be set of vertices
+                reachable from $v$.
+            \item If $v \in \ProcedureName{Reach}{v}$, $v$ may or may not be in
+                \ProcedureName{Reach}{u}.
+        \end{itemize}
+\end{itemize}
+
+
+%\subsection{Directed Acyclic Graphs}
+
