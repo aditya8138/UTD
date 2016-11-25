@@ -130,3 +130,261 @@ The running time for these two data structures are shown in
     \end{tikzpicture}
 \end{table}
 
+
+\subsection{Traversing Graph}
+\subsubsection{Intuitive Approach}
+Assume $G$ is a connected, undirected graph.
+Suppose we want to visit every vertex in $G$,
+we can use Depth First Search (DFS) is a recursive
+manner, as shown in \cref{algo:recursiveDFS}.
+
+\begin{algorithm}[H]
+    \caption{Recursive Depth First Search Algorithm}\label{algo:recursiveDFS}
+    \begin{algorithmic}[1]
+        \Procedure{RecursiveDFS}{$v$}
+            \If{$v$ unmarked}
+                \State Mark $v$.\Comment{has $v$ been visited.}
+                \For{each edge $vw$.}
+                    \State\ProcedureName{RecursiveDFS}{w}
+                \EndFor
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Initially, call \ProcedureName{RecursiveDFS}{s},
+where $s \in V$ is some start vertex.
+
+Note that the functions was called recursively, forming an implicit stack.
+We can re-write as an iteration using an explicit stack,
+as shown in \cref{algo:iterativeDFS}.
+
+\begin{algorithm}[H]
+    \caption{Iterative Depth First Search Algorithm}\label{algo:iterativeDFS}
+    \begin{algorithmic}[1]
+        \Procedure{IterativeDFS}{$s$}
+            \State\ProcedureName{Push}{s}
+            \While{stack not empty}
+                \State $s = \ProcedureName{Pop}{}$
+                \If{$v$ is unmarked.}
+                    \State Mark $v$.
+                    \For{each edge $vw$.}
+                        \If{$w$ is unmarked.}
+                            \Comment{This \emph{if} is optional in some cases.}
+                            \State\ProcedureName{Push}{w}
+                        \EndIf
+                    \EndFor
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\observation
+Traversal algorithms store candidate vertices in a ``bag'',
+which can be any structure allowing insertion/deletion.
+
+\subsubsection{Generic Traverse Algorithm}
+
+So we can define this generic traverse algorithm
+as shown in \cref{algo:genericTraverse}.
+
+
+\begin{algorithm}[H]
+    \caption{Generic Traverse Algorithm}\label{algo:genericTraverse}
+    \begin{algorithmic}[1]
+        \Procedure{Traverse}{$s$}
+            \State Put $s$ in bag.
+            \While{Bag is not empty.}
+            \State \tikzmark{algogenericTraverseambiguousPoint}{Take $v$ from bag.}
+                \If{$v$ is unmarked.}
+                    \State Mark $v$.
+                    \For{each edge $vw$.}
+                        \If{$w$ is unmarked.}
+                        \Comment{\tikzmark{algogenericTraverseNote}{This \emph{if} is optional in some cases.}}
+                            \State Put $w$ in bag.
+                        \EndIf
+                    \EndFor
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+    \begin{tikzpicture}[remember picture,overlay,node distance = 1cm]
+        \node[above right = 0em and 8em of algogenericTraverseambiguousPoint] (notes)
+            {\textbf{This step is ambiguous.}};
+        \draw[blue,->,thick] (algogenericTraverseambiguousPoint.east) to [in=180,out=0] (notes.west);
+        \node[below = 3em of algogenericTraverseNote, text width=8cm] (notes1)
+            {In other application, this line may bot be needed, as for traversing, it is needed.};
+        \draw[blue,->,thick] (algogenericTraverseNote) to (notes1);
+    \end{tikzpicture}
+\end{algorithm}
+
+\observation This traverse algorithm clearly marks each vertex at most once.
+Now we want to prove it marks each vertex at least once,
+i.e. ``visit'' every vertex. To do this, we can remember each vertex's
+parent in the process. The modified algorithm is shown in \cref{algo:genericTraverseM}
+
+
+\begin{algorithm}[H]
+    \caption{Remember Parent version of Generic Traverse Algorithm}\label{algo:genericTraverseM}
+    \begin{algorithmic}[1]
+        \Procedure{Traverse}{$s$}
+            \State Put $(\varnothing,s)$ in bag.
+            \While{Bag is not empty.}
+                \State Take $(p,v)$ from bag.
+                    \Comment{\bigO{1} per round.}
+                \If{$v$ is unmarked.}
+                \Comment{\bigO{m} overall, regardless of inner \emph{for}.}
+                    \State Mark $v$.
+                    \State $Parent(v) = p$
+                    \For{each edge $vw$.}
+                            \Comment{\bigO{m} overall.}
+                        \If{$w$ is unmarked.}
+                            \State Put $(v,w)$ in bag.
+                        \EndIf
+                    \EndFor
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+    \ProcedureName{Traverse}{s} marks every vertex in connected graph exactly once.
+
+    Set of pair $(parent(v),v)$ with $parent \neq \varnothing$ defines spanning tree.
+\end{lemma}
+
+\begin{proof}
+    $s$ is marked, so let $v \neq s$.
+
+    Let $(s,\ldots,u,v)$ be shortest path from $s$ to $v$, use induction on path length.
+    By induction, $u$ is visited, which implies that when $u$ is marked,
+    $(u,v)$ is put in the bag.
+
+    Call a pair $(parent(v),v)$, s.t. $parent(v) \neq \varnothing$ a parent edge.
+    Consider the path $(v,parent(v),parent(parent(v)),\ldots)$, this path eventually lead to $s$.
+    If every vertex has path to $s$, then parent edge define connected spanning graph.
+\end{proof}
+
+\vspace{0.1in}\noindent\textbf{Running Time for Generic Traverse Algorithm}
+
+Each vertex marked exactly once. Each edge $(v,w)$ added to bag at most once
+by $v$ and at most once by $w$.
+
+Inner loop executed at most \bigO{m} time.
+Outer loop \bigO{m} time. In total, \bigO{m} time.
+
+Note that, this running time analysis ignore bag operation
+time (consider \bigO{1} for all bag operations). If bag operation
+takes $b$ per operation, \bigO{mb} total time is required.
+
+For connected graph, $n = \bigO{m}$.
+
+\subsubsection{Usage of Using Generic Travers Algorithm}
+\begin{enumerate}
+    \item Bag is stack $\Longrightarrow$ DFS (results in a long skinny tree).
+    \item Bag is queue $\Longrightarrow$ BFS (results in a short fat tree).
+    \item If edges have weight, and bag is min priority queue on edge weights.\\
+        $\Longrightarrow$ MST, Prim's Algorithm.
+    \item Bag is min priority queue on vertex distance.\\
+        $\Longrightarrow$ Dijkstra's Algorithm, shortest path tree.
+\end{enumerate}
+
+If $G$ is disconnected, we can use a wrap functions to traverse,
+as shown in \cref{algo:wrapperGenericTraverse}.
+
+\begin{algorithm}[H]
+    \caption{Wrapper for Traverse}\label{algo:wrapperGenericTraverse}
+    \begin{algorithmic}[1]
+        \Procedure{TraverseAll}{}
+            \For{all vertices $v$}
+                \If{$v$ is unmarked.}
+                    \State\ProcedureName{Traverse}{v}
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+    \ProcedureName{TraverseAll}{} marks every vertex in disconnected graph exactly once.
+
+    Set of pair $(parent(v),v)$ with $parent \neq \varnothing$ defines spanning forest.
+\end{lemma}
+
+\subsection{Standard Graph Algorithm}
+\begin{enumerate}[label=Step {\arabic*}, leftmargin=0.5in]
+    \item Maintain set $S$ of visited vertices, and $T \setminus S$ of unvisited.
+    \item Maintain tree over $S$.
+    \item Repeat:
+        \begin{enumerate}
+            \item Pick vertex $w$ in $T$, which is adjacent to $S$.
+            \item Add to $S$, remove from $T$, update tree on $S$.
+        \end{enumerate}
+\end{enumerate}
+
+\subsection{Depth First Search}
+The Formal definition of DFS is shown in \cref{algo:formalDFS}.
+\begin{algorithm}[H]
+    \caption{Formal Definition of DFS}\label{algo:formalDFS}
+    \begin{algorithmic}[1]
+        \Procedure{DFS}{$v$}
+            \State Mark $v$.
+            \For{each edge $vw$.}
+                \If{$w$ is unmarked.}
+                    \State\ProcedureName{DFS}{w}
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\observation The procedure create a similar stack of that
+in \cref{algo:genericTraverse}, but it's the program's stack.
+When \ProcedureName{DFS}{w} makes recursive call, it stores
+current program on program stack, i.e. when \ProcedureName{DFS}{v}
+calls \ProcedureName{DFS}{w}, \ProcedureName{DFS}{v} is on stack.
+
+
+Given $v$ in undirected $G$, \ProcedureName{DFS}{v} visits
+all vertices in $v$'s component.
+
+\begin{algorithm}[H]
+    \caption{DFS All the Component}\label{algo:dfsall}
+    \begin{algorithmic}[1]
+        \Procedure{DFSAll}{$G$}
+            \For{all $v \in V$}
+                \If{$v$ is unmarked.}
+                    \State\ProcedureName{DFS}{v}
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
+\caption{Count and Label the Components}\label{algo:countlabel}
+    \begin{algorithmic}[1]
+        \Procedure{CountAndLabel}{$G$}
+            \State $count = 0$
+            \For{all $v \in V$}
+                \If{$v$ is unmarked.}
+                    \State $count = count + 1$
+                    \State\ProcedureName{LabelComponent}{v,count}
+                \EndIf
+            \EndFor
+            \Return $count$
+        \EndProcedure
+        \Procedure{LabelComponent}{$v,count$}
+            \State Mark $v$.
+            \State $component(v) = count$
+            \For{each $vw$}
+                \If{$w$ is unmarke.}
+                    \State\ProcedureName{LabelComponent}{w,count}
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
