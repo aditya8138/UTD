@@ -223,7 +223,13 @@ The key point of D\&C is try to get problem size down quickly.
     \Return $0$
   \EndIf
   \State $mid = \left\lfloor \frac{i + j}{2} \right\rfloor$
-  \Return $\max\{\ProcedureName{maxSum}{i, mid}, \ProcedureName{maxSum}{mid, j}, \ProcedureName{maxGoFrom}{i, mid} + \ProcedureName{maxGoFrom}{mid, j}\}$
+  \Return $\max\left\{
+      \begin{array}{l}
+          \ProcedureName{maxSum}{i, mid}, \\
+          \ProcedureName{maxSum}{mid, j}, \\
+          \ProcedureName{maxGoFrom}{i, mid} + \ProcedureName{maxGoFrom}{mid, j}
+      \end{array}
+  \right\}$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -233,6 +239,7 @@ If goes cross, must include $A[mid]$ and $A[mid+1]$.
 The running time for \cref{dc_max_sub_sum} is
 \[T(m) = 2T\big(\frac{m}{2}\big) + m\]
 in which $m = j - i + 1$.
+
 
 \begin{table}[!htb]
     \caption{Comparison Between Previous Two Method}
