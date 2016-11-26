@@ -195,7 +195,7 @@ as shown in \cref{algo:genericTraverse}.
     \begin{algorithmic}[1]
         \Procedure{Traverse}{$s$}
             \State Put $s$ in bag.
-            \While{Bag is not empty.}
+            \While{bag is not empty.}
             \State \tikzmark{algogenericTraverseambiguousPoint}{Take $v$ from bag.}
                 \If{$v$ is unmarked.}
                     \State Mark $v$.
@@ -230,7 +230,7 @@ parent in the process. The modified algorithm is shown in \cref{algo:genericTrav
     \begin{algorithmic}[1]
         \Procedure{Traverse}{$s$}
             \State Put $(\varnothing,s)$ in bag.
-            \While{Bag is not empty.}
+            \While{bag is not empty.}
                 \State Take $(p,v)$ from bag.
                     \Comment{\bigO{1} per round.}
                 \If{$v$ is unmarked.}
@@ -966,10 +966,10 @@ path $P$ from $s$ to $t$ that minimized
 Note that we can allow negative weights,
 but cannot be negative cycles.
 
-A example is shown in \cref{fig:spexample}.
+A example of no SP is shown in \cref{fig:spexample}.
 
 \begin{figure}[ht!]
-    \caption{Example for Shortest Path}\label{fig:spexample}
+    \caption{Example for No Shortest Path}\label{fig:spexample}
     \centering
     \includegraphics[width=.9\linewidth]{fig/spExample}
 \end{figure}
@@ -977,12 +977,212 @@ A example is shown in \cref{fig:spexample}.
 \subsubsection{Single Source Shortest Path ( SSSP )}
 Almost every algorithm to find shortest $s-t$ path find
 shortest path to every vertex. 
-
 We can represent all shortest paths from $s$ using
 a spanning tree rooted at $s$.
 
-Why a tree satisfied?
+\textbf{Why a tree satisfied?}
 
 Suppose shortest $s-w$ path passes through $v$
 and shortest $s-t$ path passes through $v$.
 The subpath of a shortest path is a shortest path.
+
+\subsubsection{SSSP Algorithm}
+Most SSSP algorithms have same structure.
+
+For every vertex $v$, store two values.
+\begin{itemize}
+    \item $dist(v) =$ length of tentative shortest $sv$ path, or $\infty$ if no $s-v$ path exists.
+    \item $pred(v) =$ predecessor of $v$ in tentative shortest $s-v$ path tree.
+\end{itemize}
+
+Predecessor pointers define tentative shortest path tree.
+
+Initially, we know $dist(s) = 0$, $pred(s) = null$,
+and for every $v \neq s$, initially $dist(v) = \infty$, $pred(v) = null$
+to indicate we don't know if there is $s-v$ path.
+
+As we run algorithm $dist(v)$ values may decrease,
+but always upper bound tree distances.
+
+During algorithm execution, an edge $u \rightarrow v$ is ``tense''
+if $dist(v) + w(u \rightarrow v) < dist(v)$.
+If $u \rightarrow v$ tense, clearly shortest path from $s$ to $v$ is wrong,
+since $s-u$ path followed by $u \rightarrow v$ is shortest.
+
+\subsubsection{Generic SSSP algorithm}
+The general idea is:
+\begin{quote}
+    Repeated find tense edge and relax it.
+\end{quote}
+The relax operation is defined as \cref{algo:relax}.
+
+\begin{algorithm}[H]
+    \caption{Relax Operation in SSSP Algorithm}\label{algo:relax}
+    \begin{algorithmic}[1]
+        \Procedure{Relax}{$u \rightarrow v$}
+            \State $dist(v) = dist(u) + w(u \rightarrow v)$
+            \State $pred(v) = u$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+The algorithm stops when no tense edges. This can prove the following:
+\begin{enumerate}[label={\arabic*)}]
+    \item $dist(v) \geq \text{ true distance from $s$ to $v$ at all times. }$
+    \item Algorithm halts, i.e. at some finite time, no more tense.
+    \item When algorithm halts, all $dist(v)$ values correct.
+\end{enumerate}
+
+\begin{proof}
+    For 1), prove $\forall v \in V$, $dist(v)$ is either $\infty$ or the length of $s-v$ walk.
+
+    Use induction on number of relaxations.
+    \begin{itemize}
+        \item Consider $v \in V$, if $v$ not updated in previous relax,
+            then holds by induction.
+        \item If $v$ updated, then $dist(v) = dist(u) + w(u \rightarrow v)$,
+            and $dist(u)$ is the length of walk by induction.
+    \end{itemize}
+
+    For 2).
+
+    In 1) can actually prove $dist(v)$ is $\infty$ or length of $s-v$ path (not just walk).
+
+    There finite number of paths, and distances only decrease,
+    thus, the algorithm must stop at some finite time.
+
+    For 3).
+
+    Suppose otherwise, and let $v$ be vertex in true shortest path tree,
+    s.t. $dist(v)$ wrong, and $v$ closest to $s$ in tree ( in terms of edges ).
+
+    Let $s, \ldots ,u,v$ be shortest path, true distance to $v$ is$dist(u) + w(u \rightarrow v)$.
+    By 1), $dist(v) > true distance$, so $dist(v) > true distance = dist(u) + w(u \rightarrow v)$,
+    which means tense edge still exist. So the algorithm shouldn't halts,
+    hence result in contradiction.
+\end{proof}
+
+Note that during the process, we look at a local statement,
+in the end result in a global statement.
+
+So, how do we determine tense edges and what order to relax?
+
+One way to do this is to mimic traverse.
+The algorithm is shown in \cref{algo:genericSSSP}.
+
+\begin{algorithm}[H]
+    \caption{Generic SSSP Algorithm}\label{algo:genericSSSP}
+    \begin{algorithmic}[1]
+        \Procedure{InitSSSP}{$s$}
+            \State $dist(s) = 0$
+            \State $pred(s) = null$
+            \For{all $s \neq v$}
+                \State $dist(v) = \infty$
+                \State $pred(v) = null$
+            \EndFor
+        \EndProcedure
+        \Procedure{GenericSSSP}{$s$}
+            \State \ProcedureName{InitSSSP}{s}
+            \State Put $s$ in bag
+            \While{bag not empty}
+                \State Take $u$ from bag
+                \For{all $u \rightarrow v$}
+                    \If{$u \rightarrow v$ is tense}
+                        \State \ProcedureName{Relax}{u \rightarrow v}
+                        \State Put $v$ in bag
+                    \EndIf
+                \EndFor
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Initially, inly tense edge are those leaving $s$.
+Each time we relax an edge $u \rightarrow v$, a new edge can become tense,
+but those edge must have $v$ as the origin.
+Hence all tense edges would be seen before bag empty.
+
+The question is: How do we implement the bag?
+
+If bag is stack, could run in exponential time.
+And here come the Dijkstra's Algorithm.
+
+\subsubsection{Dijkstra's Algorithm}
+Use a minimum priority queue on $dist(u)$ values to implement the bag.
+If no negative edge weights, we can prove vertices removed from bag
+in increasing order of distance from $s$.
+
+It follows each vertex removed ( or inserted ) from bag at most once.
+Each time an edge relaxed, algorithm performs decrease key on priority queue.
+Since each vertex inserted at most once, at most one decrease key per edge.
+So, total number insertions/deletions is \bigO{n}.
+
+Fibonacci heaps has \bigO{1} decrease key time, \bigO{\log n} insert/delete time.
+Thus in total \[\bigO{m + n \log n}\]
+
+For regular binary heap, every operation takes \bigO{\log n} time.
+Thus in total \[\bigO{(n+m)\log n} = \bigO{m \log n}\]
+
+\subsubsection{Bellman-Ford Algorithm}
+Use a standard FIFO queue to implement the bag.
+
+The correctness follows since \ProcedureName{GenericSSSP}{S} is correct.
+%The running time is not clear
+
+\begin{algorithm}[H]
+    \caption{Bellman-Ford Algorithm}\label{algo:bellmanford}
+    \begin{algorithmic}[1]
+        \Procedure{Bellman-Ford}{$s$}
+            \State\ProcedureName{InitSSSP}{s}
+            \Loop Repeat $|V|$ times:
+                \For{every edge $u \rightarrow v$}
+                    \If{$u \rightarrow v$ is tense}
+                        \State \ProcedureName{Relax}{u \rightarrow v}
+                    \EndIf
+                \EndFor
+            \EndLoop
+            \For{every edge $u \rightarrow v$}
+                \If{$u \rightarrow v$ is tense}
+                    \Return ``Negative Cycle''
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+In other word, the algorithm relax all tense edges and repeat.
+
+The running time if \bigO{mn}.
+
+Is the algorithm correct?
+
+We can prove that, after $i$ repeat phases,
+$dist(v)$ is length of shortest walk from $s$ to $v$ using at most $i$ edges.
+This statement holds true regardless of negative edges.
+
+If negative cycle exists, there is always tense edges,
+since it can always get shorter walk.
+Hence Bellman-Ford Algorithm can detect negative cycles.
+
+\subsubsection{Some Intuition on SSSP}
+Dijkstra's algorithm: sends out wave based on true distance.
+
+\noindent Bellman-Ford algorithm: sends out wave based on number of edges.
+
+\subsection{Max Flows and Min Cuts}
+Example first:
+
+Given a network of nodes, where each connection has some bandwidth.
+\begin{enumerate}
+    \item How much data per unit time can be sent from $s$ to $t$?
+    \item How much bandwidth must be removed, so that $s$ cannot reach $t$?
+\end{enumerate}
+The answer for both questions is the same! Max flow = Min cut.
+
+\subsubsection{Flows}
+Given a directed graph $G$, with source $s$, target $t$. An $(s,t)-flow$ is a function:
+$f:E \rightarrow \mathbb{R}_{\geq 0}$ which satisfies following conservation at all $v \neq s,t$
+\[\sum_uf(u \rightarrow v) = \sum_wf(v \rightarrow w)\]
+which means flow into $v$ and flow out of $v$.
+
+%The ``value'' of the flows, denoted
