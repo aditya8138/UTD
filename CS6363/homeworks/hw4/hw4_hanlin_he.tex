@@ -96,8 +96,8 @@ The algorithm is shown in \cref{checksssp} applying DFS.
     \caption{Algorithm to Check Correctness of SSSP}\label{checksssp}
     \begin{algorithmic}[1]
         \Procedure{CheckSSSP}{$v$}
-            \State Mark $v$.
-            \For{each edge $v \rightarrow w$.}
+            \State Mark $v$
+            \For{each edge $v \rightarrow w$}
                 \If{$dist(v) \neq pred(v) + w(pred(v) \rightarrow v)$}
                     \Return \textsc{False}
                 \EndIf
@@ -125,7 +125,7 @@ The residual graph of the flow network is shown in \cref{p3a}.
 \begin{figure}[H]
     \caption{Residual Graph}\label{p3a}
     \centering
-    \includegraphics[width=.7\textwidth]{p3a}
+    \includegraphics[width=.6\textwidth]{p3a}
 \end{figure}
 
 
@@ -137,7 +137,7 @@ is an augmenting path, as shown in \cref{p3b}.
 \begin{figure}[H]
     \caption{Residual Graph}\label{p3b}
     \centering
-    \includegraphics[width=.7\textwidth]{p3b}
+    \includegraphics[width=.6\textwidth]{p3b}
 \end{figure}
 
 \begin{homeworkSubProblem}[Minimum Cut]
@@ -145,7 +145,7 @@ A minimum $s-t$ cut is $\{s,a,c\}$ and $\{b,d,t\}$, as shown in \cref{p3c}.
 \begin{figure}[H]
     \caption{Residual Graph}\label{p3c}
     \centering
-    \includegraphics[width=.7\textwidth]{p3c}
+    \includegraphics[width=.6\textwidth]{p3c}
 \end{figure}
 \end{homeworkSubProblem}
 \end{homeworkSubProblem}
@@ -174,7 +174,7 @@ The maximum flow graph is shown in \cref{p4a}.
 \begin{figure}[H]
     \caption{Example}\label{p4a}
     \centering
-    \includegraphics[width=.73\textwidth]{p4a}
+    \includegraphics[width=.6\textwidth]{p4a}
 \end{figure}
 
 
@@ -193,7 +193,7 @@ The graph is shown in \cref{p4b}.
 \begin{figure}[H]
     \caption{Turn Double Target Flow Into Standard Flow}\label{p4b}
     \centering
-    \includegraphics[width=.9\textwidth]{p4b}
+    \includegraphics[width=.7\textwidth]{p4b}
 \end{figure}
 
 Let \ProcedureName{StandardMaxFlow}{G, s, t} be the given algorithm
