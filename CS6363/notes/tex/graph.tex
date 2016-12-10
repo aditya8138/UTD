@@ -1169,20 +1169,5 @@ Dijkstra's algorithm: sends out wave based on true distance.
 
 \noindent Bellman-Ford algorithm: sends out wave based on number of edges.
 
-\subsection{Max Flows and Min Cuts}
-Example first:
 
-Given a network of nodes, where each connection has some bandwidth.
-\begin{enumerate}
-    \item How much data per unit time can be sent from $s$ to $t$?
-    \item How much bandwidth must be removed, so that $s$ cannot reach $t$?
-\end{enumerate}
-The answer for both questions is the same! Max flow = Min cut.
-
-\subsubsection{Flows}
-Given a directed graph $G$, with source $s$, target $t$. An $(s,t)-flow$ is a function:
-$f:E \rightarrow \mathbb{R}_{\geq 0}$ which satisfies following conservation at all $v \neq s,t$
-\[\sum_uf(u \rightarrow v) = \sum_wf(v \rightarrow w)\]
-which means flow into $v$ and flow out of $v$.
-
-%The ``value'' of the flows, denoted
+\input{tex/optimization}
