@@ -19,6 +19,9 @@
 # *.eps
 # *.pdf
 
+## Generated if empty string is given at "Please type another file name for output:"
+.pdf
+
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
 *.bcf
@@ -31,6 +34,7 @@
 ## Build tool auxiliary files:
 *.fdb_latexmk
 *.synctex
+*.synctex(busy)
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
@@ -48,14 +52,27 @@ acs-*.bib
 
 # beamer
 *.nav
+*.pre
 *.snm
 *.vrb
 
 # cprotect
 *.cpt
 
+# endnotes
+*.ent
+
 # fixme
 *.lox
+
+# feynmf/feynmp
+*.mf
+*.mp
+*.t[1-9]
+*.t[1-9][0-9]
+*.tfm
+*.[1-9]
+*.[1-9][0-9]
 
 #(r)(e)ledmac/(r)(e)ledpar
 *.end
@@ -84,6 +101,10 @@ acs-*.bib
 # gnuplottex
 *-gnuplottex-*
 
+# gregoriotex
+*.gaux
+*.gtex
+
 # hyperref
 *.brf
 
@@ -106,9 +127,7 @@ acs-*.bib
 *.maf
 *.mlf
 *.mlt
-*.mtc
-*.mtc[0-9]
-*.mtc[1-9][0-9]
+*.mtc[0-9]*
 
 # minted
 _minted*
@@ -127,6 +146,9 @@ _minted*
 *.sagetex.sage
 *.sagetex.py
 *.sagetex.scmd
+
+# scrwfile
+*.wrt
 
 # sympy
 *.sout
@@ -151,6 +173,9 @@ pythontex-files-*/
 
 # todonotes
 *.tdo
+
+# easy-todo
+*.lod
 
 # xindy
 *.xdy
@@ -178,3 +203,11 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+# auto folder when using emacs and auctex 
+/auto/*
+
+# expex forward references with \gathertags
+*-tags.tex
+
+.DS_Store
