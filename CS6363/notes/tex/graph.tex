@@ -143,7 +143,7 @@ manner, as shown in \cref{algo:recursiveDFS}.
     \begin{algorithmic}[1]
         \Procedure{RecursiveDFS}{$v$}
             \If{$v$ unmarked}
-                \State Mark $v$.\Comment{has $v$ been visited.}
+                \State Mark $v$\Comment{has $v$ been visited.}
                 \For{each edge $vw$.}
                     \State\ProcedureName{RecursiveDFS}{w}
                 \EndFor
@@ -167,9 +167,9 @@ as shown in \cref{algo:iterativeDFS}.
             \While{stack not empty}
                 \State $s = \ProcedureName{Pop}{}$
                 \If{$v$ is unmarked.}
-                    \State Mark $v$.
-                    \For{each edge $vw$.}
-                        \If{$w$ is unmarked.}
+                    \State Mark $v$
+                    \For{each edge $vw$}
+                        \If{$w$ is unmarked}
                             \Comment{This \emph{if} is optional in some cases.}
                             \State\ProcedureName{Push}{w}
                         \EndIf
@@ -194,13 +194,13 @@ as shown in \cref{algo:genericTraverse}.
     \caption{Generic Traverse Algorithm}\label{algo:genericTraverse}
     \begin{algorithmic}[1]
         \Procedure{Traverse}{$s$}
-            \State Put $s$ in bag.
-            \While{bag is not empty.}
+            \State Put $s$ in bag
+            \While{bag is not empty}
             \State \tikzmark{algogenericTraverseambiguousPoint}{Take $v$ from bag.}
-                \If{$v$ is unmarked.}
-                    \State Mark $v$.
-                    \For{each edge $vw$.}
-                        \If{$w$ is unmarked.}
+                \If{$v$ is unmarked}
+                    \State Mark $v$
+                    \For{each edge $vw$}
+                        \If{$w$ is unmarked}
                         \Comment{\tikzmark{algogenericTraverseNote}{This \emph{if} is optional in some cases.}}
                             \State Put $w$ in bag.
                         \EndIf
@@ -229,18 +229,18 @@ parent in the process. The modified algorithm is shown in \cref{algo:genericTrav
     \caption{Remember Parent version of Generic Traverse Algorithm}\label{algo:genericTraverseM}
     \begin{algorithmic}[1]
         \Procedure{Traverse}{$s$}
-            \State Put $(\varnothing,s)$ in bag.
-            \While{bag is not empty.}
-                \State Take $(p,v)$ from bag.
+            \State Put $(\emptyset,s)$ in bag
+            \While{bag is not empty}
+                \State Take $(p,v)$ from bag
                     \Comment{\bigO{1} per round.}
-                \If{$v$ is unmarked.}
-                \Comment{\bigO{m} overall, regardless of inner \emph{for}.}
-                    \State Mark $v$.
+                \If{$v$ is unmarked}
+                \Comment{\bigO{m} overall, regardless of inner \emph{for}}
+                    \State Mark $v$
                     \State $Parent(v) = p$
-                    \For{each edge $vw$.}
+                    \For{each edge $vw$}
                             \Comment{\bigO{m} overall.}
-                        \If{$w$ is unmarked.}
-                            \State Put $(v,w)$ in bag.
+                        \If{$w$ is unmarked}
+                            \State Put $(v,w)$ in bag
                         \EndIf
                     \EndFor
                 \EndIf
@@ -252,7 +252,7 @@ parent in the process. The modified algorithm is shown in \cref{algo:genericTrav
 \begin{lemma}
     \ProcedureName{Traverse}{s} marks every vertex in connected graph exactly once.
 
-    Set of pair $(parent(v),v)$ with $parent \neq \varnothing$ defines spanning tree.
+    Set of pair $(parent(v),v)$ with $parent \neq \emptyset$ defines spanning tree.
 \end{lemma}
 
 \begin{proof}
@@ -262,7 +262,7 @@ parent in the process. The modified algorithm is shown in \cref{algo:genericTrav
     By induction, $u$ is visited, which implies that when $u$ is marked,
     $(u,v)$ is put in the bag.
 
-    Call a pair $(parent(v),v)$, s.t. $parent(v) \neq \varnothing$ a parent edge.
+    Call a pair $(parent(v),v)$, s.t. $parent(v) \neq \emptyset$ a parent edge.
     Consider the path $(v,parent(v),parent(parent(v)),\ldots)$, this path eventually lead to $s$.
     If every vertex has path to $s$, then parent edge define connected spanning graph.
 \end{proof}
@@ -299,7 +299,7 @@ as shown in \cref{algo:wrapperGenericTraverse}.
     \begin{algorithmic}[1]
         \Procedure{TraverseAll}{}
             \For{all vertices $v$}
-                \If{$v$ is unmarked.}
+                \If{$v$ is unmarked}
                     \State\ProcedureName{Traverse}{v}
                 \EndIf
             \EndFor
@@ -310,7 +310,7 @@ as shown in \cref{algo:wrapperGenericTraverse}.
 \begin{lemma}
     \ProcedureName{TraverseAll}{} marks every vertex in disconnected graph exactly once.
 
-    Set of pair $(parent(v),v)$ with $parent \neq \varnothing$ defines spanning forest.
+    Set of pair $(parent(v),v)$ with $parent \neq \emptyset$ defines spanning forest.
 \end{lemma}
 
 \subsection{Standard Graph Algorithm}
@@ -331,9 +331,9 @@ The Formal definition of DFS is shown in \cref{algo:formalDFS}.
     \caption{Formal Definition of DFS}\label{algo:formalDFS}
     \begin{algorithmic}[1]
         \Procedure{DFS}{$v$}
-            \State Mark $v$.
-            \For{each edge $vw$.}
-                \If{$w$ is unmarked.}
+            \State Mark $v$
+            \For{each edge $vw$}
+                \If{$w$ is unmarked}
                     \State\ProcedureName{DFS}{w}
                 \EndIf
             \EndFor
@@ -356,7 +356,7 @@ all vertices in $v$'s component.
     \begin{algorithmic}[1]
         \Procedure{DFSAll}{$G$}
             \For{all $v \in V$}
-                \If{$v$ is unmarked.}
+                \If{$v$ is unmarked}
                     \State\ProcedureName{DFS}{v}
                 \EndIf
             \EndFor
@@ -380,10 +380,10 @@ DFS Algorithm can be modified to count and label all the components.
             \Return $count$
         \EndProcedure
         \Procedure{LabelComponent}{$v,count$}
-            \State Mark $v$.
+            \State Mark $v$
             \State $component(v) = count$
             \For{each $vw$}
-                \If{$w$ is unmarke.}
+                \If{$w$ is unmarked}
                     \State\ProcedureName{LabelComponent}{w,count}
                 \EndIf
             \EndFor
@@ -412,16 +412,16 @@ A modified algorithm is shown in \cref{algo:DFSprepost}
         \Procedure{DFSAll}{$G$}
             \State $clock = 0$
             \For{all $v \in V$}
-                \If{$v$ is unmarked.}
+                \If{$v$ is unmarked}
                     \State\ProcedureName{DFS}{v}
                 \EndIf
             \EndFor
         \EndProcedure
         \Procedure{DFS}{$v$}
-            \State Mark $v$.
+            \State Mark $v$
             \State \ProcedureName{Previsit}{v}
             \For{each edge $vw$}
-                \If{$w$ is unmarked.}
+                \If{$w$ is unmarked}
                     \State\ProcedureName{PreVisit}{w}
                 \EndIf
             \EndFor
@@ -485,14 +485,14 @@ Thus, the DFS algorithm can be modified as shown in \cref{algo:acyclicDFS}
     \caption{Determine Whether a Graph is DAG}\label{algo:acyclicDFS}
     \begin{algorithmic}[1]
         \Procedure{IsAcyclic}{$G$}
-            \State Add vertex $s$.
+            \State Add vertex $s$
             \For{all $v \neq s$ in $V$}
-                \State Add edge $s \rightarrow v$.
+                \State Add edge $s \rightarrow v$
                 \State \ProcedureName{Status}{v} = \textsc{New}
             \EndFor
             \Return \ProcedureName{IsAcyclicDFS}{s}
         \EndProcedure
-        \Procedure{IsAcyclicDFS}{$s$}
+        \Procedure{IsAcyclicDFS}{$v$}
             \State \ProcedureName{Status}{v} = \textsc{Active}
             \For{each edge $v \rightarrow w$}
                 \If{\ProcedureName{Status}{w} = \textsc{Active}}
@@ -513,7 +513,7 @@ Thus, the DFS algorithm can be modified as shown in \cref{algo:acyclicDFS}
 
 Prove ``False'' implies cycle.
 
-Suppose ``False'' is returned, then find edge $v \rightarrow w$
+Suppose ``False'' is returned, then find edge $v \rightarrow w$,
 s.t. \ProcedureName{Status}{w} = \textsc{Active}.
 \begin{itemize}
     \item If $w$ is \textsc{Active}, then it's on the stack and
@@ -649,7 +649,7 @@ Strong Component defines an eequivalent relation.
     \item If $u,v$ in some SC, and $v,w$ in some SC, then
         $u,w$ in same SC.
     \item Define a vertex partition: given two strong components
-        $S_1$, $S_2$, $S_1 \cap S_2 = \varnothing$,
+        $S_1$, $S_2$, $S_1 \cap S_2 = \emptyset$,
         and every vertex in same SC.
 \end{itemize}
 
@@ -717,7 +717,7 @@ Some properties are obvious:
 \noindent \textbf{Main MST Property}
 
 A partition of $V$ is a pair $S,R \subseteq V$,
-s.t. $S \cap R = \varnothing$ and $S \cup R = V$.
+s.t. $S \cap R = \emptyset$ and $S \cup R = V$.
 Given a partition $S,R \subseteq V$, \ProcedureName{mwe}{S,R}
 denotes minimum weight edge $u\rightarrow v$, s.t. $u \in S$, $v \in R$.
 \begin{itemize}
@@ -778,18 +778,18 @@ The algorithm is shown in \cref{algo:prim}
     \caption{Prim's Algorithm}\label{algo:prim}
     \begin{algorithmic}[1]
         \Procedure{Prim}{$s$}
-            \State Initial an empty minimum priority queue $Q$.
-            \State Mark $s$.
+            \State Initial an empty minimum priority queue $Q$
+            \State Mark $s$
             \For{all edges $s \rightarrow w$}
-                \State Put $(s,w)$ in $Q$.
+                \State Put $(s,w)$ in $Q$
             \EndFor
             \While{$Q$ is not empty}
                 \State $(p,v) = Q.pop$
                 \If{$v$ is unmarked}
-                    \State Mark $v$.
+                    \State Mark $v$
                     \State $\ProcedureName{Parent}{v} = p$
                     \For{each edge $v \rightarrow w$}
-                        \State Put $(v,w)$ in $Q$.
+                        \State Put $(v,w)$ in $Q$
                     \EndFor
                 \EndIf
             \EndWhile
@@ -826,7 +826,7 @@ Note that the running time can be improved to
 \subsubsection{Borvka's Algorithm}
 \vspace{0.1in}\noindent\textbf{Key point}
 \begin{itemize}
-    \item Start with forest of singletons, $F = (v,\varnothing)$.
+    \item Start with forest of singletons, $F = (v,\emptyset)$.
     \item Repeat until $F$ is a single tree:
         For every $T \in F$, add \ProcedureName{mwe}{T, V \setminus T}.
 \end{itemize}
@@ -835,7 +835,7 @@ The algorithm is shown in \cref{algo:borvka}
     \caption{Borvka's Algorithm}\label{algo:borvka}
     \begin{algorithmic}[1]
         \Procedure{Borvka}{$V,E$}
-            \State $F = (V, \varnothing)$
+            \State $F = (V, \emptyset)$
             \State $count = \ProcedureName{CountAndLabel}{F}$
             \While{$count > 1$}
                 \State \ProcedureName{AddAllMWE}{E,F,count}
