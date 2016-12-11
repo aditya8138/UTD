@@ -154,5 +154,104 @@ as shown in \cref{fig:residualGraphExample}
         \end{equation}
         To prove that the flow $f^\prime$ is feasible with respect to original capacities $c$,
         we need to verify that $f^\prime \geq 0$ and $f^\prime \leq c$ for all edges.
+
+        Consider and edge $u \rightarrow v \in G$.
+        \begin{itemize}
+            \item If $u \rightarrow v$ is in augmenting path,
+                then $f^\prime(u \rightarrow v) > f(u \rightarrow v) \geq 0$ and
+                \begin{align*}
+                    f^\prime(u \rightarrow v) &= f(u \rightarrow v) + F && \text{ by definition of $f^\prime$ } \\
+                                              &\leq f(u \rightarrow v) + c_f(u \rightarrow v) && \text{ by definition of $F$ } \\
+                                              &= f(u \rightarrow v) + c(u \rightarrow v) - f(u \rightarrow v) && \text{ by definition of $c_f$ } \\
+                                              &= c(u \rightarrow v)
+                \end{align*}
+            \item If $v \rightarrow u$ is in the augmenting path,
+                then $f^\prime(u \rightarrow v) < f(u \rightarrow v) \leq c(u \rightarrow v)$,
+                which implies that
+                \begin{align*}
+                    f^\prime(u \rightarrow v) &= f(u \rightarrow v) - F && \text{ by definition of $f^\prime$ } \\
+                                              &\geq f(u \rightarrow v) - c_f(u \rightarrow v) && \text{ by definition of $F$ } \\
+                                              &= f(u \rightarrow v) - f(u \rightarrow v) && \text{ by definition of $c_f$ } \\
+                                              &= 0
+                \end{align*}
+            \item If $u \rightarrow v$ nor $v \rightarrow u$ is in augmenting path, nothing change.
+        \end{itemize}
 \end{enumerate}
+Finally, we observe that only the first edge in augmenting path leaves $s$,
+so $|f^\prime| = |f| + F > |f|$. Hence, $f$ is not a max flow.
+
+We proved:
+\emph{For feasible $f$, let $S$ be reachable set from $s$ in $G_f$, $f$ is max flow,
+if and only if $t \notin S$.
+If $t \notin S$, $|f| = \|S, V \setminus S\|$ and so $\|S, V \setminus S\|$ is min cut.}
 \end{proof}
+
+\subsubsection{Ford-Fulkerson Algorithm}
+Maxflow Mincut theorem proof gives an algorithm to compute max flow and hence min cut.
+\begin{enumerate}
+    \item Initially set $G_f = G$;
+    \item Find any $s,t$ path $P$ in $G_f$;
+    \item Augment $f$ along $P$, update $G_f$ and repeat until no $s,t$ path.
+\end{enumerate}
+The question is: how long does this algorithm takes?
+
+\begin{theorem}[Integrality Theorem]
+    If all capacities in a flow network are integers, then there is a maximum
+    flow such that the flow through every edge is an integer.
+\end{theorem}
+
+\analysis Let $f^*$ be max flow.
+Each time Ford-Fulkerson's augments, flow increases by at least 1.
+Thus, augmenting takes \bigO{|E|} time.
+Total time: \bigO{|E||f^*|} time.
+
+However, Ford-Fulkerson might alternate between pushing 1 unit of flow
+along the augmenting path back and forth, as shown in \cref{fig:ffexample}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.2]{fig/ffexample}
+    \caption{A bad example for the Ford-Fulkerson algorithm}
+    \label{fig:ffexample}
+\end{figure}
+
+To avoid this situation, we can choose (Edmands-Karp algorithm)
+\begin{itemize}
+    \item path with largest bottleneck;
+    \item path with shortest number of edges.
+\end{itemize}
+For more information, see Chapter 23.6 in Jeff's notes.
+
+In conclusion, Ford-Fulkerson's algorithm takes \bigO{X} time where
+the maximum flow value $|f^*| = 2X$, but the input size is \bigO{\log X},
+thus, Ford-Fulkerson is actually exponential in the input size.
+
+\subsubsection{Application of Max Flow}
+\begin{itemize}
+    \item Edge disjoint path (edp).\\
+        Given directed grpah $G$, want max number of edge disjoint
+        $s-t$ paths (note that it may share vertices).
+        Let $K$ be the max number.\\
+        Solution: Assign capacity 1 to all edges, compute max flow $f^*$,
+        then $|f^*| = k$.
+    \item Vertex capacities.\\
+        Also given vertex capacities, $c(v)$ for each $v \in V$,
+        want max flow with additional requirement that total flow
+        entering $v \leq c(v)$ (and therefore flow out of $v \leq c(v)$).\\
+        Solution: Use standard flow, but replace each $v$ with $v_{in}$ and $v_{out}$,
+        with edge $v_{in} \rightarrow v_{out}$ of capacity $c(v)$.
+        All incoming edges to $v$ now to $v_{in}$, all outgoing edges now from $v_{out}$.
+    \item Maximum Matching in Bipartite graphs.\\
+        Given an undirected graph $G=(V,E)$ is Bipartite. If $V$ can be partitioned
+        into two sets $A,B$, so that all edges are from $A$ to $B$ ($A,B$ are independent set).
+        A matching is a subset $M \subseteq E$ s.t every vertex in $G^\prime = (V,M)$
+        has degree $\leq 1$ (i.e. edges in $M$ are non-adjacent).
+        A maximum matching is matching s.t $|M|$ is maximized.\\
+        Can find max matching in bipartite $G$ as follow:
+        \begin{enumerate}
+            \item orient all edges from $u$ to $W$.
+            \item adding source $s$, with directed edges from all of $A$.
+            \item adding sink $t$, with directed edges from all of $B$.
+            \item assign capacity 1 to all edges.
+            \item compute max flow, saturated $A$ to $B$ edges are max matching.
+        \end{enumerate}
+\end{itemize}
