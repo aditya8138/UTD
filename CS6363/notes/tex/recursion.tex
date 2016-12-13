@@ -431,10 +431,12 @@ A Special Case is that, $f(n) = n^c$, i.e. $f(n)$ is polynomial.
 
 The \cref{master_theorem} is called the Master Theorem.
 
-\subsubsection{More Examples: \texorpdfstring{$T(n)=\sqrt{n}T(\sqrt{n})+n$}{T(n)=sqrt(n)T(sqrt(n))+n}}
+\subsubsection{Examples: \texorpdfstring{$T(n)=\sqrt{n}T(\sqrt{n})+n$}{T(n)=sqrt(n)T(sqrt(n))+n}}
 
+The recursion tree are shown in \cref{fig:rt1}.
 \begin{figure}[H]
     \caption{Recursion Tree for \texorpdfstring{$T(n)=\sqrt{n}T(\sqrt{n})+n$}{T(n)=sqrt(n)T(sqrt(n))+n}}\label{recur_tree_example1}
+    \label{fig:rt1}
 \begin{tikzpicture}
     \Tree
     [.\node(root) {$n$};
@@ -477,4 +479,69 @@ How many times apply $\sqrt{ n }$ (root function) until get to constant size?
 
 In total, the running time would be: $T(n) = \Theta(n\log\log n)$.
 
+
+\subsubsection{Examples: \texorpdfstring{$T(n)=2T(\frac{n}{4}) + n\log n$}{T(n)=2T(n/4) + n log n}}
+The recursion tree are shown in \cref{fig:rt2}.
+\begin{figure}[H]
+    \caption{Recursion Tree for \texorpdfstring{$T(n)=2T(\frac{n}{4}) + n\log n$}{T(n)=2T(n/4) + n log n}}
+    \label{fig:rt2}
+    \centering
+\begin{tikzpicture}
+    \Tree
+        [.{$n \log n$} 
+            [.{$\frac{n}{4} \log\frac{n}{4}$} ]
+            [.{$\frac{n}{4} \log\frac{n}{4}$} ]
+        ]
+\end{tikzpicture}
+\end{figure}
+
+Level sum: $\displaystyle 2^i \frac{n}{4^i} \log\frac{n}{4^i} = \frac{n}{2^i}(\log (n-2i))$
+is decreasing.
+
+Thus, total running time is dominated by root, which is $T(n) = \Theta(n \log n)$.
+
+To prove it, first prove the upper bound:
+\begin{align*}
+    T(n) &\leq 2c \times \frac{n}{4}\log\frac{n}{4} + n \log n \\
+         &= \frac{1}{2}cn(\log n-2)+n \log n\\
+         &= cn\log n \bigg(\frac{1}{2}+\frac{1}{c}\bigg) - cn \\
+         &\leq cn\log n \text{ for } c = 2
+\end{align*}
+Then prove the lower bound, which is exactly the same steps as upper bound.
+
+
+\subsubsection{Examples: \texorpdfstring{$T(n)=2T(\frac{n}{3}) + \sqrt{n}$}{T(n)=2T(n/3) + sqrt(n)}}
+The recursion tree are shown in \cref{fig:rt3}.
+\begin{figure}[H]
+    \caption{Recursion Tree for \texorpdfstring{$T(n)=2T(\frac{n}{3}) + \sqrt{n}$}{T(n)=2T(n/3) + sqrt(n)}}
+    \label{fig:rt3}
+    \centering
+\begin{tikzpicture}
+    \Tree
+        [.{$\sqrt{n}$} 
+            [.{$\sqrt{\frac{n}{3}}$} ]
+            [.{$\sqrt{\frac{n}{3}}$} ]
+        ]
+\end{tikzpicture}
+\end{figure}
+
+Level sum: $\displaystyle 2^i\sqrt{\frac{n}{3^i}} = \sqrt{n}\bigg(\frac{2}{\sqrt{3}}\bigg)$ is increasing.
+
+Thus, total running time is dominated by number of leaves, which is
+$2^{\log_3n}=n^{\log_32}$.
+
+To prove it, first prove the lower bound:
+\begin{align*}
+    T(n) &\geq 2c\bigg(\frac{n}{3}\bigg)^{\log_32} + \sqrt{n} \\
+         &= c \times n^{\log_32} + \sqrt{n} \\
+         &\geq cn^{\log_32}
+\end{align*}
+
+Lower bound works for any $c$, but upper bound fails for any $c$.
+In this case, we have to guess a upper bound:
+
+Assume $T(n) \leq cn^{\log_32} - b\sqrt{n}$,
+\[T(n) \leq 2 \times c \bigg(\frac{n}{3}\bigg)^{\log_32} - 2b\sqrt{\frac{n}{3}} + \sqrt{n}
+= c \times n^{\log_32} + \sqrt{n}\bigg(1 - 2 \times \frac{b}{\sqrt{3}}\bigg)\]
+for $\displaystyle \sqrt{n}\times\bigg(1 - \frac{2b}{\sqrt{3}}\bigg) = -b\sqrt{n}$.
 
