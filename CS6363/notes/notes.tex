@@ -1,19 +1,27 @@
 %!TEX program = <xelatex>
-\documentclass[12pt,letterpaper]{article}
+\documentclass[12pt,letterpaper,titlepage]{article}
 
 \usepackage{basicstyle}
 \usepackage{notestyle}
 
-\title{Notes on CS6363}
-\author{Hanlin He}
-\date{\today}
+\title{
+    \vspace{1in}
+    \textmd{\textbf{Class Notes for CS6363}}\\
+    \textbf{\Large{Design and Analysis of Computer Algorithms}}\\
+    \large\vspace{0.1in}\textit{Instructor: Benjamin Raichel}\\
+    \vspace{0.1in}\normalsize{University of Texas at Dallas}\\
+    Department of Computer Science\\
+    \vspace{0.1in}\includegraphics[height=2.4em]{fig/UTD_logo_BW}\\
+    \vspace{2in}
+}
+\author{Hanlin He\\\vspace{0.1in}\includegraphics[height=4em]{fig/comets_logo_black.pdf}}
+\date{}
 
 \makeindex
 \begin{document}
 
 \maketitle
 
-\pagebreak
 
 \pagenumbering{Roman}
 \tableofcontents
@@ -22,7 +30,6 @@
 \pagebreak
 
 \pagenumbering{arabic}
-
 \input{tex/syllabus}
 
 \pagebreak
@@ -57,8 +64,8 @@
 
 \input{tex/graph}
 
-\pagebreak
+% \pagebreak
 
-\input{tex/np}
+% \input{tex/np}
 
 \end{document}
