@@ -179,11 +179,159 @@ Quick sort reverses the order:
 
 \subsubsection{Pivoting}
 Pick element $A[p]$, divide $A$ into elements smaller or larger than $A[p]$.
-
-\begin{figure}[H]
-    \caption{Example of Pivoting}\label{fig:examplepivot}
-\end{figure}
-
-After pivoting, if we sort the ``<'' set and ``>'' set recursively,
+After pivoting, if we sort the ``$<$'' set and ``$>$'' set recursively,
 we are done when recursive calls return.
+The algorithm is described in \cref{algo:qs}
 
+\begin{algorithm}[H]
+    \caption{Pivoting \& Quick Sort}\label{algo:qs}
+    \begin{algorithmic}[1]
+        \Procedure{Pivot}{$A[1 \ldots n], p$}
+            \State\ProcedureName{Swap}{A[p], A[n]}
+            \State $i = 0$
+            \State $j = n$
+            \While{$i < j$}
+                \Repeat
+                    \State $i = i+1$
+                \Until{$i \geq j \text{ or } A[i] \geq A[n]$}
+                \Repeat
+                    \State $j = j-1$
+                \Until{$i \geq j \text{ or } A[j] \leq A[n]$}
+                \If{$i < j$}
+                    \State\ProcedureName{Swap}{A[i], A[j]}
+                \EndIf
+            \EndWhile
+            \State\ProcedureName{Swap}{A[i], A[n]}
+            \Return $i$
+        \EndProcedure
+        \Procedure{QuickSort}{}
+            \If{$n > 1$}
+                \State Choose pivot $p$
+                \State $r = \ProcedureName{Pivot}{A[1 \ldots n], p}$
+                \State \ProcedureName{QuickSort}{A[1 \ldots r-1]}
+                \State \ProcedureName{QuickSort}{A[r-1 \ldots n]}
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\analysis
+Running time: pivot operation takes linear time ($\Theta(n) time$)
+after \bigO{1} work either $i$ increments or $j$ decrements.
+Total running time:
+\[T(n) = T(r - 1) + T(n - r) + \Theta(n)\]
+which depends on $r$.
+\begin{itemize}
+    \item If $r = n$, then $T(n) = T(n-1) + \Theta(n) = \Theta(n^2)$ (worst case).
+    \item If $r = n/2$, then $T(n) = 2T(n/2) + \Theta(n) = \Theta(n\log n)$ (best case).
+\end{itemize}
+
+Why is quick sort popular?
+\begin{itemize}
+    \item For good $r$, runs fast;
+    \item Sort in place, using little memory;
+    \item Constants in $\Theta(  )$ small;
+    \item Easy to implement.
+\end{itemize}
+
+Then, what determines $r$? Choice of $p$.
+Can we find the median in \bigO{n}
+\footnote{Previously, we've already use \bigO{n} time to pivot}
+deterministic time?
+
+\subsubsection{Median Selection}
+Given $A[1 \ldots n]$, let $\overline{A}$ denotes $A$ after sorting.
+The ``rank'' of $A[i]$ is its index in $\overline{A}$,
+i.e finding median means find element of rank $n/2$.
+
+We can derive the problem to a more general one:
+\begin{quote}
+    Given $k \in [1 \ldots n]$, we want element of rank $k$ in $A[1 \ldots n]$ in \bigO{n} time.
+\end{quote}
+The main idea is to modify quick select.
+
+Quick Select is described in \cref{algo:quickselect}.
+
+\begin{algorithm}[H]
+    \caption{Quick Select}\label{algo:quickselect}
+    \begin{algorithmic}
+        \Procedure{QuickSelect}{$A[1 \ldots n], k$}
+            \If{$n = 1$}
+                \Return $A[1]$
+            \Else
+                \State Choose pivot $p$
+                \State $r = \ProcedureName{Pivot}{A[1 \ldots n], p}$
+                \If{$k < r$}
+                    \Return \ProcedureName{QuickSelect}{A[1 \ldots r-1], k}
+                \ElsIf{$k > r$}
+                    \Return \ProcedureName{QuickSelect}{A[r-1 \ldots n], k-r}
+                \Else
+                    \Return $A[r]$
+                \EndIf
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Total running time:
+\[T(n) \leq \max\{T(r-1), T(n-r)\} + \Theta(n)\]
+
+Again, depend on $r$, worst case is when $r=n$, $T(n) = T(n-1) + \Theta(n) = \Theta(n^2)$.
+
+\Claim Given $T(n) = T(an) + T(bn) + n$
+\footnote{$n$ means cost is linear.},
+where $a,b<1$. Let $L_i$ be the $i$th level sum
+in recursive tree, then $L_{i+1} = (a + b)L_i$
+
+\begin{proof}
+Suppose $L_i$ has $m$ sub problem of size $P_1 \ldots P_m$.
+
+Then, let $\displaystyle L_i = \sum_{i=1}^m{P_i}$
+and $\displaystyle L_{i+1} = \sum_{i=1}^m{aP_i+bP_i} = (a+b)\sum_{i=1}^m{P_i}=(a+b)L_i$
+\end{proof}
+
+We have:
+\begin{itemize}
+    \item If $a+b <1$, then $T(n) = \Theta(n)$;
+    \item If $a+b =1$, then $T(n) = \Theta(n \log n)$
+\end{itemize}
+
+Let $0<c<1$ be some constant. Suppose our pivot always had rank $cn$.
+
+The running time would be:
+\begin{itemize}
+    \item[QuickSort] $T(n) = T(cn) + T((1-c)n) + n = \Theta(n \log n)$;
+    \item[QuickSelect] $T(n) = \max\{T(cn), T((1-c)n)\} + n = T(bn) + n = \bigO{n}$, where $b = \max\{c, 1-c\}$.
+\end{itemize}
+
+Note that \textsc{QuickSelect} has slack. It spend an extra $T(an)$ time as long as $a+b<1$.
+
+Now we introduce the median on median select, the algorithm is described in \cref{algo:mom}.
+
+\begin{algorithm}[H]
+    \caption{Median of Median Select}\label{algo:mom}
+    \begin{algorithmic}[1]
+        \Procedure{MoMSelect}{$A[1 \ldots n],k$}
+            \If{$n \leq 25$}
+                \State Use brute force
+            \Else
+                \State $\displaystyle m = \left\lceil\frac{n}{5}\right\rceil$
+                \For{$i = 1 \text{ to } n$}
+                    \State $M[i] = \ProcedureName{MedianOfFive}{A[5i-4, \ldots ,5i]}$
+                \EndFor
+                \State $mom = \ProcedureName{MoMSelect}{M[1 \ldots m], \lfloor m/2 \rfloor}$
+                \State $r = \ProcedureName{Pivot}{A[1 \ldots n], mom}$
+                \If{$k < r$}
+                    \Return \ProcedureName{MoMSelect}{A[1 \ldots r-1],k}
+                \ElsIf{$k > 0$}
+                    \Return \ProcedureName{MoMSelect}{A[r+1 \ldots n],k-r}
+                \Else
+                    \Return $mom$
+                \EndIf
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\observation
+$mom$ is greater then $m/2$ medians, each of which is $\geq 3$ items, also less then $3n/10$ elements.
