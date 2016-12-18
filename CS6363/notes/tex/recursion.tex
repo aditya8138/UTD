@@ -96,7 +96,7 @@ Let $T(n)$ be the total moves for $n$ disks.
   \If{$high < low$}
     \Return Not Found
   \EndIf
-  \State $mid = \big\lfloor\frac{high + low}{2}\big\rfloor$
+  \State $\displaystyle mid = \big\lfloor\frac{high + low}{2}\big\rfloor$
   \If{$val < A[mid]$}
     \Return \ProcedureName{Bin}{val, low, mid-1}
   \EndIf
@@ -237,7 +237,7 @@ The key point of D\&C is try to get problem size down quickly.
 If goes cross, must include $A[mid]$ and $A[mid+1]$.
 
 The running time for \cref{dc_max_sub_sum} is
-\[T(m) = 2T\big(\frac{m}{2}\big) + m\]
+\[T(m) = 2T\bigg(\frac{m}{2}\bigg) + m\]
 in which $m = j - i + 1$.
 
 
@@ -370,6 +370,7 @@ where $a,b \geq 1$. The recursion tree for \cref{main_recur_tree_eq} is shown in
 
 \begin{figure}[H]
     \caption{Generalize Recursion Tree}\label{main_recur_tree}
+    \centering
 \begin{tikzpicture}
     \Tree
     [.\node(root) {$f(n)$};
@@ -393,6 +394,7 @@ where $a,b \geq 1$. The recursion tree for \cref{main_recur_tree_eq} is shown in
 \end{tikzpicture}
 \end{figure}
 
+\vspace{1in}
 \observation
 
 \begin{itemize}
@@ -486,7 +488,7 @@ The recursion tree are shown in \cref{fig:rt2}.
     \caption{Recursion Tree for \texorpdfstring{$T(n)=2T(\frac{n}{4}) + n\log n$}{T(n)=2T(n/4) + n log n}}
     \label{fig:rt2}
     \centering
-\begin{tikzpicture}
+    \begin{tikzpicture}[level distance = 3cm]
     \Tree
         [.{$n \log n$} 
             [.{$\frac{n}{4} \log\frac{n}{4}$} ]
@@ -532,9 +534,9 @@ $2^{\log_3n}=n^{\log_32}$.
 
 To prove it, first prove the lower bound:
 \begin{align*}
-    T(n) &\geq 2c\bigg(\frac{n}{3}\bigg)^{\log_32} + \sqrt{n} \\
-         &= c \times n^{\log_32} + \sqrt{n} \\
-         &\geq cn^{\log_32}
+    T(n) &\geq 2c\bigg(\frac{n}{3}\bigg)^{\log_32} + \sqrt{n}
+         = c \times n^{\log_32} + \sqrt{n}
+         \geq cn^{\log_32}
 \end{align*}
 
 Lower bound works for any $c$, but upper bound fails for any $c$.

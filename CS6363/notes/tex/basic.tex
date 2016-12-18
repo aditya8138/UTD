@@ -1,9 +1,11 @@
 \section{Basic}
 \subsection{What is an algorithm?}
 Unambiguous, mechanically executable sequence of elementary operations.
-
 There are certain types of algorithm:
 
+\begin{table}[H]
+\caption{Comparison between Traditional \& Modern Algorithm}
+\centering
 \begin{tabular}{ ll }
 Traditional (This course’s main focus.) & Modern algorithm research\\
 \hline
@@ -12,24 +14,18 @@ Exact & Approximate\\
 Off-line & On-line\\
 Sequential & Parallel\\
 \end{tabular}
+\end{table}
 
 \subsection{Input \& Output}
 
 View algorithm as a function with well defined inputs mapping to specific
-outputs. For example:
-
-\begin{quote}
+outputs.
 
 \AlgoInput $A[1...n]$  // Positive real number, distinct.
 
 \AlgoOutput $MAX A[i], 1<= i <= n$.
 
-\end{quote}
-
-\subsubsection{Algorithm 1}
-
-Stupid way.
-
+\subsubsection{Algorithm 1: Stupid way}
 \begin{algorithm}[H]
 \caption{Stupid Find Max Algorithm}\label{Stupid_Find_Max_Algorithm}
 \begin{algorithmic}[1]
@@ -51,10 +47,7 @@ Stupid way.
 
 \textbf{Analysis}: Worst Case, $n^2$ comparison.
 
-\subsubsection{Algorithm 2}
-
-Sort \& Find.
-
+\subsubsection{Algorithm 2: Sort \& Find}
 \begin{algorithm}[H]
 \caption{Sort \& Find Max Algorithm}\label{Sort_and_Find_Max_Algorithm}
 \begin{algorithmic}[1]
@@ -67,10 +60,7 @@ Sort \& Find.
 
 \textbf{Analysis}: Worst Case, sorting takes $c\ n\log n$ time.
 
-\subsubsection{Algorithm 3}
-
-Dynamically store the biggest one.
-
+\subsubsection{Algorithm 3: Dynamically store the biggest one}
 \begin{algorithm}[H]
 \caption{Search \& Find Max Algorithm}\label{Search_and_Find_Max_Algorithm}
 \begin{algorithmic}[1]

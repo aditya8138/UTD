@@ -123,6 +123,8 @@ The comparison tree can be described as \cref{fig:sortinglowerbound}
 
 \begin{figure}[H]
     \caption{Comparison Tree}\label{fig:sortinglowerbound}
+    \centering
+    \includegraphics[scale=1.1]{fig/sortlowerbound}
 \end{figure}
 
 Meaning of the comparison tree:
@@ -141,7 +143,7 @@ In total $n!$ (factorial) ordering of elements.
 \[n! \leq \text{ number of leaves } \leq 2^d\]
 which means:
 \[d \geq \lg(n!) = \Theta(n \log n)\]
-using Stirling's Approximation $n! \approx \sqrt{2n}\left(\frac{n}{e}\right)^n$.
+using Stirling's Approximation $\displaystyle n! \approx \sqrt{2n}\left(\frac{n}{e}\right)^n$.
 
 \subsection{Sorting in Linear Time}
 What if allow operations other than comparisons,
@@ -299,9 +301,10 @@ We have:
 Let $0<c<1$ be some constant. Suppose our pivot always had rank $cn$.
 
 The running time would be:
-\begin{itemize}
+\begin{itemize}[leftmargin=1.2in]
     \item[QuickSort] $T(n) = T(cn) + T((1-c)n) + n = \Theta(n \log n)$;
-    \item[QuickSelect] $T(n) = \max\{T(cn), T((1-c)n)\} + n = T(bn) + n = \bigO{n}$, where $b = \max\{c, 1-c\}$.
+    \item[QuickSelect] $T(n) = \max\{T(cn), T((1-c)n)\} + n = T(bn) + n = \bigO{n}$,\\
+        where $b = \max\{c, 1-c\}$.
 \end{itemize}
 
 Note that \textsc{QuickSelect} has slack. It spend an extra $T(an)$ time as long as $a+b<1$.

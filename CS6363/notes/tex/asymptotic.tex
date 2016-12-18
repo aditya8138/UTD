@@ -24,7 +24,8 @@ Let $f(n)$, $g(n)$ be function.
 
 $f(n) = \bigO{g(n)}$, if $\exists n_0 \in \mathbb{N}$,
 $c \in \mathbb{R}^+$, s.t. $\forall n \geq n_0$, $f(n) \leq c * g(n)$,
-and $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} \ne \infty$, i.e.\ it is $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < k$, for some constant $k$.
+and $\displaystyle\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} \ne \infty$,
+i.e.\ it is $\displaystyle\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < k$, for some constant $k$.
 \end{definition}
 
 Table \ref{def_asymptotic_notation} shows the basic definition of all the asymptotic notations.
@@ -33,7 +34,7 @@ Table \ref{def_asymptotic_notation} shows the basic definition of all the asympt
 \caption{Definition for all Asymptotic Notation}\label{def_asymptotic_notation}
 \begin{tabular}{c|l|c}
 \hline
-$f(n)$ & $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}$ & relation \\
+$f(n)$ & $\displaystyle\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}$ & relation \\
 \hline
 \hline
 $\bigO{g(n)}$ & $\neq \infty$ & $\leq$ \\
@@ -92,7 +93,7 @@ $n_0 = 1$ ($n_0 = 2^{10}$) means $n$ is at least $1$ (or $2^{10}$).
 $\bigO{1}$ means \textbf{Any Constant}.
 \end{corollary}
 
-\textbf{Attention}: \emph{Asymptotic notation has limit. It is not applicable for all scenarios}.
+\noindent\textbf{Attention}: \emph{Asymptotic notation has limit. It is not applicable for all scenarios}.
 
 \subsection{Properties of \texorpdfstring{$\log(n)$}{log(n)}}
 \definition{$n = C^{\log_c{n}}$, $c > 1$, $\lg{n} = \log_2{n}$, $\ln{n} = \log_e{n}$.}
@@ -109,6 +110,7 @@ $\forall{a,b} > 1$
 
 \end{corollary}
 
+\pagebreak
 \begin{corollary}
 $\forall{a,b} \in \mathbb{R}$
 
@@ -131,7 +133,7 @@ Let $f(n)$ be a polynomial function, then $\log(f(n)) = \Theta(\log(n))$.
 \end{theorem}
 
 \begin{proof}
-The asymptotic result of $n^2$ and $n^10$ are the same.
+    The asymptotic result of $n^2$ and $n^{10}$ are the same.
 \end{proof}
 
 \begin{definition}
