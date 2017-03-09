@@ -1,0 +1,105 @@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{###########################################################################}
+\hlcom{# R code for problem 1}
+\hlcom{###########################################################################}
+
+\hlcom{# 1 (b) Explain how you would simulate a draw from the distribution of X.}
+\hlkwd{runif}\hlstd{(}\hlnum{1}\hlstd{)}\hlopt{^}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9476318
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Define function getdraw(x,y) for (c) and (d).}
+\hlcom{# Arguments:}
+\hlcom{#       'x' is the number of draws to simulate.}
+\hlcom{#       'y' is the times to repeat.}
+\hlcom{# Result: Summary of E(X), Var(X) and P(X>5) of each simulation in a table.}
+
+\hlstd{getdraw} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+    \hlcom{# Simulated x draws y times, result stored in variable 'draw'.}
+    \hlstd{draw} \hlkwb{<-} \hlkwd{replicate}\hlstd{(y,} \hlkwd{runif}\hlstd{(x)}\hlopt{^}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{4}\hlstd{))}
+
+    \hlcom{# Calculated the result of each 1000 draws,}
+    \hlcom{# i.e. apply calculation in each column.}
+
+    \hlcom{# Calculated the mean in each column.}
+    \hlstd{mean5} \hlkwb{<-} \hlkwd{apply}\hlstd{(draw,} \hlnum{2}\hlstd{, mean)}
+
+    \hlcom{# Calculated the variance in each column.}
+    \hlstd{var5} \hlkwb{<-} \hlkwd{apply}\hlstd{(draw,} \hlnum{2}\hlstd{, var)}
+
+    \hlcom{# Calculated the probability of X > 5 in each column.}
+    \hlstd{p5} \hlkwb{<-} \hlkwd{apply}\hlstd{(draw,} \hlnum{2}\hlstd{, (}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{sum}\hlstd{(x} \hlopt{>} \hlnum{0.5}\hlstd{)}\hlopt{/}\hlkwd{sum}\hlstd{(x} \hlopt{>=} \hlnum{0}\hlstd{)))}
+
+    \hlcom{# Combine the result in a table.}
+    \hlstd{result} \hlkwb{<-} \hlkwd{cbind}\hlstd{(mean5, var5, p5)}
+
+    \hlcom{# Rename column.}
+    \hlkwd{colnames}\hlstd{(result)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Mean"}\hlstd{,}\hlstr{"Variance"}\hlstd{,}\hlstr{"P(X>0.5)"}\hlstd{)}
+
+    \hlkwd{return}\hlstd{(result)}
+\hlstd{\}}
+
+
+\hlcom{# 1 (c) Approximate E(X), Var(X) and P(X > 0.5)}
+\hlcom{#       using Monte Carlo simulation with 1,000}
+\hlcom{#       draws 5 times. Summarize the results in a table.}
+
+\hlkwd{getdraw}\hlstd{(}\hlnum{1000}\hlstd{,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##           Mean   Variance P(X>0.5)
+## [1,] 0.8049452 0.02534549    0.948
+## [2,] 0.8000916 0.02706675    0.944
+## [3,] 0.8105327 0.02494554    0.947
+## [4,] 0.7988951 0.02895235    0.930
+## [5,] 0.8002070 0.02614280    0.939
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 1 (d) Repeat (c) with 10,000 draws.}
+
+\hlkwd{getdraw}\hlstd{(}\hlnum{10000}\hlstd{,} \hlnum{5}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##           Mean   Variance P(X>0.5)
+## [1,] 0.7993287 0.02676855   0.9385
+## [2,] 0.7975362 0.02755187   0.9352
+## [3,] 0.8013925 0.02583196   0.9396
+## [4,] 0.7990607 0.02680608   0.9379
+## [5,] 0.7965577 0.02675823   0.9391
+\end{verbatim}
+\begin{alltt}
+
+\hlcom{###########################################################################}
+\hlcom{# R code for problem 2}
+\hlcom{###########################################################################}
+
+\hlcom{# 2 (c) Explain how you would simulate a draw from the distribution}
+\hlcom{#       of the IQ scores.}
+\hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{mean} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{15}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 111.3283
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 2 (d) Approximate the 95-th percentile of the distribution}
+\hlcom{#       using Monte Carlo simulation with 1,000 draws 5 times.}
+\hlkwd{replicate}\hlstd{(}\hlnum{5}\hlstd{,} \hlkwd{quantile}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,} \hlkwc{mean} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{15}\hlstd{),} \hlkwc{prob} \hlstd{=} \hlnum{0.95}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      95%      95%      95%      95%      95%
+## 125.4001 123.5218 123.6171 124.0018 122.0643
+\end{verbatim}
+\begin{alltt}
+\hlcom{# 2 (e) Repeat (d) with 10,000 draws.}
+\hlkwd{replicate}\hlstd{(}\hlnum{5}\hlstd{,} \hlkwd{quantile}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{10000}\hlstd{,} \hlkwc{mean} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{15}\hlstd{),} \hlkwc{prob} \hlstd{=} \hlnum{0.95}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      95%      95%      95%      95%      95%
+## 124.8571 123.6998 124.5491 125.4282 124.4076
+\end{verbatim}
+\end{kframe}
+\end{knitrout}

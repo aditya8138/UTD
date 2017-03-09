@@ -1,0 +1,195 @@
+\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{report}
+\usepackage{knit}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Mini Project \#3}
+\DTMsavetimestamp{DueDate}{2017-03-07T16:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6313.001}
+\newcommand{\hmwkClassName}{Statistical Methods for Data Science}
+\newcommand{\hmwkClassInstructor}{Instructor: Pankaj Choudhary}
+\newcommand{\hmwkAuthorName}{Hanlin He / Lizhong Zhang}
+\newcommand{\hmwkAuthorNetID}{hxh160630 / lxz160730}
+
+\newcommand{\hmwkAuthorOneName}{Lizhong Zhang (lxz160730)}
+\newcommand{\hmwkAuthorTwoName}{Hanlin He (hxh160630)}
+
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{1in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle }}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}\\
+    \vspace{0.5in}\includegraphics[height=2.4em]{UTD_logo_BW}\\
+    \vspace{2in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ }
+\date{}
+\makeindex
+
+\begin{document}
+\maketitle
+
+% \pagenumbering{Roman}
+
+% \tableofcontents
+
+% \pagebreak
+\pagenumbering{arabic}
+
+
+\section*{Contribution}
+Both team members made the same contribution in this project.
+
+\section{Answers}
+\subsection{Blood Pressure Measurement}
+\subsubsection{Boxplots}
+The boxplots are shown in \cref{pic1}:
+\begin{figure}[H]
+\caption{Boxplots}
+\label{pic1}
+\centering
+\includegraphics[width=.6\textwidth]{figure/pic1.pdf}
+\end{figure}
+From my point of view, we could see that based on boxplots, two distributions are not similar. The data in Finger method is slightly larger than the data in Arm method, and Finger method is slightly right-skewed.
+
+\pagebreak
+\subsubsection{Histograms \& QQplot}
+
+The histograms are shown in \cref{pic2}:
+\begin{figure}[H]
+\caption{Histogram}
+\label{pic2}
+\centering
+\includegraphics[width=.49\textwidth]{figure/pic2.pdf}
+\includegraphics[width=.49\textwidth]{figure/pic3.pdf}
+\end{figure}
+
+The QQplots are shown in \cref{pic4}:
+\begin{figure}[H]
+\caption{QQplot}
+\label{pic4}
+\centering
+\includegraphics[width=.49\textwidth]{figure/pic4.pdf}
+\includegraphics[width=.49\textwidth]{figure/pic5.pdf}
+\end{figure}
+
+Based on histograms and QQplots, we could see that the assumptions of normality are not reasonable.
+
+In histograms, we could see that both distributions are slightly right-skewed.
+And in QQplots, both distributions have many outliers.
+
+\subsubsection{CI}
+
+The CI is $[-0.5208386, 9.1108386]$.
+
+According above result, we can conclude that the two methods have identical means.
+But this is a borderline case. We need more data for a more precise conclusion.
+
+
+\subsection{}
+
+CI for the same sample size $n$ of different $p$ is shown in \cref{sndp}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $n = 50$ and Different $p$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameN50.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for Same $n = 100$ and Different $p$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameN100.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for Same $n = 300$ and Different $p$}
+    \label{sndp}
+    \centering
+
+    \includegraphics[width=.9\textwidth]{figure/sameN300.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for Same $n = 500$ and Different $p$}
+    \label{sndp}
+    \centering
+
+    \includegraphics[width=.9\textwidth]{figure/sameN500.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for Same $n = 1000$ and Different $p$}
+    \label{sndp}
+    \centering
+
+    \includegraphics[width=.9\textwidth]{figure/sameN1000.pdf}
+
+\end{figure}
+
+
+CI for the same $p$ with different sample size $n$ is shown in \cref{spdn}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.05$ and Different $n$}
+    \label{spdn}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP005.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.1$ and Different $n$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP01.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.25$ and Different $n$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP025.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.5$ and Different $n$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP05.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.9$ and Different $n$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP09.pdf}
+\end{figure}
+\begin{figure}[H]
+    \caption{Confidence Intervals for $p = 0.95$ and Different $n$}
+    \label{sndp}
+    \centering
+    \includegraphics[width=.9\textwidth]{figure/sameP095.pdf}
+\end{figure}
+
+
+Based on the output tables and confidence interval, we know that with the increase of $n$, the accuracy of confidence interval for a population proportion will be higher for same $p$. On the other hand, for same $n$, when $p = 0.5$, the CI is largest in general.
+
+For this problem, $n = 100$ is recommended, and the answer does not rely on $p$.
+
+\pagebreak
+
+\section{R Code}
+
+\input{source}
+
+\end{document}

@@ -1,0 +1,97 @@
+\documentclass[11pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{report}
+\usepackage{knit}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Mini Project \#2}
+\DTMsavetimestamp{DueDate}{2017-02-16T16:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6313.001}
+\newcommand{\hmwkClassName}{Statistical Methods for Data Science}
+\newcommand{\hmwkClassInstructor}{Instructor: Pankaj Choudhary}
+\newcommand{\hmwkAuthorName}{Hanlin He / Lizhong Zhang}
+\newcommand{\hmwkAuthorNetID}{hxh160630 / lxz160730}
+
+\newcommand{\hmwkAuthorOneName}{Lizhong Zhang (lxz160730) : P1(ae), P2(bcde)}
+\newcommand{\hmwkAuthorTwoName}{Hanlin He (hxh160630) : P1(bcd), P2(af)}
+
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{1in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle }}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}\\
+    \vspace{0.5in}\includegraphics[height=2.4em]{UTD_logo_BW}\\
+    \vspace{2in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ }
+\date{}
+\makeindex
+
+\begin{document}
+\maketitle
+
+% \pagenumbering{Roman}
+
+% \tableofcontents
+
+% \pagebreak
+\pagenumbering{arabic}
+
+
+\section*{Contribution}
+Both team members made the same contribution in this project.
+
+\section{The Map}
+
+The first approach to draw the map is shown in \cref{m1}.
+The color is based on the ``RdBu'' palette of \emph{ggplot}.
+However, since Alaska and Hawaii is not in the map data, mapping them independently
+may result in inconsistency in color. Therefore, these two states are not shown in
+this version of the map.
+\begin{figure}[H]
+\caption{The First Approach}\label{m1}
+\includegraphics[width=\textwidth]{figure/app1}
+\end{figure}
+
+Based on the above map, it uses shades of red for Donald Trump and shades of blue for Hillary Clinton. And due to different vote percentages, we know that with the increasing of vote percentage, the colors will be deeper, i.e. for Donald Trump, he won in Texas and Arkansas, so the color of Texas and Arkansas in this map is Red, but vote percentage in Arkansas is bigger than in Texas, so that color of Arkansas is deeper.
+
+The second approach to draw the map is shown in \cref{m2}.
+To solve the problem in \cref{m1}, we introduced the library of \emph{mapdata}.
+And to make the color brighter, and to get rid of the predefine ``RdBu'' palette,
+we directly mapped the support rates into RGB color. In this way, making the color
+of Alaska and Hawaii consistent with the other states.
+And finally, we used a \emph{layout} function, joined the plots together into one
+single graph.
+
+However, the second approach still brought in new problem. Since the color was
+directly mapped from rates to RGB, no mapping was used in the \textbf{aes}.
+Thus, the guide of legend failed to generate.
+
+\begin{figure}[H]
+\caption{The Second Approach}\label{m2}
+\includegraphics[width=\textwidth]{figure/app2}
+\end{figure}
+
+
+\section{R Code}
+
+\input{source}
+
+\end{document}

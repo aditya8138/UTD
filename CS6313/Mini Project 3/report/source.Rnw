@@ -1,0 +1,212 @@
+\documentclass[a4paper]{article}
+\parindent0pt
+\begin{document}
+Knitr test in \LaTeX.
+
+<<Test>>=
+###########################################################################
+# R code for exercise 1
+###########################################################################
+
+# Read bp.txt file.
+mydata <- read.table("bp.txt",
+    header = TRUE,
+    col.names=c("armsys", "fingsys"))
+
+# Use 1.5 IQR rule to draw boxplots.
+pdf("pic1.pdf")
+boxplot(mydata, range = 1.5)
+dev.off()
+
+# Draw a histogram for arm method.
+minArm <- min(mydata[, 1])
+maxArm <- max(mydata[, 1])
+pdf("pic2.pdf")
+hist(mydata[, 1],
+    xlab = "times",
+    ylab = "frequency",
+    xlim = range(minArm, maxArm),
+    main = "frequency of arm method data")
+dev.off()
+
+# Draw a histogram for finger method.
+minFinger <- min(mydata[, 2])
+maxFinger <- max(mydata[, 2])
+pdf("pic3.pdf")
+hist(mydata[, 2],
+    xlab = "times",
+    ylab = "frequency",
+    xlim = range(minFinger, maxFinger),
+    main = "frequency of finger method data")
+dev.off()
+
+# Draw a qqplot for arm method.
+pdf("pic4.pdf")
+qqnorm(mydata[, 1], main = "arm method")
+qqline(mydata[, 1], main = "arm method")
+dev.off()
+
+# Draw a qqlpot for finger method.
+pdf("pic5.pdf")
+qqnorm(mydata[, 2], main = "finger method")
+qqline(mydata[, 2], main = "finger method")
+dev.off()
+
+# CI for difference.
+meanArm <- mean(mydata[, 1])
+nArm <- nrow(mydata)
+sdArm <- sd(mydata[, 1])
+varArm <- var(mydata[, 1])
+
+meanFinger <- mean(mydata[, 2])
+nFinger <- nrow(mydata)
+sdFinger <- sd(mydata[, 2])
+varFinger <- var(mydata[, 2])
+
+se <-sqrt(varFinger/nFinger + varArm/nArm)
+
+ci.diff <- (meanFinger - meanArm) +
+    c(-1,1) * qt(1 - (1 - 0.95)/2, nFinger + nArm - 2) * se
+ci.diff
+
+###########################################################################
+# R code for exercise 2
+###########################################################################
+
+library(functional)
+
+pl <- cbind(c(0.05),c(0.1),c(0.25),c(0.5),c(0.9),c(0.95))
+nl <- cbind(c(50),c(100),c(300),c(500),c(1000))
+
+# Create a function to compute confidence intervals for different n and p.
+# Arguments:
+#       'n' is the specific number of draws in the simulation.
+#       'p' is the specific probabilities for the simulation.
+# Result:
+#       will generate the CI for specifies p and n.
+getCI <- function(n, p) {
+    draw <- runif(n)
+    prob <- sum(draw <= p)/sum(draw >= 0)
+    ci <- prob + c(-1, 1) * qt(1-(1-0.95)/2, n-1) * sqrt(prob * (1-prob)/n)
+    return(c(ci, getProb(p, ci)))
+}
+
+getProb <- function(p, ci) {
+    draw <- replicate(1000, MonteCarlo(p, ci))
+    return(sum(draw==TRUE)/1000)
+}
+
+MonteCarlo <- function(p, ci) {
+    draw <- runif(1000)
+    prob <- sum(draw <= p)/sum(draw >= 0)
+    if(ci[1] <= prob && ci[2] >= prob) {
+        return(TRUE)
+    } else {
+        return(FALSE)
+    }
+}
+
+# Create a function to draw the plot for a particular n and a list of p,
+#       using Curry function to specify parameter n for getCI(n,p)
+# Arguments:
+#       'n' is the specific number of draws in the simulation.
+#       'pl' is the list of probabilities for the simulation.
+# Result:
+#       will generate the plot for all p in 'pl' with the same n.
+#       as well as the coverage of the CI.
+getCIwithAllP <- function(n, pl) {
+    plotting <- function(ci, n) {
+        plot(1:6,
+            ci[1, 1:6],
+            ylim = c(min(ci[1:2, 1:6]), max(ci[1:2, 1:6])),
+            xlab = paste("sample size of ",n),
+            ylab = "95% CI",
+            type = "p")
+        points(1:6, ci[2, 1:6])
+        for(i in 1:6) {
+            segments(i, ci[1, i], i, ci[2, i], lty = 1)
+        }
+    }
+    plotting_prob <- function(ci, n) {
+        plot(1:6,
+            ci[3, 1:6],
+            ylim = c(0,1),
+            xlab = paste("sample size of ",n),
+            ylab = "Coverage for 95% CI",
+            type = "p")
+        for(i in 1:5) {
+            segments(i, ci[3, i], i+1, ci[3, i+1], lty = 1)
+        }
+    }
+    getCIwithAllP_  <- Curry(getCI, n = n)
+    ci <- apply(pl, 2, getCIwithAllP_)
+    pdf(paste("sameN", n, ".pdf"))
+    layout(matrix(c(1,2), 2, 1, byrow = TRUE))
+    plotting(ci, n)
+    plotting_prob(ci, n)
+    dev.off()
+}
+
+# Curry the getCIwithAllP(n, pl) function by specifying the parameter pl.
+# Function getCIforN now has one parameter: n.
+getCIforN <- Curry(getCIwithAllP, pl = pl)
+
+# Apply getCIforN(n) to the array of n, for each n, draw the plot for all p.
+apply(nl,2, getCIforN)
+
+# Create a function to draw the plot for a particular p and a list of n,
+#       using Curry function to specify parameter p for getCI(n,p)
+# Arguments:
+#       'nl' is the list of draws number in the simulation.
+#       'p' is the specific probabilities for the simulation.
+# Result:
+#       will generate the plot for all n in 'nl' with the same p.
+#       as well as the coverage of the CI.
+getCIwithAllN <- function(nl, p) {
+    plotting <- function(ci, p) {
+        plot(1:5,
+            ci[1, 1:5],
+            ylim = c(min(ci[1:2, 1:5]), max(ci[1:2, 1:5])),
+            xlab = paste("sample with p of ", p),
+            ylab = "95% CI",
+            type ="p")
+        points(1:5, ci[2, 1:5])
+        for(i in 1:5) {
+            segments(i, ci[1, i], i, ci[2, i], lty = 1)
+        }
+    }
+    plotting_prob <- function(ci, p) {
+        plot(1:5,
+            ci[3, 1:5],
+            ylim = c(0,1),
+            xlab = paste("sample with p of ", p),
+            ylab = "Coverage for 95% CI",
+            type ="p")
+        for(i in 1:4) {
+            segments(i, ci[3, i], i+1, ci[3, i+1], lty = 1)
+        }
+    }
+
+    getCIwithAllN_  <- Curry(getCI, p = p)
+
+    ci <- apply(nl, 2, getCIwithAllN_)
+    pdf(paste("sameP", p, ".pdf"))
+    layout(matrix(c(1,2), 2, 1, byrow = TRUE))
+    plotting(ci, p)
+    plotting_prob(ci, p)
+    dev.off()
+
+    plotting(apply(nl, 2, getCIwithAllN_), p)
+}
+
+# Curry the getCIwithAllN(nl, p) function by specifying the parameter nl.
+# Function getCIforP now has one parameter: p.
+getCIforP <- Curry(getCIwithAllN, nl = nl)
+
+# Apply getCIforP(p) to the array of p, for each p, draw the plot for all n.
+apply(pl,2, getCIforP)
+
+
+@
+Done. $\pi=\Sexpr{runif(1)^(1/4)}$
+\end{document}

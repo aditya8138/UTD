@@ -1,0 +1,235 @@
+\documentclass[12pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{report}
+\usepackage{knit}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Mini Project \#1}
+\DTMsavetimestamp{DueDate}{2017-02-02T16:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6313.001}
+\newcommand{\hmwkClassName}{Statistical Methods for Data Science}
+\newcommand{\hmwkClassInstructor}{Instructor: Pankaj Choudhary}
+\newcommand{\hmwkAuthorName}{Hanlin He / Lizhong Zhang}
+\newcommand{\hmwkAuthorNetID}{hxh160630 / lxz160730}
+
+\newcommand{\hmwkAuthorOneName}{Lizhong Zhang (lxz160730) : P1(ae), P2(bcde)}
+\newcommand{\hmwkAuthorTwoName}{Hanlin He (hxh160630) : P1(bcd), P2(af)}
+
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{1in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle }}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}\\
+    \vspace{0.5in}\includegraphics[height=2.4em]{UTD_logo_BW}\\
+    \vspace{2in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ }
+\date{}
+\makeindex
+
+\begin{document}
+\maketitle
+
+\pagenumbering{Roman}
+
+\tableofcontents
+
+\pagebreak
+\pagenumbering{arabic}
+
+
+\section*{Contribution}
+Generally speaking, two of us wrote this report together. To be specific, the work is split as follows:
+\begin{itemize}
+    \item Hanlin He: P1(b)(c)(d), P2(a)(b)(f)
+    \item Lizhong Zhang: P1(a)(e), P2(c)(d)(e)
+\end{itemize}
+\section{Answers}
+\subsection{Random Variable X}
+\subsubsection{Compute E(X), Var(X) and P( X > 0.5 )}
+Based on the conditions in the problem, we have:
+\begin{equation}
+f(x) = \begin{cases} 4x^3 & \text{if } 0 \leq x < 1,\\ 0 & \text{otherwise} \end{cases}
+\end{equation}
+
+We can calculate the following using formulas.
+\begin{equation}
+E(X) = \int_0^1 x f(x) \diff x
+     = \left.\frac{4}{5} \times x^5\right|_0^1
+     = \frac{4}{5}
+     = 0.8
+\end{equation}
+
+\begin{equation}
+E(X^2) = \int_0^1 x^2 f(x) \diff x \\
+     = \left.\frac{4}{6} \times x^6\right|_0^1 \\
+     = \frac{2}{3}
+\end{equation}
+
+\begin{equation}
+Var(X) = E(X^2) - (E(X))^2
+     = \frac{2}{3} - \left(\frac{4}{5}\right)^2
+     \approx 0.02666667
+\end{equation}
+
+\begin{equation}
+P(X > 0.5) =\int_{0.5}^1 f(x) \diff x \\
+     =\int_{0.5}^1 4x^3 \diff x \\
+     = \left.x^4\right|_{0.5}^1 \\
+     = 0.9375
+\end{equation}
+
+\subsubsection{Simulate a Draw}
+From inverse transform method, we have:
+\[U = F(X) = \int 4x^3 \diff x = x^4\]
+Thus, $\displaystyle X = F^{-1}(U) = U^{\frac{1}{4}}$.
+
+Therefore, to simulate a draw from the distribution of X, we can call \texttt{\textbf{runif()}} function in R as follow:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{runif}\hlstd{(}\hlnum{1}\hlstd{)}\hlopt{^}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.7905004
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Approximate E(X), Var(X) and P(X > 0.5)}
+Using Monte Carlo simulation with 1,000 draws 5 times comes the results in \cref{11000}.
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|c|}
+\hline
+          &Mean   &Variance &P(X>0.5) \\\hline
+[1,] &0.7968975 &0.02656562    &0.935 \\\hline
+[2,] &0.8066367 &0.02570413    &0.946 \\\hline
+[3,] &0.7993725 &0.02848914    &0.933 \\\hline
+[4,] &0.7960599 &0.02745759    &0.936 \\\hline
+[5,] &0.7992016 &0.02744726    &0.929 \\\hline
+\end{tabular}
+\caption{5 Times 1000 Draws}\label{11000}
+\end{table}
+
+\subsubsection{Repeat (c) with 10,000 draws.}
+Using Monte Carlo simulation with 10,000 draws 5 times comes the results in \cref{110000}.
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|c|}
+\hline
+          &Mean   &Variance &P(X>0.5) \\\hline
+[1,] &0.8019585 &0.02683943   &0.9398\\\hline
+[2,] &0.8017539 &0.02565271   &0.9418\\\hline
+[3,] &0.7997643 &0.02633748   &0.9370\\\hline
+[4,] &0.7984901 &0.02708400   &0.9329\\\hline
+[5,] &0.7980328 &0.02707841   &0.9356\\\hline
+\end{tabular}
+\caption{5 Times 10000 Draws}\label{110000}
+\end{table}
+
+\subsubsection{Compare Result in (a), (c), (d)}
+Based on the results computed in (a), we know that accurate values of $E(X)$,
+$Var(X)$ and $P(X > 0.5)$ theoretically.
+
+Comparing the results of (c) and (d) to the theoretical values,
+we can find that, as the repetition of simulation increases,
+the simulated results approaches the theoretical results.
+
+When we calculated the theoretical values of a distribution based on formulas,
+we were using implicit assumptions that the number of sample is enough large.
+Thus, in simulation, the more repeated times, the more accurate results we could get.
+
+\subsection{IQ test}
+
+\subsubsection{Compute the 95-th Percentile}
+Based on transformations from any Normal random variable to Standard Normal variable,
+$X = \mu + \sigma Z$. To compute the 95-th percentile of X is to compute the
+95-th percentile of Z, in other word $x = \mu + \sigma(\Phi^{-1}(0.95))$.
+
+According to Table A4 in Appendix of the textbook, $\Phi(1.64) = 0.9495 \approx 0.95$.
+Therefore, $\Phi^{-1}(0.95) = 1.64$
+
+Thus, we have: $x = \mu + \sigma(\Phi^{-1}(0.95)) = \mu + \sigma(1.64) = 100 + 15 \times 1.64 = 124.6$.
+
+\subsubsection{What does this mean?}
+If my IQ score equals the 95-th percentile, which is 124.6, it means, generally speaking,
+my IQ score is more than 95 percent of the total population, on which the IQ test
+has been taken, i.e. I'm smarter than 95\% people among the population.
+
+\subsubsection{Simulate a Draw}
+To simulate a draw from the distribution of IQ scores, we can call \textbf{\texttt{rnorm()}} function in R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\begin{kframe}
+\begin{alltt}
+\hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{mean} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{15}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 96.57991
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Approximate the 95-th Percentile}
+Using Monte Carlo simulation with 1,000 draws 5 times comes the results in \cref{21000}.
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+     95\%      &95\%      &95\%      &95\%      &95\% \\\hline
+120.8349 &125.8516 &123.7723 &125.7336 &125.0442\\\hline
+\end{tabular}
+\caption{5 Times 1000 Draws}\label{21000}
+\end{table}
+
+\subsubsection{Repeat (d) with 10,000 draws}
+Using Monte Carlo simulation with 10,000 draws 5 times comes the results in \cref{210000}.
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+     95\%      &95\%      &95\%      &95\%      &95\% \\\hline
+124.4912 &123.8312 &125.0600 &124.6121 &124.8582 \\\hline
+\end{tabular}
+\caption{5 Times 10000 Draws}\label{210000}
+\end{table}
+\subsubsection{Compare Result in (a), (c), (d)}
+In (a), we used the Table to calculate the 95-th percentile of a standard normal
+distribution, which is an approximation of a theoretical value when the population
+is infinite.
+
+During the simulation, let X denotes the result in (d), and Y denotes the result in (e),
+\begin{align*}
+mean(x) &= 124.2473 & var(x) &=  4.322004 \\
+mean(y) &= 124.5705 & var(y) &=  0.2192413
+\end{align*}
+we can see that the mean of (d) and (e) are both very close to the theoretical value
+calculated in (a), but the variance of (e) is much smaller than the variance of (d).
+In other word, when the number of draws (size of sample) increases, the
+95-th percentile of sample becomes closer to the theoretical value.
+
+This observation can be explained by the law of large number.
+
+\section{R Code}
+
+\input{source}
+
+\end{document}

@@ -1,0 +1,240 @@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{###########################################################################}
+\hlcom{# R code for exercise 1}
+\hlcom{###########################################################################}
+
+\hlcom{# Read bp.txt file.}
+\hlstd{mydata} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"bp.txt"}\hlstd{,}
+    \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+    \hlkwc{col.names}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"armsys"}\hlstd{,} \hlstr{"fingsys"}\hlstd{))}
+
+\hlcom{# Use 1.5 IQR rule to draw boxplots.}
+\hlkwd{pdf}\hlstd{(}\hlstr{"pic1.pdf"}\hlstd{)}
+\hlkwd{boxplot}\hlstd{(mydata,} \hlkwc{range} \hlstd{=} \hlnum{1.5}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Draw a histogram for arm method.}
+\hlstd{minArm} \hlkwb{<-} \hlkwd{min}\hlstd{(mydata[,} \hlnum{1}\hlstd{])}
+\hlstd{maxArm} \hlkwb{<-} \hlkwd{max}\hlstd{(mydata[,} \hlnum{1}\hlstd{])}
+\hlkwd{pdf}\hlstd{(}\hlstr{"pic2.pdf"}\hlstd{)}
+\hlkwd{hist}\hlstd{(mydata[,} \hlnum{1}\hlstd{],}
+    \hlkwc{xlab} \hlstd{=} \hlstr{"times"}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{"frequency"}\hlstd{,}
+    \hlkwc{xlim} \hlstd{=} \hlkwd{range}\hlstd{(minArm, maxArm),}
+    \hlkwc{main} \hlstd{=} \hlstr{"frequency of arm method data"}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Draw a histogram for finger method.}
+\hlstd{minFinger} \hlkwb{<-} \hlkwd{min}\hlstd{(mydata[,} \hlnum{2}\hlstd{])}
+\hlstd{maxFinger} \hlkwb{<-} \hlkwd{max}\hlstd{(mydata[,} \hlnum{2}\hlstd{])}
+\hlkwd{pdf}\hlstd{(}\hlstr{"pic3.pdf"}\hlstd{)}
+\hlkwd{hist}\hlstd{(mydata[,} \hlnum{2}\hlstd{],}
+    \hlkwc{xlab} \hlstd{=} \hlstr{"times"}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{"frequency"}\hlstd{,}
+    \hlkwc{xlim} \hlstd{=} \hlkwd{range}\hlstd{(minFinger, maxFinger),}
+    \hlkwc{main} \hlstd{=} \hlstr{"frequency of finger method data"}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Draw a qqplot for arm method.}
+\hlkwd{pdf}\hlstd{(}\hlstr{"pic4.pdf"}\hlstd{)}
+\hlkwd{qqnorm}\hlstd{(mydata[,} \hlnum{1}\hlstd{],} \hlkwc{main} \hlstd{=} \hlstr{"arm method"}\hlstd{)}
+\hlkwd{qqline}\hlstd{(mydata[,} \hlnum{1}\hlstd{],} \hlkwc{main} \hlstd{=} \hlstr{"arm method"}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Draw a qqlpot for finger method.}
+\hlkwd{pdf}\hlstd{(}\hlstr{"pic5.pdf"}\hlstd{)}
+\hlkwd{qqnorm}\hlstd{(mydata[,} \hlnum{2}\hlstd{],} \hlkwc{main} \hlstd{=} \hlstr{"finger method"}\hlstd{)}
+\hlkwd{qqline}\hlstd{(mydata[,} \hlnum{2}\hlstd{],} \hlkwc{main} \hlstd{=} \hlstr{"finger method"}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# CI for difference.}
+\hlstd{meanArm} \hlkwb{<-} \hlkwd{mean}\hlstd{(mydata[,} \hlnum{1}\hlstd{])}
+\hlstd{nArm} \hlkwb{<-} \hlkwd{nrow}\hlstd{(mydata)}
+\hlstd{sdArm} \hlkwb{<-} \hlkwd{sd}\hlstd{(mydata[,} \hlnum{1}\hlstd{])}
+\hlstd{varArm} \hlkwb{<-} \hlkwd{var}\hlstd{(mydata[,} \hlnum{1}\hlstd{])}
+
+\hlstd{meanFinger} \hlkwb{<-} \hlkwd{mean}\hlstd{(mydata[,} \hlnum{2}\hlstd{])}
+\hlstd{nFinger} \hlkwb{<-} \hlkwd{nrow}\hlstd{(mydata)}
+\hlstd{sdFinger} \hlkwb{<-} \hlkwd{sd}\hlstd{(mydata[,} \hlnum{2}\hlstd{])}
+\hlstd{varFinger} \hlkwb{<-} \hlkwd{var}\hlstd{(mydata[,} \hlnum{2}\hlstd{])}
+
+\hlstd{se} \hlkwb{<-}\hlkwd{sqrt}\hlstd{(varFinger}\hlopt{/}\hlstd{nFinger} \hlopt{+} \hlstd{varArm}\hlopt{/}\hlstd{nArm)}
+
+\hlstd{ci.diff} \hlkwb{<-} \hlstd{(meanFinger} \hlopt{-} \hlstd{meanArm)} \hlopt{+}
+    \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{)} \hlopt{*} \hlkwd{qt}\hlstd{(}\hlnum{1} \hlopt{-} \hlstd{(}\hlnum{1} \hlopt{-} \hlnum{0.95}\hlstd{)}\hlopt{/}\hlnum{2}\hlstd{, nFinger} \hlopt{+} \hlstd{nArm} \hlopt{-} \hlnum{2}\hlstd{)} \hlopt{*} \hlstd{se}
+\hlstd{ci.diff}
+\end{alltt}
+\begin{verbatim}
+## [1] -0.5208386  9.1108386
+\end{verbatim}
+\begin{alltt}
+\hlcom{###########################################################################}
+\hlcom{# R code for exercise 2}
+\hlcom{###########################################################################}
+
+\hlkwd{library}\hlstd{(functional)}
+
+\hlstd{pl} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.05}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{0.25}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{0.95}\hlstd{))}
+\hlstd{nl} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{50}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{100}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{300}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{500}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{1000}\hlstd{))}
+
+\hlcom{# Create a function to compute confidence intervals for different n and p.}
+\hlcom{# Arguments:}
+\hlcom{#       'n' is the specific number of draws in the simulation.}
+\hlcom{#       'p' is the specific probabilities for the simulation.}
+\hlcom{# Result:}
+\hlcom{#       will generate the CI for specifies p and n.}
+\hlstd{getCI} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{n}\hlstd{,} \hlkwc{p}\hlstd{) \{}
+    \hlstd{draw} \hlkwb{<-} \hlkwd{runif}\hlstd{(n)}
+    \hlstd{prob} \hlkwb{<-} \hlkwd{sum}\hlstd{(draw} \hlopt{<=} \hlstd{p)}\hlopt{/}\hlkwd{sum}\hlstd{(draw} \hlopt{>=} \hlnum{0}\hlstd{)}
+    \hlstd{ci} \hlkwb{<-} \hlstd{prob} \hlopt{+} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{*} \hlkwd{qt}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{(}\hlnum{1}\hlopt{-}\hlnum{0.95}\hlstd{)}\hlopt{/}\hlnum{2}\hlstd{, n}\hlopt{-}\hlnum{1}\hlstd{)} \hlopt{*} \hlkwd{sqrt}\hlstd{(prob} \hlopt{*} \hlstd{(}\hlnum{1}\hlopt{-}\hlstd{prob)}\hlopt{/}\hlstd{n)}
+    \hlkwd{return}\hlstd{(}\hlkwd{c}\hlstd{(ci,} \hlkwd{getProb}\hlstd{(p, ci)))}
+\hlstd{\}}
+
+\hlstd{getProb} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{ci}\hlstd{) \{}
+    \hlstd{draw} \hlkwb{<-} \hlkwd{replicate}\hlstd{(}\hlnum{1000}\hlstd{,} \hlkwd{MonteCarlo}\hlstd{(p, ci))}
+    \hlkwd{return}\hlstd{(}\hlkwd{sum}\hlstd{(draw}\hlopt{==}\hlnum{TRUE}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{)}
+\hlstd{\}}
+
+\hlstd{MonteCarlo} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{p}\hlstd{,} \hlkwc{ci}\hlstd{) \{}
+    \hlstd{draw} \hlkwb{<-} \hlkwd{runif}\hlstd{(}\hlnum{1000}\hlstd{)}
+    \hlstd{prob} \hlkwb{<-} \hlkwd{sum}\hlstd{(draw} \hlopt{<=} \hlstd{p)}\hlopt{/}\hlkwd{sum}\hlstd{(draw} \hlopt{>=} \hlnum{0}\hlstd{)}
+    \hlkwa{if}\hlstd{(ci[}\hlnum{1}\hlstd{]} \hlopt{<=} \hlstd{prob} \hlopt{&&} \hlstd{ci[}\hlnum{2}\hlstd{]} \hlopt{>=} \hlstd{prob) \{}
+        \hlkwd{return}\hlstd{(}\hlnum{TRUE}\hlstd{)}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlkwd{return}\hlstd{(}\hlnum{FALSE}\hlstd{)}
+    \hlstd{\}}
+\hlstd{\}}
+
+\hlcom{# Create a function to draw the plot for a particular n and a list of p,}
+\hlcom{#       using Curry function to specify parameter n for getCI(n,p)}
+\hlcom{# Arguments:}
+\hlcom{#       'n' is the specific number of draws in the simulation.}
+\hlcom{#       'pl' is the list of probabilities for the simulation.}
+\hlcom{# Result:}
+\hlcom{#       will generate the plot for all p in 'pl' with the same n.}
+\hlcom{#       as well as the coverage of the CI.}
+\hlstd{getCIwithAllP} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{n}\hlstd{,} \hlkwc{pl}\hlstd{) \{}
+    \hlstd{plotting} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{ci}\hlstd{,} \hlkwc{n}\hlstd{) \{}
+        \hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,}
+            \hlstd{ci[}\hlnum{1}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{],}
+            \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwd{min}\hlstd{(ci[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{]),} \hlkwd{max}\hlstd{(ci[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{])),}
+            \hlkwc{xlab} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"sample size of "}\hlstd{,n),}
+            \hlkwc{ylab} \hlstd{=} \hlstr{"95% CI"}\hlstd{,}
+            \hlkwc{type} \hlstd{=} \hlstr{"p"}\hlstd{)}
+        \hlkwd{points}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{, ci[}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{])}
+        \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{) \{}
+            \hlkwd{segments}\hlstd{(i, ci[}\hlnum{1}\hlstd{, i], i, ci[}\hlnum{2}\hlstd{, i],} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlstd{)}
+        \hlstd{\}}
+    \hlstd{\}}
+    \hlstd{plotting_prob} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{ci}\hlstd{,} \hlkwc{n}\hlstd{) \{}
+        \hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,}
+            \hlstd{ci[}\hlnum{3}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{6}\hlstd{],}
+            \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),}
+            \hlkwc{xlab} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"sample size of "}\hlstd{,n),}
+            \hlkwc{ylab} \hlstd{=} \hlstr{"Coverage for 95% CI"}\hlstd{,}
+            \hlkwc{type} \hlstd{=} \hlstr{"p"}\hlstd{)}
+        \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+            \hlkwd{segments}\hlstd{(i, ci[}\hlnum{3}\hlstd{, i], i}\hlopt{+}\hlnum{1}\hlstd{, ci[}\hlnum{3}\hlstd{, i}\hlopt{+}\hlnum{1}\hlstd{],} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlstd{)}
+        \hlstd{\}}
+    \hlstd{\}}
+    \hlstd{getCIwithAllP_}  \hlkwb{<-} \hlkwd{Curry}\hlstd{(getCI,} \hlkwc{n} \hlstd{= n)}
+    \hlstd{ci} \hlkwb{<-} \hlkwd{apply}\hlstd{(pl,} \hlnum{2}\hlstd{, getCIwithAllP_)}
+    \hlkwd{pdf}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"sameN"}\hlstd{, n,} \hlstr{".pdf"}\hlstd{))}
+    \hlkwd{layout}\hlstd{(}\hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+    \hlkwd{plotting}\hlstd{(ci, n)}
+    \hlkwd{plotting_prob}\hlstd{(ci, n)}
+    \hlkwd{dev.off}\hlstd{()}
+\hlstd{\}}
+
+\hlcom{# Curry the getCIwithAllP(n, pl) function by specifying the parameter pl.}
+\hlcom{# Function getCIforN now has one parameter: n.}
+\hlstd{getCIforN} \hlkwb{<-} \hlkwd{Curry}\hlstd{(getCIwithAllP,} \hlkwc{pl} \hlstd{= pl)}
+
+\hlcom{# Apply getCIforN(n) to the array of n, for each n, draw the plot for all p.}
+\hlkwd{apply}\hlstd{(nl,}\hlnum{2}\hlstd{, getCIforN)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 2 2 2 2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Create a function to draw the plot for a particular p and a list of n,}
+\hlcom{#       using Curry function to specify parameter p for getCI(n,p)}
+\hlcom{# Arguments:}
+\hlcom{#       'nl' is the list of draws number in the simulation.}
+\hlcom{#       'p' is the specific probabilities for the simulation.}
+\hlcom{# Result:}
+\hlcom{#       will generate the plot for all n in 'nl' with the same p.}
+\hlcom{#       as well as the coverage of the CI.}
+\hlstd{getCIwithAllN} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{nl}\hlstd{,} \hlkwc{p}\hlstd{) \{}
+    \hlstd{plotting} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{ci}\hlstd{,} \hlkwc{p}\hlstd{) \{}
+        \hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,}
+            \hlstd{ci[}\hlnum{1}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{],}
+            \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwd{min}\hlstd{(ci[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]),} \hlkwd{max}\hlstd{(ci[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])),}
+            \hlkwc{xlab} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"sample with p of "}\hlstd{, p),}
+            \hlkwc{ylab} \hlstd{=} \hlstr{"95% CI"}\hlstd{,}
+            \hlkwc{type} \hlstd{=}\hlstr{"p"}\hlstd{)}
+        \hlkwd{points}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{, ci[}\hlnum{2}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
+        \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{) \{}
+            \hlkwd{segments}\hlstd{(i, ci[}\hlnum{1}\hlstd{, i], i, ci[}\hlnum{2}\hlstd{, i],} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlstd{)}
+        \hlstd{\}}
+    \hlstd{\}}
+    \hlstd{plotting_prob} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{ci}\hlstd{,} \hlkwc{p}\hlstd{) \{}
+        \hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,}
+            \hlstd{ci[}\hlnum{3}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{],}
+            \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),}
+            \hlkwc{xlab} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"sample with p of "}\hlstd{, p),}
+            \hlkwc{ylab} \hlstd{=} \hlstr{"Coverage for 95% CI"}\hlstd{,}
+            \hlkwc{type} \hlstd{=}\hlstr{"p"}\hlstd{)}
+        \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{) \{}
+            \hlkwd{segments}\hlstd{(i, ci[}\hlnum{3}\hlstd{, i], i}\hlopt{+}\hlnum{1}\hlstd{, ci[}\hlnum{3}\hlstd{, i}\hlopt{+}\hlnum{1}\hlstd{],} \hlkwc{lty} \hlstd{=} \hlnum{1}\hlstd{)}
+        \hlstd{\}}
+    \hlstd{\}}
+
+    \hlstd{getCIwithAllN_}  \hlkwb{<-} \hlkwd{Curry}\hlstd{(getCI,} \hlkwc{p} \hlstd{= p)}
+
+    \hlstd{ci} \hlkwb{<-} \hlkwd{apply}\hlstd{(nl,} \hlnum{2}\hlstd{, getCIwithAllN_)}
+    \hlkwd{pdf}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"sameP"}\hlstd{, p,} \hlstr{".pdf"}\hlstd{))}
+    \hlkwd{layout}\hlstd{(}\hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+    \hlkwd{plotting}\hlstd{(ci, p)}
+    \hlkwd{plotting_prob}\hlstd{(ci, p)}
+    \hlkwd{dev.off}\hlstd{()}
+
+    \hlkwd{plotting}\hlstd{(}\hlkwd{apply}\hlstd{(nl,} \hlnum{2}\hlstd{, getCIwithAllN_), p)}
+\hlstd{\}}
+
+\hlcom{# Curry the getCIwithAllN(nl, p) function by specifying the parameter nl.}
+\hlcom{# Function getCIforP now has one parameter: p.}
+\hlstd{getCIforP} \hlkwb{<-} \hlkwd{Curry}\hlstd{(getCIwithAllN,} \hlkwc{nl} \hlstd{= nl)}
+
+\hlcom{# Apply getCIforP(p) to the array of p, for each p, draw the plot for all n.}
+\hlkwd{apply}\hlstd{(pl,}\hlnum{2}\hlstd{, getCIforP)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}

@@ -1,0 +1,189 @@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{###########################################################################}
+\hlcom{# Basic data operation}
+\hlcom{###########################################################################}
+
+\hlkwd{library}\hlstd{(maps)}
+\hlkwd{library}\hlstd{(mapdata)}
+\hlkwd{library}\hlstd{(ggplot2)} \hlcom{# for plotting and miscellaneuous things}
+\hlkwd{library}\hlstd{(ggmap)} \hlcom{# for plotting}
+\hlkwd{library}\hlstd{(plyr)} \hlcom{# for merging datasets}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'plyr'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:maps':\\\#\# \\\#\#\ \ \ \  ozone}}\begin{alltt}
+\hlcom{# Fetch map data for the States.}
+\hlstd{usa} \hlkwb{<-} \hlkwd{map_data}\hlstd{(}\hlstr{"state"}\hlstd{)}
+\hlcom{# Fetch map data for Alaska.}
+\hlstd{alaska} \hlkwb{<-} \hlkwd{map_data}\hlstd{(}\hlstr{"world2Hires"}\hlstd{,} \hlstr{"USA:Alaska"}\hlstd{)}
+\hlcom{# Fetch map data for Hawaii.}
+\hlstd{hawaii} \hlkwb{<-} \hlkwd{map_data}\hlstd{(}\hlstr{"world2Hires"}\hlstd{,} \hlstr{"Hawaii"}\hlstd{)}
+
+\hlcom{# Change states names into lower case.}
+\hlstd{hawaii}\hlopt{$}\hlstd{region} \hlkwb{<-} \hlkwd{tolower}\hlstd{(hawaii}\hlopt{$}\hlstd{region)}
+\hlstd{alaska}\hlopt{$}\hlstd{subregion} \hlkwb{<-} \hlkwd{tolower}\hlstd{(alaska}\hlopt{$}\hlstd{subregion)}
+
+\hlcom{# Remove useless column and unify column names.}
+\hlstd{usa}\hlopt{$}\hlstd{subregion} \hlkwb{<-} \hlkwa{NULL}
+\hlstd{hawaii}\hlopt{$}\hlstd{subregion} \hlkwb{<-} \hlkwa{NULL}
+\hlstd{alaska}\hlopt{$}\hlstd{region} \hlkwb{<-} \hlkwa{NULL}
+\hlkwd{colnames}\hlstd{(alaska)[}\hlnum{5}\hlstd{]} \hlkwb{<-} \hlstr{"region"}
+
+\hlcom{# Fetch abbreviations for each states.}
+\hlstd{statesname} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(state.center, state.abb)}
+
+\hlcom{# Unify column names.}
+\hlkwd{colnames}\hlstd{(statesname)[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlstr{"region"}
+
+\hlcom{# Extract abbr for Hawaii and Alaska, modify the coordinates.}
+\hlstd{hiname} \hlkwb{<-} \hlstd{statesname[statesname}\hlopt{$}\hlstd{region} \hlopt{==} \hlstr{"HI"}\hlstd{,]}
+\hlstd{hiname[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{mean}\hlstd{(hawaii[,}\hlnum{1}\hlstd{])}
+\hlstd{hiname[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlkwd{mean}\hlstd{(hawaii[,}\hlnum{2}\hlstd{])}
+\hlstd{akname} \hlkwb{<-} \hlstd{statesname[statesname}\hlopt{$}\hlstd{region} \hlopt{==} \hlstr{"AK"}\hlstd{,]}
+\hlstd{akname[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{mean}\hlstd{(alaska[,}\hlnum{1}\hlstd{])}
+\hlstd{akname[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlkwd{mean}\hlstd{(alaska[,}\hlnum{2}\hlstd{])}
+
+\hlcom{# Remove Hawaii and Alaska from list.}
+\hlstd{statesname} \hlkwb{<-} \hlstd{statesname[statesname}\hlopt{$}\hlstd{region} \hlopt{!=} \hlstr{"HI"}\hlstd{,]}
+\hlstd{statesname} \hlkwb{<-} \hlstd{statesname[statesname}\hlopt{$}\hlstd{region} \hlopt{!=} \hlstr{"AK"}\hlstd{,]}
+
+\hlcom{# Fetch pool data.}
+\hlstd{data} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"us_2016_election_data.csv"}\hlstd{,} \hlkwc{header} \hlstd{= T,} \hlkwc{sep} \hlstd{=} \hlstr{","}\hlstd{)}
+
+\hlcom{# Convert "xx%" to float number.}
+\hlstd{data[,}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{sub}\hlstd{(}\hlstr{"%"}\hlstd{,}\hlstr{""}\hlstd{,data[,}\hlnum{2}\hlstd{]))}
+\hlstd{data[,}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{sub}\hlstd{(}\hlstr{"%"}\hlstd{,}\hlstr{""}\hlstd{,data[,}\hlnum{3}\hlstd{]))}
+
+\hlcom{# Change states names into lower case.}
+\hlstd{data}\hlopt{$}\hlstd{State} \hlkwb{<-} \hlkwd{tolower}\hlstd{(data}\hlopt{$}\hlstd{State)}
+
+
+\hlstd{data[,}\hlnum{5}\hlstd{]} \hlkwb{<-} \hlkwd{apply}\hlstd{(data,} \hlnum{1}\hlstd{,}
+    \hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{a}\hlstd{)} \hlkwa{if}\hlstd{(a[}\hlnum{2}\hlstd{]}\hlopt{>}\hlstd{a[}\hlnum{3}\hlstd{])} \hlopt{-}\hlkwd{as.numeric}\hlstd{(a[}\hlnum{2}\hlstd{])} \hlkwa{else} \hlkwd{as.numeric}\hlstd{(a[}\hlnum{3}\hlstd{])))}
+
+\hlcom{# Modify column for convenience.}
+\hlkwd{colnames}\hlstd{(data)[}\hlnum{2}\hlstd{]} \hlkwb{<-} \hlstr{"Clinton"}
+\hlkwd{colnames}\hlstd{(data)[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlstr{"Trump"}
+\hlkwd{colnames}\hlstd{(data)[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstr{"region"}
+\hlkwd{colnames}\hlstd{(data)[}\hlnum{5}\hlstd{]} \hlkwb{<-} \hlstr{"Rate"}
+
+\hlcom{# Extract data for Hawaii and Alaska, and remove them from main list.}
+\hlstd{hdata} \hlkwb{<-} \hlstd{data[data}\hlopt{$}\hlstd{region} \hlopt{==} \hlstr{"hawaii"}\hlstd{,]}
+\hlstd{adata} \hlkwb{<-} \hlstd{data[data}\hlopt{$}\hlstd{region} \hlopt{==} \hlstr{"alaska"}\hlstd{,]}
+\hlstd{data}  \hlkwb{<-} \hlstd{data[data}\hlopt{$}\hlstd{region} \hlopt{!=} \hlstr{"hawaii"}\hlstd{,]}
+\hlstd{data}  \hlkwb{<-} \hlstd{data[data}\hlopt{$}\hlstd{region} \hlopt{!=} \hlstr{"alaska"}\hlstd{,]}
+
+\hlcom{# Join the data with map.}
+\hlstd{usa.df} \hlkwb{<-} \hlkwd{join}\hlstd{(usa, data,} \hlkwc{by} \hlstd{=} \hlstr{"region"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"inner"}\hlstd{)}
+\hlstd{alaska.df} \hlkwb{<-} \hlkwd{join}\hlstd{(alaska, data,} \hlkwc{by} \hlstd{=} \hlstr{"region"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"inner"}\hlstd{)}
+\hlstd{hawaii.df} \hlkwb{<-} \hlkwd{join}\hlstd{(hawaii, data,} \hlkwc{by} \hlstd{=} \hlstr{"region"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"inner"}\hlstd{)}
+
+\hlcom{###########################################################################}
+\hlcom{# Approach 1}
+\hlcom{###########################################################################}
+
+\hlcom{# Generate map for States.}
+\hlstd{state.maps} \hlkwb{<-} \hlkwd{ggplot}\hlstd{()} \hlopt{+}
+    \hlkwd{geom_polygon}\hlstd{(}\hlkwc{data}  \hlstd{= usa.df,}
+                 \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= long,}
+                     \hlkwc{y} \hlstd{= lat,}
+                     \hlkwc{group} \hlstd{= group,}
+                     \hlkwc{fill} \hlstd{= Rate),}
+                 \hlkwc{color} \hlstd{=} \hlstr{"white"}\hlstd{,}
+                 \hlkwc{size} \hlstd{=} \hlnum{0.25}\hlstd{)} \hlopt{+}
+    \hlkwd{scale_fill_distiller}\hlstd{(}\hlkwc{palette} \hlstd{=} \hlstr{"RdBu"}\hlstd{,}
+                         \hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{80}\hlstd{,} \hlnum{80}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{20}\hlstd{))} \hlopt{+}
+    \hlkwd{geom_text}\hlstd{(}\hlkwc{data} \hlstd{= statesname,}
+              \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= x,} \hlkwc{y} \hlstd{= y,} \hlkwc{label} \hlstd{= region),}
+              \hlkwc{size}\hlstd{=}\hlnum{2.0}\hlstd{)} \hlopt{+}
+    \hlkwd{coord_map}\hlstd{(}\hlstr{"polyconic"}\hlstd{)} \hlopt{+}
+    \hlkwd{ggtitle}\hlstd{(}\hlstr{"President Trump in the 2016 US Election"}\hlstd{)} \hlopt{+}
+    \hlkwd{theme}\hlstd{(}\hlkwc{plot.title} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{hjust} \hlstd{=} \hlnum{0.5}\hlstd{))}
+
+\hlstd{state.maps}
+
+\hlcom{###########################################################################}
+\hlcom{# Approach 2}
+\hlcom{###########################################################################}
+
+\hlcom{# Generate map for the States except Hawaii and Alaska.}
+\hlcom{# Conduct 'ggplot' on 'data' based on 'region'.}
+\hlcom{# To generate map for States, call: gMap(data, usa, statesname)}
+\hlcom{# To generate map for Hawaii, call: gMap(hdata, hawaii, hiname)}
+\hlcom{# To generate map for Alaska, call: gMap(adata, alaska, akname)}
+\hlstd{gMap} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{data}\hlstd{,} \hlkwc{states}\hlstd{,} \hlkwc{statesname}\hlstd{) \{}
+    \hlstd{maps} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(data,} \hlkwd{aes}\hlstd{(}\hlkwc{map_id} \hlstd{= region))}
+    \hlcom{# Add map for each state in data iteratively.}
+    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(data)[}\hlnum{1}\hlstd{]) \{} \hlcom{# for each state in 'data'}
+        \hlcom{# Extract the target state.}
+        \hlstd{targetstate} \hlkwb{<-} \hlstd{states[states}\hlopt{$}\hlstd{region} \hlopt{==} \hlstd{data[i,]}\hlopt{$}\hlstd{region,]}
+        \hlcom{# Depends on who won, specify the color of the state in RGB.}
+        \hlkwa{if}\hlstd{(data[i,]}\hlopt{$}\hlstd{Clinton} \hlopt{>} \hlstd{data[i,]}\hlopt{$}\hlstd{Trump) \{}
+            \hlstd{r} \hlkwb{<-} \hlstd{(}\hlnum{1}   \hlopt{-} \hlstd{((data[i,]}\hlopt{$}\hlstd{Clinton}\hlopt{/}\hlnum{100} \hlopt{-} \hlnum{0.464}\hlstd{)}\hlopt{/}\hlnum{0.445}\hlstd{))}\hlopt{*}\hlnum{0.5}
+            \hlstd{g} \hlkwb{<-} \hlstd{(}\hlnum{1.3} \hlopt{-} \hlstd{((data[i,]}\hlopt{$}\hlstd{Clinton}\hlopt{/}\hlnum{100} \hlopt{-} \hlnum{0.464}\hlstd{)}\hlopt{/}\hlnum{0.445}\hlstd{))}\hlopt{*}\hlnum{0.6}
+            \hlstd{b} \hlkwb{<-} \hlnum{1}
+        \hlstd{\}} \hlkwa{else} \hlstd{\{}
+            \hlstd{r} \hlkwb{<-} \hlnum{1}
+            \hlstd{g} \hlkwb{<-} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{((data[i,]}\hlopt{$}\hlstd{Trump}\hlopt{/}\hlnum{100} \hlopt{-} \hlnum{0.455}\hlstd{)}\hlopt{/}\hlnum{0.231}\hlstd{))}\hlopt{*}\hlnum{0.7}
+            \hlstd{b} \hlkwb{<-} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{((data[i,]}\hlopt{$}\hlstd{Trump}\hlopt{/}\hlnum{100} \hlopt{-} \hlnum{0.455}\hlstd{)}\hlopt{/}\hlnum{0.231}\hlstd{))}\hlopt{*}\hlnum{0.7}
+        \hlstd{\}}
+        \hlcom{# Add map with color filling.}
+        \hlstd{maps} \hlkwb{<-} \hlstd{maps} \hlopt{+}
+            \hlkwd{geom_map}\hlstd{(}\hlkwc{fill}   \hlstd{=} \hlkwd{rgb}\hlstd{(r,g,b),}
+                     \hlkwc{color}  \hlstd{=} \hlstr{'white'}\hlstd{,}
+                     \hlkwc{size}   \hlstd{=} \hlnum{0.2}\hlstd{,}
+                     \hlkwc{map}    \hlstd{= targetstate)} \hlopt{+}
+            \hlkwd{expand_limits}\hlstd{(}\hlkwc{x} \hlstd{= targetstate}\hlopt{$}\hlstd{long,}
+                          \hlkwc{y} \hlstd{= targetstate}\hlopt{$}\hlstd{lat)}
+    \hlstd{\}}
+    \hlcom{# Add some more information to the map.}
+    \hlstd{maps} \hlkwb{<-} \hlstd{maps} \hlopt{+}
+        \hlcom{# Add abbreviations for each state.}
+        \hlkwd{geom_text}\hlstd{(}\hlkwc{data}  \hlstd{= statesname,}
+                  \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= x,}
+                      \hlkwc{y} \hlstd{= y,}
+                      \hlkwc{label} \hlstd{= region),}
+                  \hlkwc{size}  \hlstd{=} \hlnum{2.0}\hlstd{)} \hlopt{+}
+        \hlcom{# Make map shape more realistic.}
+        \hlkwd{coord_map}\hlstd{(}\hlstr{"polyconic"}\hlstd{)}
+    \hlcom{# Return the result}
+    \hlkwd{return}\hlstd{(maps)}
+\hlstd{\}}
+
+\hlcom{# This function was used to combine three generated map into one file,}
+\hlcom{# coming from an early version of https://github.com/cran, its url is}
+\hlcom{# https://github.com/cran/wq/blob/8223da687d8daff2ad612f9a07926f412a08ba82/R/layOut.R}
+\hlstd{layOut} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{...}\hlstd{) \{}
+     \hlkwd{require}\hlstd{(grid)}
+
+     \hlstd{x} \hlkwb{<-} \hlkwd{list}\hlstd{(...)}
+     \hlstd{n} \hlkwb{<-} \hlkwd{max}\hlstd{(}\hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{max}\hlstd{(x[[}\hlnum{2}\hlstd{]])))}
+     \hlstd{p} \hlkwb{<-} \hlkwd{max}\hlstd{(}\hlkwd{sapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{max}\hlstd{(x[[}\hlnum{3}\hlstd{]])))}
+     \hlkwd{pushViewport}\hlstd{(}\hlkwd{viewport}\hlstd{(}\hlkwc{layout} \hlstd{=} \hlkwd{grid.layout}\hlstd{(n, p)))}
+
+     \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlkwd{seq_len}\hlstd{(}\hlkwd{length}\hlstd{(x))) \{}
+         \hlkwd{print}\hlstd{(x[[i]][[}\hlnum{1}\hlstd{]],} \hlkwc{vp} \hlstd{=} \hlkwd{viewport}\hlstd{(}\hlkwc{layout.pos.row} \hlstd{= x[[i]][[}\hlnum{2}\hlstd{]],}
+             \hlkwc{layout.pos.col} \hlstd{= x[[i]][[}\hlnum{3}\hlstd{]]))}
+     \hlstd{\}}
+\hlstd{\}}
+
+\hlcom{# This function calls the previous gMap function to generate three maps}
+\hlcom{# from data, and then use layOut function to combine them together.}
+\hlstd{print_map} \hlkwb{<-} \hlkwa{function}\hlstd{() \{}
+    \hlkwd{layOut}\hlstd{(}
+        \hlkwd{list}\hlstd{(}\hlkwd{gMap}\hlstd{(data, usa, statesname)} \hlopt{+}
+            \hlkwd{ggtitle}\hlstd{(}\hlstr{"President Trump in the 2016 US Election"}\hlstd{)} \hlopt{+}
+            \hlkwd{theme}\hlstd{(}\hlkwc{plot.title} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{hjust} \hlstd{=} \hlnum{0.5}\hlstd{)),} \hlnum{1}\hlopt{:}\hlnum{200}\hlstd{,} \hlnum{10}\hlopt{:}\hlnum{300}\hlstd{),}
+        \hlkwd{list}\hlstd{(}\hlkwd{gMap}\hlstd{(hdata, hawaii, hiname)}\hlopt{+}\hlkwd{theme_nothing}\hlstd{(),} \hlnum{90}\hlopt{:}\hlnum{160}\hlstd{,} \hlnum{10}\hlopt{:}\hlnum{120}\hlstd{),}
+        \hlkwd{list}\hlstd{(}\hlkwd{gMap}\hlstd{(adata, alaska, akname)}\hlopt{+}\hlkwd{theme_nothing}\hlstd{(),} \hlnum{90}\hlopt{:}\hlnum{170}\hlstd{,} \hlnum{10}\hlopt{:}\hlnum{90}\hlstd{))}
+\hlstd{\}}
+
+\hlkwd{print_map}\hlstd{()}
+\end{alltt}
+\end{kframe}
+
+\end{knitrout}
