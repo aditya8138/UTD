@@ -1,0 +1,136 @@
+\documentclass[11pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{report}
+\usepackage{knit}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Mini Project \#4}
+\DTMsavetimestamp{DueDate}{2017-03-30T16:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6313.001}
+\newcommand{\hmwkClassName}{Statistical Methods for Data Science}
+\newcommand{\hmwkClassInstructor}{Instructor: Pankaj Choudhary}
+\newcommand{\hmwkAuthorName}{Hanlin He / Lizhong Zhang}
+\newcommand{\hmwkAuthorNetID}{hxh160630 / lxz160730}
+
+\newcommand{\hmwkAuthorOneName}{Lizhong Zhang (lxz160730)}
+\newcommand{\hmwkAuthorTwoName}{Hanlin He (hxh160630)}
+
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{1in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle }}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}\\
+    \vspace{0.5in}\includegraphics[height=2.4em]{UTD_logo_BW}\\
+    \vspace{2in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ }
+\date{}
+\makeindex
+
+\begin{document}
+\maketitle
+
+\pagenumbering{Roman}
+\tableofcontents
+\pagebreak
+\pagenumbering{arabic}
+
+\section*{Contribution}
+Both team members made the same contribution in this project.
+
+\section{Answers}
+\subsection{Bass to Soprano}
+\subsubsection{Exploratory Analysis}
+
+The boxplot is shown in \cref{bx}.
+
+\begin{figure}[!htb]
+\caption{Boxplot}\label{bx}
+\centering
+\includegraphics[width = .6\textwidth]{boxplot.pdf}
+\end{figure}
+
+We plotted the four groups side by side on a box plot. The box plots show that the means and medians of four groups are almost different, so there is no any two distributions seemed similar.
+
+\subsubsection{Test The Hypotheses}
+Based on information given:
+\begin{itemize}
+    \item The null hypothesis $H_0: \mu_x = \mu_y$, Bass singers' heights is same to Tenor singers'.
+    \item The alternative hypothesis $H_1: \mu_x > \mu_y$, Bass singers are taller than Tenor singers.
+\end{itemize}
+Assume $5\%$ level of significance,
+\[t_{obs} = \frac{(mean_{Bass} - mean_{Tenor})}{\sqrt{\frac{sd_{Bass}^2}{nums_{bass}} + \frac{sd_{Tenor}^2}{nums_{Tenor}}}}\]
+\[p-value = 1 - F(t_{obs}) = 0.001591409 < 0.05\]
+Thus, reject $H_0$.
+On average Bass singers are taller than Tenor singers.
+
+\subsubsection{Comparison}
+From (b), we know that Bass singers are taller than Tenor singers. In the meantime, by observing box plots in (a), we can see that the mean, median and the range of values is higher for Bass singer than Tenor singer, which makes me conclude that Bass singers are taller than Tenor singer on average.
+
+\subsection{Test Hypothesis}
+\subsubsection{Set up the null and alternative hypotheses}
+Assume the following:
+
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$H_0: \mu = 10$ & vs & $H_1: \mu > 10$\\\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Which test would you use? What is the test statistic? What is the null distribution of the test statistic?}
+We would use the \emph{t test}, because we do not know the standard deviation of the distribution.
+
+The test statistic is \[T = \cfrac{\overline{x} - \mu_0}{\sigma / \sqrt{n}}\ \sim \ t_{n-1}\]
+
+\subsubsection{Compute the observed value of the test statistic.}
+\[t_{obs} = \frac{9.02 - 10}{2.22 / \sqrt{20}} = -1.974186\]
+
+\subsubsection{Compute the p-value of the test using the usual way.}
+\[p-value = 1 - pt(-1.974186,\ 20 - 1) = 0.9684606\]
+
+\subsubsection{Estimate the p-value of the test using Monte Carlo simulation. How do your answers in (d) and (e) compare?}
+We made simulation using t-distribution $10000$ times. The R code will be shown in section 2. And we get $p-value = 0.97$.
+Comparing the result in (d) and (e), we find two result is almost same.
+
+\subsubsection{State your conclusion at 5\% level of significance.}
+From (d) and (e) result, we know that $p-value > 0.05$, so accept $H_0$, the mean of the population is not greater than 10.
+
+\subsection{Credit Rating}
+\subsubsection{Construct an appropriate 95\% confidence interval}
+To find the $95\%$ confidence interval for the difference in mean credit limits of all credit issued in January 2011 and in May 2011, we know the large number of samples (400 and 500) should let us assume either a normal distribution or normal distribution for the difference between the credit cards.
+
+An alpha value of $0.05$ was used to find the quantile as shown in the R code below. The sample mean and standard deviation were used. The $95\%$ confidence interval is: $CI = [201.1711,\ 302.8289]$, so based on the confidence interval, we know that the credit limits on newly issued credit cards increased between January 2011 and May 2011.
+
+\subsubsection{Perform an appropriate 5\% level test}
+Assume the following:
+\begin{itemize}
+\item $H_0: \mu_x = \mu_y$:  Not greater
+\item $H_1: \mu_x < \mu_y$:  The mean credit limit of all credit cards issued in May 2011 is greater than the same in January 2011.
+\end{itemize}
+Use large sample: \[z = \frac{2887 - 2635}{\sqrt{\frac{365^2}{400} + \frac{412^2}{500}}} = 9.717132\]
+\[p-value = 1 - pnorm(9.717132) = 0 < 0.05\]
+
+So, reject $H_0$, the mean credit limit of all credit cards issued in May 2011 is greater than the same in January 2011.
+
+\section{R Code}
+
+\input{source}
+
+\end{document}

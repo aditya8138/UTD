@@ -1,0 +1,83 @@
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{##############################################################}
+\hlcom{# R code for exercise 1}
+\hlcom{##############################################################}
+
+\hlcom{# Read singer.txt file.}
+\hlstd{mydata} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"singer.txt"}\hlstd{,} \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{","}\hlstd{)}
+
+\hlcom{# Extract data by different voice part.}
+\hlstd{mydata_Bass} \hlkwb{=} \hlkwd{subset}\hlstd{(mydata, voice.part} \hlopt{==} \hlstr{"Bass"}\hlstd{)}
+\hlstd{mydata_Tenor} \hlkwb{=} \hlkwd{subset}\hlstd{(mydata, voice.part} \hlopt{==} \hlstr{"Tenor"}\hlstd{)}
+\hlstd{mydata_Alto} \hlkwb{=} \hlkwd{subset}\hlstd{(mydata, voice.part} \hlopt{==} \hlstr{"Alto"}\hlstd{)}
+\hlstd{mydata_Soprano} \hlkwb{=} \hlkwd{subset}\hlstd{(mydata, voice.part} \hlopt{==} \hlstr{"Soprano"}\hlstd{)}
+
+\hlcom{# Use ggplot to draw boxplots.}
+\hlkwd{pdf}\hlstd{(}\hlstr{"boxplot.pdf"}\hlstd{)}
+\hlkwd{library}\hlstd{(ggplot2)}
+\hlkwd{ggplot}\hlstd{(mydata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=voice.part,} \hlkwc{y}\hlstd{=height))} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()} \hlopt{+} \hlkwd{theme_classic}\hlstd{()}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf
+##   2
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Calculate numbers, means and standard deviations of Bass singers}
+\hlcom{# and Tenor singers.}
+\hlstd{nums_Bass} \hlkwb{<-} \hlkwd{nrow}\hlstd{(mydata_Bass)}
+\hlstd{mean_Bass} \hlkwb{<-} \hlkwd{mean}\hlstd{(mydata_Bass[,} \hlnum{1}\hlstd{])}
+\hlstd{sd_Bass} \hlkwb{<-} \hlkwd{sd}\hlstd{(mydata_Bass[,} \hlnum{1}\hlstd{])}
+
+\hlstd{nums_Tenor} \hlkwb{<-} \hlkwd{nrow}\hlstd{(mydata_Tenor)}
+\hlstd{mean_Tenor} \hlkwb{<-} \hlkwd{mean}\hlstd{(mydata_Tenor[,} \hlnum{1}\hlstd{])}
+\hlstd{sd_Tenor} \hlkwb{<-} \hlkwd{sd}\hlstd{(mydata_Tenor[,} \hlnum{1}\hlstd{])}
+
+\hlcom{# Calculate nu.}
+\hlstd{i} \hlkwb{<-} \hlstd{(sd_Bass}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{/} \hlstd{nums_Bass} \hlopt{+} \hlstd{(sd_Tenor)}\hlopt{^}\hlnum{2} \hlopt{/} \hlstd{nums_Tenor}
+\hlstd{j} \hlkwb{<-} \hlstd{(sd_Bass}\hlopt{^}\hlnum{4}\hlstd{)} \hlopt{/} \hlstd{((nums_Bass}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{(nums_Bass} \hlopt{-} \hlnum{1}\hlstd{))}
+\hlstd{k} \hlkwb{<-} \hlstd{(sd_Tenor}\hlopt{^}\hlnum{4}\hlstd{)} \hlopt{/} \hlstd{((nums_Tenor}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{(nums_Tenor} \hlopt{-} \hlnum{1}\hlstd{))}
+\hlstd{nu} \hlkwb{<-} \hlstd{i} \hlopt{/} \hlstd{(j} \hlopt{+} \hlstd{k)}
+
+\hlcom{# Calculate t_obs.}
+\hlstd{t_obs} \hlkwb{<-} \hlstd{(mean_Bass} \hlopt{-} \hlstd{mean_Tenor)} \hlopt{/}
+    \hlkwd{sqrt}\hlstd{(sd_Bass}\hlopt{^}\hlnum{2} \hlopt{/} \hlstd{nums_Bass} \hlopt{+} \hlstd{sd_Tenor}\hlopt{^}\hlnum{2} \hlopt{/} \hlstd{nums_Tenor)}
+
+\hlcom{# Calculate p-value.}
+\hlstd{p_value} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pt}\hlstd{(t_obs, nu)}
+
+\hlcom{##############################################################}
+\hlcom{# R code for exercise 2}
+\hlcom{##############################################################}
+
+\hlcom{# Calculate test statistic.}
+\hlstd{t_obs1} \hlkwb{<-} \hlstd{(}\hlnum{9.02} \hlopt{-} \hlnum{10}\hlstd{)} \hlopt{/} \hlstd{(}\hlnum{2.22} \hlopt{/} \hlkwd{sqrt}\hlstd{(}\hlnum{20}\hlstd{))}
+\hlstd{p1_value} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pt}\hlstd{(t_obs1,} \hlnum{20} \hlopt{-} \hlnum{1}\hlstd{)}
+
+\hlcom{# Estimate the p-value of the test using Monte Carlo simulation}
+\hlstd{time} \hlkwb{<-} \hlnum{10000}
+\hlstd{est_value} \hlkwb{<-} \hlkwd{sum}\hlstd{(}\hlkwd{rt}\hlstd{(time,} \hlnum{20}\hlopt{-}\hlnum{1}\hlstd{)} \hlopt{>} \hlstd{t_obs1)} \hlopt{/} \hlstd{time}
+
+\hlcom{##############################################################}
+\hlcom{# R code for exercise 3}
+\hlcom{##############################################################}
+
+\hlcom{# Calculate CI.}
+\hlcom{##CI <- mean(y) - mean(x) + c(-1, 1) * qt(1-(alpha/2), nu) *}
+\hlcom{##      sqrt(sd(x)^2 / n_1 + sd(y)^2 / n_2)}
+\hlcom{##CI <- mean(y) - mean(x) + c(-1, 1) * qnorm(1-(alpha/2)) *}
+\hlcom{##      sqrt(sd(x)^2 / n_1 + sd(y)^2 / n_2)}
+\hlstd{CI} \hlkwb{<-} \hlnum{2887} \hlopt{-} \hlnum{2635} \hlopt{+} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{*} \hlkwd{qnorm}\hlstd{(}\hlnum{1} \hlopt{-} \hlstd{(}\hlnum{0.05}\hlopt{/}\hlnum{2}\hlstd{))} \hlopt{*}
+    \hlkwd{sqrt}\hlstd{(}\hlnum{365}\hlopt{^}\hlnum{2} \hlopt{/} \hlnum{400} \hlopt{+} \hlnum{412}\hlopt{^}\hlnum{2} \hlopt{/} \hlnum{500}\hlstd{)}
+
+\hlcom{# Calculate z.}
+\hlstd{z_1} \hlkwb{<-} \hlstd{(}\hlnum{2887} \hlopt{-} \hlnum{2635}\hlstd{)} \hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{365}\hlopt{^}\hlnum{2} \hlopt{/} \hlnum{400} \hlopt{+} \hlnum{412}\hlopt{^}\hlnum{2} \hlopt{/} \hlnum{500}\hlstd{)}
+\hlcom{# Calculate p-value}
+\hlstd{p2_value} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlkwd{pnorm}\hlstd{(z_1)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
