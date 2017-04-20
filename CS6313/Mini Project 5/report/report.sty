@@ -1,0 +1,41 @@
+\ProvidesPackage{report}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\headsep=0.2in
+
+\headheight=15pt
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}}
+\rhead{\hmwkTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.2pt}
+\renewcommand\footrulewidth{0.2pt}
+
+%\setlength\parindent{0pt}
+
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\renewcommand{\thesubsubsection}{(\alph{subsubsection})}
+
+
+\titleformat{\section}
+{\normalfont\Large\bfseries}{Section~\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{Problem~\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+{\normalfont\bfseries}{~\thesubsubsection}{1em}{}
+
+
+%
+% R Code Display Settings
+%
+

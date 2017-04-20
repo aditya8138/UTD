@@ -1,0 +1,192 @@
+\documentclass[a4paper]{article}
+\parindent0pt
+\begin{document}
+
+<<Test>>=
+# Read data from file.
+prostatecancer <- read.table(file="prostate_cancer.csv", sep=",", header=T)
+
+# Create fig folder to store plot.
+if(!dir.exists("fig")) dir.create("fig")
+
+# Attach data to memory.
+attach(prostatecancer)
+psalog <- log(psa)
+
+# Box plot for psa.
+pdf("fig/boxplotpsa.pdf", width=7, height=7)
+boxplot(psa)
+dev.off()
+
+# Box plot for square root of psa.
+pdf("fig/boxplotpsasqrt.pdf", width=5, height=5)
+boxplot(sqrt(psa))
+dev.off()
+
+# Box plot for logarithm of psa.
+pdf("fig/boxplotpsalog.pdf", width=5, height=5)
+boxplot(log(psa))
+dev.off()
+
+# Draw scatterplots of each variables with log(psa).
+pdf("fig/boxplotcancervol.pdf", width=5, height=5)
+plot(cancervol, psalog,
+    xlab="Cancer Volume(cc)",
+    ylab="Log of PSA level(log(mg/ml))")
+abline(lm(psalog ~ cancervol))
+dev.off()
+
+pdf("fig/boxplotweight.pdf", width=5, height=5)
+plot(weight, psalog,
+    xlab="Weight(gm)",
+    ylab="Log of PSA level(log(mg/ml))")
+abline(lm(psalog ~ weight))
+dev.off()
+
+pdf("fig/boxplotage.pdf", width=5, height=5)
+plot(age, psalog,
+    xlab="Age(years)",
+    ylab="Log of PSA level(log(mg/ml))")
+abline(lm(psalog ~ age))
+dev.off()
+
+pdf("fig/boxplotbenpros.pdf", width=5, height=5)
+plot(benpros, psalog,
+    xlab="Benign prostatic hyperplasia(cm^2)",
+    ylab="Log of PSA level(log(mg/ml))")
+abline(lm(psalog ~ benpros))
+dev.off()
+
+pdf("fig/boxplotcapspen.pdf", width=5, height=5)
+plot(capspen, psalog,
+    xlab="Capsular penetration(cm)",
+    ylab="Log of PSA level(log(mg/ml))")
+abline(lm(psalog ~ capspen))
+dev.off()
+
+# Calculate the first formula.
+fit1 <- lm(psalog ~ cancervol + capspen + weight + age + benpros)
+fit1
+
+fit2 <- lm(psalog ~ cancervol + capspen + benpros)
+fit2
+
+# Compare first two guess.
+anova(fit2, fit1)
+
+# Apply stepwise selection.
+# Forward selection based on AIC.
+fit3.forward <-
+    step(lm(psalog ~ 1),
+    scope = list(upper = ~ cancervol + capspen + weight + age + benpros),
+    direction = "forward")
+
+fit3.forward
+
+# Backward elimination based on AIC.
+fit3.backward <-
+    step(lm(psalog ~ cancervol + capspen + weight + age + benpros),
+    scope = list(lower = ~1),
+    direction = "backward")
+
+fit3.backward
+
+# Both forward/backward.
+fit3.both <-
+    step(lm(psalog ~ 1),
+    scope = list(lower = ~1,
+                 upper = ~ cancervol + capspen + weight + age + benpros),
+    direction = "both")
+
+fit3.both
+
+# Model selected.
+fit3 <- lm(formula = psalog ~ cancervol + benpros)
+
+summary(fit3)
+
+# Compare the model with the guess one.
+anova(fit3, fit2)
+
+# Residual plot of fit3.
+pdf("fig/residualplotfit3.pdf", width=5, height=5)
+plot(fitted(fit3), resid(fit3))
+abline(h = 0)
+dev.off()
+
+# Plot the absolute residual of fit3.
+pdf("fig/plotfit3abu.pdf", width=5, height=5)
+plot(fitted(fit3), abs(resid(fit3)))
+dev.off()
+
+# Plot the times series plot of residuals.
+pdf("fig/plotfit3times.pdf", width=8, height=5)
+plot(resid(fit3), type="l")
+abline(h = 0)
+dev.off()
+
+# Normal QQ plot of fit3.
+pdf("fig/qqnormplotfit3.pdf", width=8, height=8)
+qqnorm(resid(fit3))
+qqline(resid(fit3))
+dev.off()
+
+# Consider the categorical variables.
+fit4 <- update(fit3, . ~ . + factor(vesinv))
+fit5 <- update(fit3, . ~ . + factor(gleason))
+
+# Comparing two categorical variables.
+summary(fit5)
+
+anova(fit3, fit5)
+
+summary(fit4)
+
+anova(fit3, fit4)
+
+# Finalize the model.
+fit6 <- update(fit3, . ~ . + factor(vesinv) + factor(gleason))
+
+summary(fit6)
+
+# Residual plot of fit6.
+pdf("fig/residualplotfit6.pdf", width=5, height=5)
+plot(fitted(fit6), resid(fit6))
+abline(h = 0)
+dev.off()
+
+# Plot the absolute residual of fit3.
+pdf("fig/plotfit6abu.pdf", width=5, height=5)
+plot(fitted(fit6), abs(resid(fit6)))
+dev.off()
+
+# Plot the times series plot of residuals.
+pdf("fig/plotfit6times.pdf", width=8, height=5)
+plot(resid(fit3), type="l")
+abline(h = 0)
+dev.off()
+
+# Normal QQ plot of fit6
+pdf("fig/qqnormplotfit6.pdf", width=8, height=8)
+qqnorm(resid(fit6))
+qqline(resid(fit6))
+dev.off()
+
+# Create the mode function.
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+# Predict the PSA level for sample mean.
+es <- predict(fit6,
+    data.frame(cancervol = mean(cancervol),
+               benpros   = mean(benpros),
+               vesinv    = getmode(vesinv),
+               gleason   = getmode(gleason)))
+exp(es)
+
+
+@
+
+\end{document}
