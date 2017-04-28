@@ -20,12 +20,17 @@ public class CLIEngine implements Runnable {
 
             try {
                 line = bufferedReader.readLine();
-                if (line.equals("quit") || line.equalsIgnoreCase("exit")) {
+                if (line.equals("quit") || line.equalsIgnoreCase("exit") || line.equals("q")) {
                     bufferedReader.close();
                     Node.getInstance().shutDown();
                     continue;
                 }
                 if (line.equals("")) {
+                    continue;
+                }
+
+                if (line.equalsIgnoreCase("display status")) {
+                    System.out.println(Node.getInstance());
                     continue;
                 }
 
@@ -49,6 +54,12 @@ public class CLIEngine implements Runnable {
                 if (line.toLowerCase().startsWith("init")) {
                     System.out.println("Initializing vote data...");
                     Node.getInstance().initiateVoteDataInitialization();
+                    continue;
+                }
+
+                if (line.toLowerCase().startsWith("write")) {
+                    System.out.println("Attempting to write...");
+                    Node.getInstance().write();
                     continue;
                 }
             } catch (IOException e) {

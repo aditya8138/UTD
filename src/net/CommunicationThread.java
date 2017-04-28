@@ -30,13 +30,14 @@ public class CommunicationThread implements Runnable {
         read();
     }
 
-    public void send(Message message) {
+    public synchronized void send(Message message) {
         try {
             if(this.oos != null){
                 this.oos.writeObject(message);
+                System.out.println("Send: " + message + " to " + getNodeConnectedTo());
                 this.oos.flush();
             } else {
-                System.out.println("Did not send: " + message + " to "+getNodeConnectedTo());
+                System.out.println("Did not send: " + message + " to " + getNodeConnectedTo());
             }
         } catch (IOException e) {
             System.err.println("IOException while sending object(" + message + ") to " +
@@ -62,7 +63,7 @@ public class CommunicationThread implements Runnable {
                         this.nodeConnectedTo = message.getSenderID();
 //                        Object content = message.getContent();
                         Node.getInstance().getCommunicationThreads().add(this);
-                        Node.getInstance().voteDataInitialize();
+//                        Node.getInstance().voteDataInitialize();
                     } else {
                         Node.getInstance().getMessageQueue().put(message);
                     }

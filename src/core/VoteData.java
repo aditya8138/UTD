@@ -1,11 +1,12 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by hanlin on 4/28/17.
  */
-public class VoteData {
+public class VoteData implements Serializable {
     private int VN;
     private int SC;
     private ArrayList<Character> DS;
