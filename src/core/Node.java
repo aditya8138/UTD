@@ -5,6 +5,7 @@ import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -64,17 +65,22 @@ public class Node {
         try {
             String localAddress = InetAddress.getLocalHost().getHostName();
 
-            this.initialConnection();
+            this.initiateConnection();
             this.addEntryToFile();
 
             System.out.println("\nCurrent Connected Nodes:\n" + Node.getInstance().printCommunicationThreads());
 
-            new CLIEngine().start();
-
+            new Thread(new CLIEngine()).start();
+            new Thread(new MessageProcessorThread()).start();
+            while (!this.shutDown)
+                Thread.sleep(500);
             this.removeEntryFromFile();
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when get local hostname: " + e.getMessage());
+        } catch (InterruptedException e) {
+            System.err.println("\nProcess interupted: " + e.getMessage());
         }
+        System.exit(0);
     }
 
     public boolean isShutDown() {
@@ -181,7 +187,7 @@ public class Node {
         }
     }
 
-    private void initialConnection() {
+    private void initiateConnection() {
         if(Files.notExists(Paths.get(NETWORK_CONFIG)))
             return;
         List<String> lines;
@@ -228,6 +234,11 @@ public class Node {
         }
     }
 
+    public void initiateVoteDataInitialization() {
+        this.voteDataInitialize();
+        this.broadcast(MessageType.INIT_VOTE);
+    }
+
     public void voteDataInitialize() {
         this.voteData = new VoteData(1, this.CommunicationThreads.size() + 1, this.selectDistinguishSite());
     }
@@ -265,5 +276,19 @@ public class Node {
          * ds remain null. */
 
         return ds;
+    }
+
+    public VoteData getVoteData() {
+        return voteData;
+    }
+
+    public void broadcast(MessageType messageType) {
+        Message message = new Message(messageType, LocalDateTime.now(), this.ID);
+        switch (messageType) {
+            case INIT_VOTE:
+                for (CommunicationThread communicationThread : this.CommunicationThreads) {
+                    communicationThread.send(message);
+                }
+        }
     }
 }

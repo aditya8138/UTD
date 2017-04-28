@@ -16,6 +16,13 @@ public class Message implements Serializable {
     private char senderID;
     private Object content;
 
+    public Message(MessageType messageType, LocalDateTime timeStamp, char senderID) {
+        this.messageType = messageType;
+        this.timeStamp = timeStamp;
+        this.senderID = senderID;
+        this.content = null;
+    }
+
     public Message(MessageType messageType, LocalDateTime timeStamp, char senderID, Object content) {
         this.messageType = messageType;
         this.timeStamp = timeStamp;

@@ -60,10 +60,9 @@ public class CommunicationThread implements Runnable {
                         /* If the message is an initialization msg, */
                     if (message.getMessageType() == MessageType.INIT_CONNECTION) {
                         this.nodeConnectedTo = message.getSenderID();
-                        Object content = message.getContent();
+//                        Object content = message.getContent();
                         Node.getInstance().getCommunicationThreads().add(this);
-//                        if(content instanceof String)
-//                            addNodetoNetwork((String)content);
+                        Node.getInstance().voteDataInitialize();
                     } else {
                         Node.getInstance().getMessageQueue().put(message);
                     }

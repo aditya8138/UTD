@@ -4,10 +4,15 @@ package core;
  * Created by hanlin on 4/27/17.
  */
 public enum MessageType {
-    /* Initialization, a node would send this message after establish the connection with
+    /* Connection initialization message.
+    * A node would send this message after establish the connection with
     * the target server so that the target server add this node into its network map.
     * Message content should be null, since senderID is contained in data field. */
     INIT_CONNECTION,
+
+    /* Vote data initialization message.
+    * After set up all the nodes in the network, user should ask node to initializa vote data. */
+    INIT_VOTE,
 
     /* When a site S receives an update to the file f, S issues a LOCK-REQUEST to its local lock man-ager.
     * When the lock request is granted, S sends a VOTE_REQ message to all the sites.*/
