@@ -1,16 +1,14 @@
-package controller;
+package core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hanlin on 4/27/17.
  */
-public class CLIController {
-    public CLIController() {
+public class CLIEngine {
+    public CLIEngine() {
     }
 
     public void start() {

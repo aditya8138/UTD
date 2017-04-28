@@ -1,4 +1,4 @@
-import controller.Node;
+import core.Node;
 
 public class Main {
 

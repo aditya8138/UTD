@@ -5,9 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import controller.*;
-import ds.*;
-import org.omg.CORBA.NO_IMPLEMENT;
+import core.*;
 
 /**
  * Created by hanlin on 4/27/17.
@@ -60,7 +58,7 @@ public class CommunicationThread implements Runnable {
 
                     System.out.println(message);
                         /* If the message is an initialization msg, */
-                    if (message.getMessageType() == MessageType.INIT) {
+                    if (message.getMessageType() == MessageType.INIT_CONNECTION) {
                         this.nodeConnectedTo = message.getSenderID();
                         Object content = message.getContent();
                         Node.getInstance().getCommunicationThreads().add(this);

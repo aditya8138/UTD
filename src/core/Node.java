@@ -1,4 +1,4 @@
-package controller;
+package core;
 
 import java.io.IOException;
 import java.net.*;
@@ -12,7 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 
 import net.*;
-import ds.*;
 
 /**
  * Created by hanlin on 4/26/17.
@@ -30,13 +29,14 @@ public class Node {
     private char ID;
     private SynchronousQueue<Message> messageQueue;
     private CopyOnWriteArrayList<CommunicationThread> CommunicationThreads;
-    private String networkNodesFile;
+    private VoteData voteData;
     private int port;
 
     private Node() {
         this.shutDown = false;
         this.messageQueue = new SynchronousQueue<>();
         this.CommunicationThreads = new CopyOnWriteArrayList<>();
+        this.voteData = null;
         this.port = new Random().nextInt(65535);
     }
 
@@ -69,7 +69,7 @@ public class Node {
 
             System.out.println("\nCurrent Connected Nodes:\n" + Node.getInstance().printCommunicationThreads());
 
-            new CLIController().start();
+            new CLIEngine().start();
 
             this.removeEntryFromFile();
         } catch (UnknownHostException e) {
@@ -210,9 +210,10 @@ public class Node {
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when get local hostname: " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("\naError when add local host to configuration file: " + e.getMessage());
+            System.err.println("\nError when add local host to configuration file: " + e.getMessage());
         }
     }
+
     private void removeEntryFromFile() {
         try {
             List<String> lines = Files.readAllLines(Paths.get(NETWORK_CONFIG));
@@ -225,5 +226,44 @@ public class Node {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void voteDataInitialize() {
+        this.voteData = new VoteData(1, this.CommunicationThreads.size() + 1, this.selectDistinguishSite());
+    }
+
+    private ArrayList<Character> selectDistinguishSite() {
+        ArrayList<Character> ds = null;
+
+        if (this.CommunicationThreads.size() == 0) {
+            System.err.println("Error in selecting distringuishi site: " + this.CommunicationThreads.size() + " exist.");
+        }
+
+        /* When SC = 3, DS lists those three sites from which a majority is needed to form a distinguished partition. */
+        if (this.CommunicationThreads.size() == 2) {
+            ds = new ArrayList<>(3);
+            ds.add(this.ID);
+            for (CommunicationThread communicationThread : this.CommunicationThreads) {
+                ds.add(communicationThread.getNodeConnectedTo());
+            }
+        }
+
+        /* Odd number of communication threads means even number of nodes in network. */
+        if (this.CommunicationThreads.size() % 2 != 0) {
+            Character dslabel = this.ID;
+            for (CommunicationThread communicationThread : this.CommunicationThreads) {
+                if(communicationThread.getNodeConnectedTo() < dslabel) {
+                    dslabel = communicationThread.getNodeConnectedTo();
+                }
+            }
+            ds = new ArrayList<>(1);
+            ds.add(dslabel);
+        }
+
+        /* If none of the above condition satisfied, i.e. number of communication threads is even and not equals to 0.
+         * The number of nodes  in network is odd and not equals to 3, no need to select a distinguish site.
+         * ds remain null. */
+
+        return ds;
     }
 }

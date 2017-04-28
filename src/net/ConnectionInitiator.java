@@ -1,12 +1,13 @@
 package net;
 
-import controller.Node;
+import core.Message;
+import core.MessageType;
+import core.Node;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import ds.*;
 
 /**
  * Created by hanlin on 4/27/17.
@@ -43,7 +44,7 @@ public class ConnectionInitiator {
 //                m.setSenderNodeID(MyData.getMyData().getMyNodeLabel());
 //                m.setMessage(object);
 
-            communicationThread.send(new Message(MessageType.INIT, LocalDateTime.now(), Node.getInstance().getID(), null));
+            communicationThread.send(new Message(MessageType.INIT_CONNECTION, LocalDateTime.now(), Node.getInstance().getID(), null));
 //                return server;
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when opening Socket to address, " + this.address +

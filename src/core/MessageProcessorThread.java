@@ -1,6 +1,4 @@
-package controller;
-
-import ds.Message;
+package core;
 
 /**
  * Created by hanlin on 4/27/17.
@@ -15,7 +13,7 @@ public class MessageProcessorThread implements Runnable {
             if (message == null)
                 continue;
             switch (message.getMessageType()) {
-                case INIT:
+                case INIT_CONNECTION:
                     System.err.println("Found unprocessed INIT message.");
                     break;
 

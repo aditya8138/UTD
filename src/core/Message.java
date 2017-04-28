@@ -1,4 +1,4 @@
-package ds;
+package core;
 
 /**
  * Created by hanlin on 4/27/17.
