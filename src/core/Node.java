@@ -154,11 +154,13 @@ public class Node {
             return false;
         }
         ArrayList<Character> nodesToRemove = new ArrayList<>();
-        synchronized (this.CommunicationThreads) {
-            for (CommunicationThread communication : this.CommunicationThreads) {
-                if (nodesList[1].indexOf(communication.getNodeConnectedTo()) != -1) {
-                    System.out.println("Disonnecting from " + communication.getNodeConnectedTo());
-                    nodesToRemove.add(communication.getNodeConnectedTo());
+        for (int i = 1; i < nodesList.length; i++) {
+            synchronized (this.CommunicationThreads) {
+                for (CommunicationThread communication : this.CommunicationThreads) {
+                    if (nodesList[i].equalsIgnoreCase(""+communication.getNodeConnectedTo())) {
+                        System.out.println("Disonnecting from " + communication.getNodeConnectedTo());
+                        nodesToRemove.add(communication.getNodeConnectedTo());
+                    }
                 }
             }
         }
@@ -296,7 +298,9 @@ public class Node {
     public void broadcast(MessageType messageType) {
         Message message = new Message(messageType, LocalDateTime.now(), this.ID);
         switch (messageType) {
-            case INIT_VOTE: case VOTE_REQ:
+            case INIT_VOTE:
+            case VOTE_REQ:
+            case ABORT:
                 for (CommunicationThread communicationThread : this.CommunicationThreads) {
                     communicationThread.send(message);
                 }
@@ -306,10 +310,8 @@ public class Node {
 //                    communicationThread.send(message);
 //                }
 //                break;
-            case ABORT:
-                break;
+//                break;
             case COMMIT:
-                System.out.println(this.localVoteData);
                 message.setContent(this.localVoteData);
                 for (CommunicationThread communicationThread : this.CommunicationThreads) {
                     communicationThread.send(message);
@@ -348,7 +350,7 @@ public class Node {
                     System.err.println("\nInterupted in collecting vote: " + e.getMessage());
                 }
             }
-            System.out.println("\n" + this.totalVoteReceive + this.allVoteSite.size());
+
             /* After all ACK/NACK received, if total vote number < reply node number,
             * i.e. some node reply NACK, abort write operation. */
             if (this.totalVoteReceive < this.allVoteSite.size() - 1) {
@@ -363,6 +365,7 @@ public class Node {
             if (!this.isDistinguished()) {
                 System.out.println("\nCurrent node does not belong to a  distinguished partition. Update abort.");
                 this.abort();
+                this.resetVoteData();
                 this.releaseLock();
                 return;
             }
@@ -465,9 +468,7 @@ public class Node {
     }
 
     public void cancel() {
-
         this.releaseLock();
-
     }
 
     private void abort() {
@@ -496,12 +497,11 @@ public class Node {
     }
 
     private void catchup() {
-
+        /* To-do: Currently no data has been invoke, so no catchup is needed. */
     }
 
-    public void commit(VoteData voteData) {
+    void commit(VoteData voteData) {
         this.localVoteData = voteData;
-//        this.commit();
         this.releaseLock();
     }
 
