@@ -58,3 +58,5 @@ vignettes/*.pdf
 
 .idea/
 NetworkConfig.txt
+META-INF/
+out/
