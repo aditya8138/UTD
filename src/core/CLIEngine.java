@@ -5,10 +5,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CLIEngine implements Runnable {
+
+
     CLIEngine() {
     }
 
     public void run() {
+        StringBuilder helpcontext = new StringBuilder();
+
+        helpcontext.append("Usage:\n")
+                .append("  <command> [options]\n\n")
+                .append("Commands:\n")
+                .append("  help                        Show help for commands.\n")
+                .append("  init                        Initializa vote data for all connected nodes.\n")
+                .append("  display [options]           Display current status. Available options\n")
+                .append("                              Available options are: status, vote, connection/network.\n")
+                .append("  connect [options]           Connect to some nodes. Need to specify the label of the nodes.\n")
+                .append("                              Example: connect B C D\n")
+                .append("  disconnect [options]        Disconnect with some nodes. Need to specify the label of the nodes.\n")
+                .append("                              Example: disconnect B C D\n")
+                .append("  write                       Write to the object.\n")
+                .append("  quit/exit/q                 Safe exit.\n");
+
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         while (!Node.getInstance().isShutDown()) {
@@ -22,6 +40,12 @@ public class CLIEngine implements Runnable {
                     Node.getInstance().shutDown();
                     continue;
                 }
+
+                if (line.equals("help")) {
+                    System.out.println(helpcontext.toString());
+                    continue;
+                }
+
                 if (line.equals("")) {
                     continue;
                 }
@@ -36,7 +60,8 @@ public class CLIEngine implements Runnable {
                     continue;
                 }
 
-                if (line.equalsIgnoreCase("display connection")) {
+                if (line.equalsIgnoreCase("display connection") ||
+                        line.equalsIgnoreCase("display network")) {
                     System.out.print(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
