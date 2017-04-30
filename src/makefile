@@ -23,7 +23,7 @@ net/*.class:
 log/*.class:
 
 clean:
-	$(RM) *.class $(DV).jar
+	$(RM) $(OBJECTS) $(DV).jar
 
 install:
 	$(INSTALL) $(DV).jar ..
