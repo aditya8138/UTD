@@ -4,6 +4,8 @@ import net.CommunicationThread;
 import net.ConnectionInitiator;
 import net.ListenerThread;
 
+import log.*;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,7 +27,6 @@ public class Node {
     }
 
     private static final String NETWORK_CONFIG = "NetworkConfig.txt";
-    private static final String LOGFILE = "log";
 
     private boolean shutDown;
     private boolean lock;
@@ -316,6 +317,8 @@ public class Node {
                 this.abort();
                 this.resetVoteData();
                 this.releaseLock();
+                new Thread(new log(this.ID,EventType.WRITE_FAIL_WITH_NACK,
+                        LocalDateTime.now(), this.localVoteData.toStringCompact())).start();
                 return;
             }
 
@@ -327,6 +330,8 @@ public class Node {
                 this.abort();
                 this.resetVoteData();
                 this.releaseLock();
+                new Thread(new log(this.ID,EventType.WRITE_FAIL_NO_DISTINGUISH,
+                        LocalDateTime.now(), this.localVoteData.toStringCompact())).start();
                 return;
             }
 
@@ -339,6 +344,8 @@ public class Node {
             this.commit();
             this.broadcast(MessageType.COMMIT);
             this.resetVoteData();
+            new Thread(new log(this.ID,EventType.WRITE_SUCCESS,
+                    LocalDateTime.now(), this.localVoteData.toStringCompact())).start();
             this.releaseLock();
         }
     }
@@ -426,6 +433,8 @@ public class Node {
 
     void cancel() {
         this.releaseLock();
+        new Thread(new log(this.ID,EventType.WRITE_ABORT,
+                LocalDateTime.now(), this.localVoteData.toStringCompact())).start();
     }
 
     private void abort() {
@@ -464,6 +473,8 @@ public class Node {
     void commit(VoteData voteData) {
         this.localVoteData = voteData;
         this.releaseLock();
+        new Thread(new log(this.ID,EventType.WRITE_REQUEST_SUCCESS,
+                LocalDateTime.now(), this.localVoteData.toStringCompact())).start();
     }
 
     private void commit() {
@@ -497,7 +508,6 @@ public class Node {
         this.latestVoteData = null;
         this.latestVoteSite = null;
     }
-
 
     @Override
     public String toString() {

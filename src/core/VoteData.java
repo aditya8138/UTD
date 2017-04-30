@@ -33,4 +33,8 @@ public class VoteData implements Serializable {
                 "\n    Update Sites Cardinality  :  " + SC +
                 "\n    Distinguished Sites List  :  " + DS;
     }
+
+    String toStringCompact() {
+        return  "Current Vote Data:" + "VN(" + VN + ") USC(" + SC + ") DS(" + DS + ")";
+    }
 }
