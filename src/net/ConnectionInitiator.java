@@ -28,24 +28,13 @@ public class ConnectionInitiator {
     {
         try {
             socket = new Socket(this.address, this.port);
-            System.out.print("\nInitiated connection successfully to " + this.address +
+            System.out.print("\nConnect to " + this.address +
                     " at port " + this.port + "\n> ");
             CommunicationThread communicationThread = new CommunicationThread(this.socket, this.label);
-//                server.setName("ThreadTo"+nodeConnectedTo);
             new Thread(communicationThread).start();
-
             Thread.sleep(500);//to establish conn
-
             Node.getInstance().getCommunicationThreads().add(communicationThread);
-
-
-//                Message m = new Message(Message.Type.INIT, LocalDateTime.now(), ID, null);
-//                m.setTimeStamp(LocalDateTime.now());
-//                m.setSenderNodeID(MyData.getMyData().getMyNodeLabel());
-//                m.setMessage(object);
-
             communicationThread.send(new Message(MessageType.INIT_CONNECTION, LocalDateTime.now(), Node.getInstance().getID(), null));
-//                return server;
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when opening Socket to address, " + this.address +
                     " at port " + this.port + ": " + e.getMessage());

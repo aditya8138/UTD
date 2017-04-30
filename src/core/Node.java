@@ -56,21 +56,6 @@ public class Node {
         this.ID = ID;
     }
 
-//    public synchronized void removeNodeFromNetwork(char senderID) {
-////        synchronized (this.CommunicationThreads) {
-//            int mark = -1;
-//            for (int i = this.CommunicationThreads.size() - 1; i >= 0; i--) {
-//                if(this.CommunicationThreads.get(i).getNodeConnectedTo() == senderID) {
-//                    mark = i;
-//                    break;
-//                }
-//            }
-//            if(mark != -1) {
-//                this.CommunicationThreads.remove(mark);
-//            }
-////        }
-//    }
-
     public void start() {
         new Thread(new ListenerThread(this.port)).start();
         try {
@@ -81,8 +66,9 @@ public class Node {
 
             System.out.println("\nCurrent Connected Nodes:\n" + Node.getInstance().printCommunicationThreads());
 
-            new Thread(new CLIEngine()).start();
             new Thread(new MessageProcessorThread()).start();
+            Thread.sleep(500);
+            new Thread(new CLIEngine()).start();
             while (!this.shutDown)
                 Thread.sleep(500);
             this.removeEntryFromFile();
@@ -115,14 +101,6 @@ public class Node {
             if(communicationThread.getNodeConnectedTo() == label)
                 return communicationThread;
         }
-
-//        int mark = -1;
-//        for (int i = this.CommunicationThreads.size() - 1; i >= 0; i--) {
-//            if(this.CommunicationThreads.get(i).getNodeConnectedTo() == label) {
-//                mark = i;
-//                break;
-//            }
-//        }
         return null;
     }
 
@@ -139,9 +117,10 @@ public class Node {
     }
 
     public String printCommunicationThreads() {
-        StringBuilder info = new StringBuilder("");
+        StringBuilder info = new StringBuilder("\nCurrent connections are:\n");
         for (CommunicationThread communicationThread : CommunicationThreads) {
-            info.append(communicationThread.getNodeConnectedTo())
+            info.append("    ")
+                    .append(communicationThread.getNodeConnectedTo())
                     .append(" at ").append(communicationThread.getHostName())
                     .append(":").append(communicationThread.getPort()).append("\n");
         }
@@ -191,9 +170,10 @@ public class Node {
                 return ;
             for (String line : lines) {
                 String[] split = line.split("\t");
-//                System.out.println(split[0]+ Integer.parseInt(split[1])+ split[2].charAt(0));
-                if (nodesList[1].indexOf(split[2].charAt(0)) != -1)
-                    (new ConnectionInitiator(split[0], Integer.parseInt(split[1]), split[2].charAt(0))).connect();
+                for (int i = 1; i < nodesList.length; i++) {
+                    if (nodesList[i].equalsIgnoreCase("" + split[2].charAt(0)))
+                        (new ConnectionInitiator(split[0], Integer.parseInt(split[1]), split[2].charAt(0))).connect();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -345,7 +325,6 @@ public class Node {
             while (this.allVoteSite.size() <= this.CommunicationThreads.size()) {
                 try {
                     wait(500);
-                    System.out.println("\nwaiting for vote." + this.allVoteSite.size() + "  " +  Collections.synchronizedList(this.CommunicationThreads).size());
                 } catch (InterruptedException e) {
                     System.err.println("\nInterupted in collecting vote: " + e.getMessage());
                 }
@@ -508,10 +487,12 @@ public class Node {
     private void commit() {
         /* if card(P) is even, and S' > S'' for all other S'' in P */
         ArrayList<Character> newds;
+        int newsc = this.allVoteSite.size();
 
         /* if N = 3 and card ( P) = 2, then there is no change made to SC and DS */
         if (this.latestVoteData.getSC() == 3 && this.allVoteSite.size() == 2) {
             newds = this.localVoteData.getDS();
+            newsc = 3;
         } else if (this.allVoteSite.size() % 2 == 0) {
             Character s = this.ID;
             for (Character c : this.allVoteSite) {
@@ -525,7 +506,7 @@ public class Node {
         } else {
             newds = null;
         }
-        this.localVoteData = new VoteData(this.latestVoteData.getVN() + 1, this.allVoteSite.size(), newds);
+        this.localVoteData = new VoteData(this.latestVoteData.getVN() + 1, newsc, newds);
     }
 
     private void resetVoteData() {

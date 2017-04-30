@@ -15,8 +15,8 @@ public class CLIEngine implements Runnable {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         while (!Node.getInstance().isShutDown()) {
-            System.out.print("> ");
             String line = null;
+            System.out.print("\n> ");
 
             try {
                 line = bufferedReader.readLine();
@@ -34,6 +34,11 @@ public class CLIEngine implements Runnable {
                     continue;
                 }
 
+                if (line.equalsIgnoreCase("display vote")) {
+                    System.out.println(Node.getInstance().getLocalVoteData());
+                    continue;
+                }
+
                 if (line.equalsIgnoreCase("display connection")) {
                     System.out.println(Node.getInstance().printCommunicationThreads());
                     continue;
@@ -42,12 +47,14 @@ public class CLIEngine implements Runnable {
                 if (line.toLowerCase().startsWith("disconnect")) {
                     System.out.println("Disconnecting...");
                     Node.getInstance().disconnectNode(line.split(" "));
+                    System.out.println(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
 
                 if (line.toLowerCase().startsWith("connect")) {
                     System.out.println("Connecting...");
                     Node.getInstance().connectNode(line.split(" "));
+                    System.out.println(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
 
@@ -60,6 +67,7 @@ public class CLIEngine implements Runnable {
                 if (line.toLowerCase().startsWith("write")) {
                     System.out.println("Attempting to write...");
                     Node.getInstance().write();
+                    System.out.println(Node.getInstance().getLocalVoteData());
                     continue;
                 }
             } catch (IOException e) {
@@ -67,6 +75,7 @@ public class CLIEngine implements Runnable {
                 Node.getInstance().shutDown();
                 return;
             }
+            System.out.print("\n> ");
         }
     }
 

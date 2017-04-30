@@ -34,7 +34,6 @@ public class CommunicationThread implements Runnable {
         try {
             if(this.oos != null){
                 this.oos.writeObject(message);
-                System.out.println("Send: " + message + " to " + getNodeConnectedTo());
                 this.oos.flush();
             } else {
                 System.out.println("Did not send: " + message + " to " + getNodeConnectedTo());
@@ -57,8 +56,7 @@ public class CommunicationThread implements Runnable {
                 if(object!= null && object instanceof Message) {
                     Message message = (Message) object;
 
-                    System.out.println(message);
-                        /* If the message is an initialization msg, */
+                    /* If the message is an initialization msg, */
                     if (message.getMessageType() == MessageType.INIT_CONNECTION) {
                         this.nodeConnectedTo = message.getSenderID();
 //                        Object content = message.getContent();

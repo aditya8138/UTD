@@ -8,22 +8,18 @@ public class MessageProcessorThread implements Runnable {
 
     @Override
     public void run() {
-
-        System.out.println("MessageProcessorThread initiated.");
         while (!Node.getInstance().isShutDown()) {
             Message message = Node.getInstance().getMessageQueue().poll();
             if (message == null)
                 continue;
-            System.out.println("Poll message:" + message);
             Object inObject = message.getContent();
             switch (message.getMessageType()) {
                 case INIT_CONNECTION:
                     System.err.println("Found unprocessed INIT message.");
                     break;
                 case INIT_VOTE:
-                    System.out.println("Initializing vote data...");
                     Node.getInstance().voteDataInitialize();
-                    System.out.println(Node.getInstance().getLocalVoteData());
+                    System.out.println(Node.getInstance().getLocalVoteData() + "\n>");
                     break;
                 case VOTE_REQ:
                     Node.getInstance().replyVote(message.getSenderID());
@@ -39,9 +35,10 @@ public class MessageProcessorThread implements Runnable {
                     Node.getInstance().cancel();
                     break;
                 case COMMIT:
-                    if (inObject instanceof VoteData)
-                        Node.getInstance().commit((VoteData)inObject);
-                    else
+                    if (inObject instanceof VoteData) {
+                        Node.getInstance().commit((VoteData) inObject);
+                        System.out.println(Node.getInstance().getLocalVoteData());
+                    } else
                         System.err.println("COMMIT message does not contain VoteData.");
                     break;
             }

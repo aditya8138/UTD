@@ -43,10 +43,9 @@ public class VoteData implements Serializable {
 
     @Override
     public String toString() {
-        return "VoteData{" +
-                "VN=" + VN +
-                ", SC=" + SC +
-                ", DS=" + DS +
-                '}';
+        return  "Current Vote Data:" +
+                "\n    Version Number            :  " + VN +
+                "\n    Update Sites Cardinality  :  " + SC +
+                "\n    Distinguished Sites List  :  " + DS + "\n";
     }
 }
