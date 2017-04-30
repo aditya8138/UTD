@@ -9,9 +9,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public class ConnectionInitiator {
     private String address;
     private int port;
@@ -28,13 +25,16 @@ public class ConnectionInitiator {
     {
         try {
             socket = new Socket(this.address, this.port);
-            System.out.print("\nConnect to " + this.address +
-                    " at port " + this.port + "\n> ");
+            System.out.print("Connecting to " + this.address +
+                    " at port " + this.port + "\n");
             CommunicationThread communicationThread = new CommunicationThread(this.socket, this.label);
             new Thread(communicationThread).start();
-            Thread.sleep(500);//to establish conn
+            Thread.sleep(500);
             Node.getInstance().getCommunicationThreads().add(communicationThread);
-            communicationThread.send(new Message(MessageType.INIT_CONNECTION, LocalDateTime.now(), Node.getInstance().getID(), null));
+            communicationThread.send(
+                    new Message(MessageType.INIT_CONNECTION,
+                            LocalDateTime.now(),
+                            Node.getInstance().getID()));
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when opening Socket to address, " + this.address +
                     " at port " + this.port + ": " + e.getMessage());

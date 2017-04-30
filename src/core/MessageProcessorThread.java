@@ -1,8 +1,5 @@
 package core;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public class MessageProcessorThread implements Runnable {
 
 
@@ -18,8 +15,10 @@ public class MessageProcessorThread implements Runnable {
                     System.err.println("Found unprocessed INIT message.");
                     break;
                 case INIT_VOTE:
+                    System.out.println("Vote data initialization command from node " + message.getSenderID());
                     Node.getInstance().voteDataInitialize();
-                    System.out.println(Node.getInstance().getLocalVoteData() + "\n>");
+                    System.out.println(Node.getInstance().getLocalVoteData());
+                    System.out.print("> ");
                     break;
                 case VOTE_REQ:
                     Node.getInstance().replyVote(message.getSenderID());
@@ -37,7 +36,9 @@ public class MessageProcessorThread implements Runnable {
                 case COMMIT:
                     if (inObject instanceof VoteData) {
                         Node.getInstance().commit((VoteData) inObject);
+                        System.out.println("Write command from node " + message.getSenderID());
                         System.out.println(Node.getInstance().getLocalVoteData());
+                        System.out.print("> ");
                     } else
                         System.err.println("COMMIT message does not contain VoteData.");
                     break;

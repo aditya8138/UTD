@@ -7,9 +7,6 @@ import java.net.SocketException;
 
 import core.*;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public class ListenerThread implements Runnable {
     private int port;
     private ServerSocket serverSocket;
@@ -23,7 +20,6 @@ public class ListenerThread implements Runnable {
         Socket socket = null;
         try {
             this.serverSocket = new ServerSocket(this.port);
-            System.out.println("Accepting at port: " + port);
 
             while (!Node.getInstance().isShutDown()) {
                 socket = this.serverSocket.accept();
@@ -46,7 +42,7 @@ public class ListenerThread implements Runnable {
         }
     }
 
-    public void close() {
+    private void close() {
         try {
             if(this.serverSocket != null)
                 this.serverSocket.close();

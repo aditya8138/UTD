@@ -7,20 +7,17 @@ import java.net.Socket;
 
 import core.*;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public class CommunicationThread implements Runnable {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private char nodeConnectedTo;
 
-    public CommunicationThread(Socket socket) {
+    CommunicationThread(Socket socket) {
         this.socket = socket;
     }
 
-    public CommunicationThread(Socket socket, char nodeConnectedTo) {
+    CommunicationThread(Socket socket, char nodeConnectedTo) {
         this.socket = socket;
         this.nodeConnectedTo = nodeConnectedTo;
     }
@@ -59,16 +56,14 @@ public class CommunicationThread implements Runnable {
                     /* If the message is an initialization msg, */
                     if (message.getMessageType() == MessageType.INIT_CONNECTION) {
                         this.nodeConnectedTo = message.getSenderID();
-//                        Object content = message.getContent();
                         Node.getInstance().getCommunicationThreads().add(this);
-//                        Node.getInstance().voteDataInitialize();
                     } else {
                         Node.getInstance().getMessageQueue().put(message);
                     }
                 }
             }
         } catch (IOException e) {
-            System.err.println("Connection closed with " + nodeConnectedTo);
+            System.err.print("\nInfo: Connection closed with " + nodeConnectedTo + "\n> ");
             this.close();
             Node.getInstance().getCommunicationThreads().remove(this);
         } catch (ClassNotFoundException e) {
@@ -78,7 +73,7 @@ public class CommunicationThread implements Runnable {
                 System.err.println("ServerThread connected to node" + nodeConnectedTo +
                         " interrupted: " + e.getMessage());
         } finally {
-//            this.close();
+            this.close();
         }
     }
 
@@ -90,20 +85,10 @@ public class CommunicationThread implements Runnable {
                 this.ois.close();
             if(this.socket!= null)
                 this.socket.close();
-//            Node.getInstance().removeNodeFromNetwork(nodeConnectedTo);
         } catch (IOException e) {
             System.err.println("\nIOException when closing Socket/oos/ois: " + e.getMessage());
         }
     }
-
-//    private void addNodetoNetwork(String label) {
-//        String[] fields = label.split("\t");
-//        if(fields.length != 1)
-//            System.err.println("Abnormal initialization message received: " + label);
-//        this.nodeConnectedTo = fields[1].charAt(0);
-////            this.setName("ThreadTo"+nodeLabel);
-//        Node.getInstance().getCommunicationThreads().add(this);
-//    }
 
     public char getNodeConnectedTo() {
         return nodeConnectedTo;

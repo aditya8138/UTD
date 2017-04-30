@@ -1,8 +1,5 @@
 package core;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public enum MessageType {
     /* Connection initialization message.
     * A node would send this message after establish the connection with
@@ -15,13 +12,13 @@ public enum MessageType {
     INIT_VOTE,
 
     /* When a site S receives an update to the file f, S issues a LOCK-REQUEST to its local lock man-ager.
-    * When the lock request is granted, S sends a VOTE_REQ message to all the sites.*/
+    * When the lock request is granted, S sends a VOTE_REQ message to all the sites. */
     VOTE_REQ,
 
     /* When a site S, receives a VOTE-REQ, it issues a LOCK-REQUEST to its local lock manager.
-    * When the lock request is granted, S sends VOTE_REQ_ACK to S, containing the values VN, SC, and DS.*/
+    * When the lock request is granted, S sends VOTE_REQ_ACK to S, containing the values VN, SC, and DS. */
     VOTE_REQ_ACK,
-
+    /* When the lock request is denied, S sends VOTE_REQ_NACK to S, containing no content. */
     VOTE_REQ_NACK,
 
     /* If S does not belong to a distinguished partition,
@@ -29,7 +26,7 @@ public enum MessageType {
     * and sends ABORT messages to all the participants.*/
     ABORT,
 
-    /* Once the copy at S is current, S commits the update to the fileftogether with the
+    /* Once the copy at S is current, S commits the update to the file f together with the
     * modification to its VN, SC, and DS, and sends to each S, the COMMIT message along
     * with the missing updates (if necessary), the new update to f, and the new values for
     * VN, SC, and DS. */

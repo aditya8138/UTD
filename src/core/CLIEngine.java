@@ -4,18 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by hanlin on 4/27/17.
- */
 public class CLIEngine implements Runnable {
-    public CLIEngine() {
+    CLIEngine() {
     }
 
     public void run() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         while (!Node.getInstance().isShutDown()) {
-            String line = null;
+            String line;
             System.out.print("\n> ");
 
             try {
@@ -40,27 +37,27 @@ public class CLIEngine implements Runnable {
                 }
 
                 if (line.equalsIgnoreCase("display connection")) {
-                    System.out.println(Node.getInstance().printCommunicationThreads());
+                    System.out.print(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
 
                 if (line.toLowerCase().startsWith("disconnect")) {
-                    System.out.println("Disconnecting...");
                     Node.getInstance().disconnectNode(line.split(" "));
-                    System.out.println(Node.getInstance().printCommunicationThreads());
+                    System.out.print(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
 
                 if (line.toLowerCase().startsWith("connect")) {
                     System.out.println("Connecting...");
                     Node.getInstance().connectNode(line.split(" "));
-                    System.out.println(Node.getInstance().printCommunicationThreads());
+                    System.out.print(Node.getInstance().printCommunicationThreads());
                     continue;
                 }
 
                 if (line.toLowerCase().startsWith("init")) {
                     System.out.println("Initializing vote data...");
                     Node.getInstance().initiateVoteDataInitialization();
+                    System.out.println(Node.getInstance().getLocalVoteData());
                     continue;
                 }
 
@@ -68,14 +65,12 @@ public class CLIEngine implements Runnable {
                     System.out.println("Attempting to write...");
                     Node.getInstance().write();
                     System.out.println(Node.getInstance().getLocalVoteData());
-                    continue;
                 }
             } catch (IOException e) {
                 System.err.println("Error while reading line from console. Leaving network...");
                 Node.getInstance().shutDown();
                 return;
             }
-            System.out.print("\n> ");
         }
     }
 

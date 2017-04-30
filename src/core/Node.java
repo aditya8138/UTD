@@ -1,24 +1,22 @@
 package core;
 
+import net.CommunicationThread;
+import net.ConnectionInitiator;
+import net.ListenerThread;
+
 import java.io.IOException;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 
-import net.*;
-
-/**
- * Created by hanlin on 4/26/17.
- */
 public class Node {
     private static Node ourInstance = new Node();
 
@@ -27,6 +25,7 @@ public class Node {
     }
 
     private static final String NETWORK_CONFIG = "NetworkConfig.txt";
+    private static final String LOGFILE = "log";
 
     private boolean shutDown;
     private boolean lock;
@@ -59,12 +58,8 @@ public class Node {
     public void start() {
         new Thread(new ListenerThread(this.port)).start();
         try {
-            String localAddress = InetAddress.getLocalHost().getHostName();
-
             this.initiateConnection();
             this.addEntryToFile();
-
-            System.out.println("\nCurrent Connected Nodes:\n" + Node.getInstance().printCommunicationThreads());
 
             new Thread(new MessageProcessorThread()).start();
             Thread.sleep(500);
@@ -72,8 +67,6 @@ public class Node {
             while (!this.shutDown)
                 Thread.sleep(500);
             this.removeEntryFromFile();
-        } catch (UnknownHostException e) {
-            System.err.println("\nUnknownHostException when get local hostname: " + e.getMessage());
         } catch (InterruptedException e) {
             System.err.println("\nProcess interupted: " + e.getMessage());
         }
@@ -96,78 +89,75 @@ public class Node {
         return CommunicationThreads;
     }
 
-    public CommunicationThread getCommunicationThread(Character label) {
+    private CommunicationThread getCommunicationThread(Character label) {
         for (CommunicationThread communicationThread : CommunicationThreads) {
-            if(communicationThread.getNodeConnectedTo() == label)
+            if (communicationThread.getNodeConnectedTo() == label)
                 return communicationThread;
         }
         return null;
     }
 
-    public void shutDown() {
-        this.shutDown = this.disconnectAllConnections();
+    void shutDown() {
+        this.disconnectAllConnections();
+        this.shutDown = true;
     }
 
-    private boolean disconnectAllConnections() {
+    private void disconnectAllConnections() {
         ArrayList<Character> nodesToRemove = new ArrayList<>();
         for (CommunicationThread communication : this.CommunicationThreads) {
             nodesToRemove.add(communication.getNodeConnectedTo());
         }
-        return disconnectNode(nodesToRemove);
+        this.disconnectNode(nodesToRemove);
     }
 
-    public String printCommunicationThreads() {
+    String printCommunicationThreads() {
         StringBuilder info = new StringBuilder("\nCurrent connections are:\n");
-        for (CommunicationThread communicationThread : CommunicationThreads) {
+        for (CommunicationThread communicationThread : this.CommunicationThreads) {
             info.append("    ")
                     .append(communicationThread.getNodeConnectedTo())
                     .append(" at ").append(communicationThread.getHostName())
                     .append(":").append(communicationThread.getPort()).append("\n");
         }
+        if (this.CommunicationThreads.size() == 0)
+            info.append("    none.");
         return info.toString();
     }
 
-    public boolean disconnectNode(String[] nodesList) {
+    void disconnectNode(String[] nodesList) {
         if (nodesList.length == 1) {
             System.err.println("Need node label to delete...");
-            return false;
+            return;
         }
         ArrayList<Character> nodesToRemove = new ArrayList<>();
         for (int i = 1; i < nodesList.length; i++) {
-            synchronized (this.CommunicationThreads) {
-                for (CommunicationThread communication : this.CommunicationThreads) {
-                    if (nodesList[i].equalsIgnoreCase(""+communication.getNodeConnectedTo())) {
-                        System.out.println("Disonnecting from " + communication.getNodeConnectedTo());
-                        nodesToRemove.add(communication.getNodeConnectedTo());
-                    }
+            for (CommunicationThread communication : this.CommunicationThreads) {
+                if (nodesList[i].equalsIgnoreCase("" + communication.getNodeConnectedTo())) {
+                    System.out.println("Disconnecting from " + communication.getNodeConnectedTo());
+                    nodesToRemove.add(communication.getNodeConnectedTo());
                 }
             }
         }
-        return disconnectNode(nodesToRemove);
+        disconnectNode(nodesToRemove);
     }
-    private synchronized boolean disconnectNode(ArrayList<Character> nodesToRemove) {
-        boolean ack = true;
+
+    private synchronized void disconnectNode(ArrayList<Character> nodesToRemove) {
         for (Character label : nodesToRemove) {
             CommunicationThread communicationThread = getCommunicationThread(label);
-            if(communicationThread != null) {
+            if (communicationThread != null) {
                 communicationThread.close();
                 this.CommunicationThreads.remove(communicationThread);
             }
-            else
-                ack = false;
         }
-        return ack;
     }
 
-    public void connectNode(String[] nodesList) {
-        ArrayList<Character> nodesToAdd = new ArrayList<>();
-        if(Files.notExists(Paths.get(NETWORK_CONFIG)))
-            return ;
+    void connectNode(String[] nodesList) {
+        if (Files.notExists(Paths.get(NETWORK_CONFIG)))
+            return;
         List<String> lines;
         try {
             lines = Files.readAllLines(Paths.get(NETWORK_CONFIG));
-            if(lines.size() == 0)
-                return ;
+            if (lines.size() == 0)
+                return;
             for (String line : lines) {
                 String[] split = line.split("\t");
                 for (int i = 1; i < nodesList.length; i++) {
@@ -181,16 +171,15 @@ public class Node {
     }
 
     private void initiateConnection() {
-        if(Files.notExists(Paths.get(NETWORK_CONFIG)))
+        if (Files.notExists(Paths.get(NETWORK_CONFIG)))
             return;
         List<String> lines;
         try {
             lines = Files.readAllLines(Paths.get(NETWORK_CONFIG));
-            if(lines.size() == 0)
+            if (lines.size() == 0)
                 return;
             for (String line : lines) {
                 String[] split = line.split("\t");
-//                System.out.println(split[0]+ Integer.parseInt(split[1])+ split[2].charAt(0));
                 (new ConnectionInitiator(split[0], Integer.parseInt(split[1]), split[2].charAt(0))).connect();
             }
         } catch (IOException e) {
@@ -200,11 +189,8 @@ public class Node {
 
     private void addEntryToFile() {
         try {
-            StringBuilder content = new StringBuilder(InetAddress.getLocalHost().getHostName());
-            content.append("\t").append(this.port).append("\t").append(this.ID);
-
-            List<String> lines = new ArrayList<String>();
-            lines.add(content.toString());
+            List<String> lines = new ArrayList<>();
+            lines.add(InetAddress.getLocalHost().getHostName() + "\t" + this.port + "\t" + this.ID);
             Files.write(Paths.get(NETWORK_CONFIG), lines, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
         } catch (UnknownHostException e) {
             System.err.println("\nUnknownHostException when get local hostname: " + e.getMessage());
@@ -218,7 +204,7 @@ public class Node {
             List<String> lines = Files.readAllLines(Paths.get(NETWORK_CONFIG));
             List<String> new_lines = new ArrayList<>();
             for (String line : lines) {
-                if(!line.contains("\t" + this.ID))
+                if (!line.contains("\t" + this.ID))
                     new_lines.add(line);
             }
             Files.write(Paths.get(NETWORK_CONFIG), new_lines);
@@ -227,12 +213,12 @@ public class Node {
         }
     }
 
-    public void initiateVoteDataInitialization() {
+    void initiateVoteDataInitialization() {
         this.voteDataInitialize();
         this.broadcast(MessageType.INIT_VOTE);
     }
 
-    public void voteDataInitialize() {
+    void voteDataInitialize() {
         this.localVoteData = new VoteData(1, this.CommunicationThreads.size() + 1, this.selectDistinguishSite());
     }
 
@@ -256,7 +242,7 @@ public class Node {
         if (this.CommunicationThreads.size() % 2 != 0) {
             Character dslabel = this.ID;
             for (CommunicationThread communicationThread : this.CommunicationThreads) {
-                if(communicationThread.getNodeConnectedTo() < dslabel) {
+                if (communicationThread.getNodeConnectedTo() < dslabel) {
                     dslabel = communicationThread.getNodeConnectedTo();
                 }
             }
@@ -271,11 +257,11 @@ public class Node {
         return ds;
     }
 
-    public VoteData getLocalVoteData() {
+    VoteData getLocalVoteData() {
         return localVoteData;
     }
 
-    public void broadcast(MessageType messageType) {
+    private void broadcast(MessageType messageType) {
         Message message = new Message(messageType, LocalDateTime.now(), this.ID);
         switch (messageType) {
             case INIT_VOTE:
@@ -285,12 +271,6 @@ public class Node {
                     communicationThread.send(message);
                 }
                 break;
-//            case VOTE_REQ:
-//                for (CommunicationThread communicationThread : this.CommunicationThreads) {
-//                    communicationThread.send(message);
-//                }
-//                break;
-//                break;
             case COMMIT:
                 message.setContent(this.localVoteData);
                 for (CommunicationThread communicationThread : this.CommunicationThreads) {
@@ -318,7 +298,7 @@ public class Node {
         }
     }
 
-    public synchronized void write() {
+    synchronized void write() {
         if (this.acquireLock()) {
 
             this.requestVote();
@@ -334,6 +314,7 @@ public class Node {
             * i.e. some node reply NACK, abort write operation. */
             if (this.totalVoteReceive < this.allVoteSite.size() - 1) {
                 this.abort();
+                this.resetVoteData();
                 this.releaseLock();
                 return;
             }
@@ -342,7 +323,7 @@ public class Node {
             * issues a RELEASE-LOCK request to its local lock manager,
             * and sends ABORT messages to all the participants. */
             if (!this.isDistinguished()) {
-                System.out.println("\nCurrent node does not belong to a  distinguished partition. Update abort.");
+                System.out.println("UPDATE FAIL:\n\tCurrent node does not belong to a distinguished partition. ");
                 this.abort();
                 this.resetVoteData();
                 this.releaseLock();
@@ -354,6 +335,7 @@ public class Node {
             if (this.localVoteData.getVN() != this.latestVoteData.getVN())
                 this.catchup();
 
+            System.out.println("UPDATE SUCCESS!");
             this.commit();
             this.broadcast(MessageType.COMMIT);
             this.resetVoteData();
@@ -361,7 +343,7 @@ public class Node {
         }
     }
 
-    public synchronized boolean acquireLock() {
+    private synchronized boolean acquireLock() {
         if (!this.lock) {
             this.lock = true;
             return true;
@@ -370,16 +352,13 @@ public class Node {
 
     }
 
-    public synchronized boolean releaseLock() {
+    private synchronized void releaseLock() {
         if (this.lock) {
             this.lock = false;
-            return true;
-        } else
-            return false;
-
+        }
     }
 
-    public synchronized void addVote(Character label, VoteData voteData) {
+    synchronized void addVote(Character label, VoteData voteData) {
         this.allVoteSite.add(label);
 
         if (voteData == null) {
@@ -398,11 +377,10 @@ public class Node {
         }
     }
 
-    public void requestVote() {
+    private void requestVote() {
         if (this.latestVoteSite != null || this.latestVoteData != null) {
             System.err.println("Cleanup for last request should be done before new request coming in.");
         }
-        System.out.println("Starting to request vote.");
         this.latestVoteSite = new ArrayList<>();
         this.latestVoteSite.add(this.ID);
         this.allVoteSite = new ArrayList<>();
@@ -412,7 +390,7 @@ public class Node {
         this.broadcast(MessageType.VOTE_REQ);
     }
 
-    public void replyVote(Character senderID) {
+    void replyVote(Character senderID) {
         if (this.acquireLock()) {
             this.send(senderID, MessageType.VOTE_REQ_ACK);
         } else {
@@ -446,7 +424,7 @@ public class Node {
         return false;
     }
 
-    public void cancel() {
+    void cancel() {
         this.releaseLock();
     }
 
@@ -457,7 +435,11 @@ public class Node {
     /* Return true if the second ArrayList 'list' contains all elements in first ArrayList 'element',
     * otherwise return false. */
     private boolean contain(ArrayList<Character> elements, ArrayList<Character> list) {
+        if (elements == null)
+            return false;
+
         boolean result = true;
+
         for (Character c : elements) {
             result = result && list.contains(c);
         }
@@ -515,6 +497,7 @@ public class Node {
         this.latestVoteData = null;
         this.latestVoteSite = null;
     }
+
 
     @Override
     public String toString() {
