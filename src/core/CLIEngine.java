@@ -16,16 +16,21 @@ public class CLIEngine implements Runnable {
         helpcontext.append("Usage:\n")
                 .append("  <command> [options]\n\n")
                 .append("Commands:\n")
-                .append("  help                        Show help for commands.\n")
-                .append("  init                        Initializa vote data for all connected nodes.\n")
-                .append("  display [options]           Display current status. Available options\n")
-                .append("                              Available options are: status, vote, connection/network.\n")
-                .append("  connect [options]           Connect to some nodes. Need to specify the label of the nodes.\n")
-                .append("                              Example: connect B C D\n")
-                .append("  disconnect [options]        Disconnect with some nodes. Need to specify the label of the nodes.\n")
-                .append("                              Example: disconnect B C D\n")
-                .append("  write                       Write to the object.\n")
-                .append("  quit/exit/q                 Safe exit.\n");
+                .append("  help                    Show help for commands.\n")
+                .append("  init                    Initialize vote data for all connected nodes.\n")
+                .append("  display [options]       Display current status.\n")
+                .append("                          Available options:\n")
+                .append("                              status,\n")
+                .append("                              vote,\n")
+                .append("                              connection/network.\n")
+                .append("  connect [options]       Connect to some nodes.\n")
+                .append("  connect [options]       Need to specify the label of the nodes.\n")
+                .append("                          Example: connect B C D\n")
+                .append("  disconnect [options]    Disconnect with some nodes.\n")
+                .append("  disconnect [options]    Need to specify the label of the nodes.\n")
+                .append("                          Example: disconnect B C D\n")
+                .append("  write                   Write to the object.\n")
+                .append("  quit/exit/q             Safe exit.\n");
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
