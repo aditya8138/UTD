@@ -24,10 +24,10 @@ public class CLIEngine implements Runnable {
                 .append("                              vote,\n")
                 .append("                              connection/network.\n")
                 .append("  connect [options]       Connect to some nodes.\n")
-                .append("  connect [options]       Need to specify the label of the nodes.\n")
+                .append("                          Need to specify the label of the nodes.\n")
                 .append("                          Example: connect B C D\n")
                 .append("  disconnect [options]    Disconnect with some nodes.\n")
-                .append("  disconnect [options]    Need to specify the label of the nodes.\n")
+                .append("                          Need to specify the label of the nodes.\n")
                 .append("                          Example: disconnect B C D\n")
                 .append("  write                   Write to the object.\n")
                 .append("  quit/exit/q             Safe exit.\n");
