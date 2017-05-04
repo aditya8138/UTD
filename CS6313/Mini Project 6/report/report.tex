@@ -1,0 +1,105 @@
+\documentclass[11pt,letterpaper,titlepage,en-US]{article}
+
+\usepackage{basicstyle}
+\usepackage{report}
+\usepackage{knit}
+
+\lstdefinestyle{customr}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=single,
+    xleftmargin=10pt,
+    % language=R,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    stringstyle=\color{orange},
+}
+
+\lstset{style=customr}
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Mini Project \#6}
+\DTMsavetimestamp{DueDate}{2017-05-04T16:00:00-06:00}
+\newcommand{\hmwkClass}{CS 6313.001}
+\newcommand{\hmwkClassName}{Statistical Methods for Data Science}
+\newcommand{\hmwkClassInstructor}{Instructor: Pankaj Choudhary}
+\newcommand{\hmwkAuthorName}{Hanlin He / Lizhong Zhang}
+\newcommand{\hmwkAuthorNetID}{hxh160630 / lxz160730}
+
+\newcommand{\hmwkAuthorOneName}{Lizhong Zhang (lxz160730)}
+\newcommand{\hmwkAuthorTwoName}{Hanlin He (hxh160630)}
+
+
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{1in}
+    \textmd{\textbf{\hmwkClassName \\\hmwkClass:\ \hmwkTitle }}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \DTMusedate{DueDate}\ at \DTMusetime{DueDate} }\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}\\
+    \vspace{0.5in}\includegraphics[height=2.4em]{UTD_logo_BW}\\
+    \vspace{2in}
+}
+
+\author{\textbf{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}} \\ }
+\date{}
+\makeindex
+
+\begin{document}
+\maketitle
+
+\pagenumbering{Roman}
+\tableofcontents
+\pagebreak
+\pagenumbering{arabic}
+
+\section*{Contribution}
+Both team members made the same contribution in this project.
+
+\section{Answers}
+\begin{itemize}
+    \item Bias is $-0.003031904$ and standard error $0.09476028$.
+    \item 2.5th and 97.5th percentile of $\hat{\theta}$: $[3.669463, 4.065631]$
+    \item 2.5th and 97.5th percentile of $\hat{\theta} - \theta$: $[-0.1871917, 0.1872621]$
+    \item CI:
+    \begin{itemize}
+        \item Normal Approximation CI: $[3.68736, 4.066203]$
+        \item Basic Bootstrap CI: $[3.68736, 4.066203]$
+        \item Normal Approximation CI: $[3.68736, 4.066203]$
+    \end{itemize}
+\end{itemize}
+
+The histogram and qqplot for bootstrap distribution is shown in \cref{fi}.
+\begin{figure}[H]
+\includegraphics[width=.49\textwidth]{fig/hist.pdf}
+\includegraphics[width=.49\textwidth]{fig/qqplot.pdf}
+\caption{Histogram \& QQplot}\label{fi}
+\end{figure}
+
+The bootstrap CI and plot indicates that $\log(mean(\hat{\theta}))$ is a good 
+estimator of the parameter of interest.
+
+\pagebreak
+
+\section{R Code}
+
+\input{source}
+
+\end{document}

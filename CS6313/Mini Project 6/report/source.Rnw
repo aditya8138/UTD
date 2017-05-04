@@ -1,0 +1,139 @@
+\documentclass[a4paper]{article}
+\parindent0pt
+\begin{document}
+
+<<Test>>=
+cpu <- scan(file="cputime.txt")
+
+# Define the function to compute the natural logarithm of the polulation mean.
+logmean <- function(data) {
+  return(log(mean(data)))
+}
+
+# Define the resample function.
+resample <- function(x) {
+  sample(x, size = length(x), replace = TRUE)
+}
+
+# Define the bootstrap function.
+rboot <- function(B, statistic, simulator, data) {
+  tboots <- replicate(B, statistic(simulator(data)))
+  return(tboots)
+}
+
+# Define the bootstrap function that directly compute specific statistic.
+bootstrap.se <- function(B, statistic, simulator, data) {
+  tboots <- rboot(B, statistic, simulator, data)
+  se <- sd(tboots)
+  return(se)
+}
+
+# Define the bootstrap function that directly compute the bias of specific statistic.
+bootstrap.bias <- function(B, statistic, simulator, t.hat, data) {
+  tboots <- rboot(B, statistic, simulator, data)
+  bias <- mean(tboots) - t.hat
+  return(bias)
+}
+
+# Define the bootstrap function that directly compute the quantile
+# of specific statistic.
+bootstrap.alphaquantile <- function(B, statistic, simulator, data, alpha) {
+  tboots <- rboot(B, statistic, simulator, data)
+  alphaquantile <- quantile(tboots, alpha)
+  return(alphaquantile)
+}
+
+# Define the bootstrap function that directly compute the quantile
+# of the bias of specific statistic.
+bootstrap.alphaquantile.hat <- function(B, statistic, simulator, t.hat, data, alpha) {
+  alphaquantile <- bootstrap.alphaquantile(B, statistic, simulator, data, alpha)
+  alphaquantile.hat <- alphaquantile - t.hat
+  return(alphaquantile.hat)
+}
+
+# Define function to compute the CI with normal approximation.
+NormalCI <- function(B, statistic, simulator, t.hat, data, alpha) {
+  tboots <- rboot(B, statistic, simulator, data)
+  se <- sd(tboots)
+  bias <- mean(tboots) - t.hat
+  ci.lower <- t.hat - bias - qnorm(1 - alpha/2) * se
+  ci.upper <- t.hat - bias - qnorm(alpha/2) * se
+  return(list(ci.lower=ci.lower,ci.upper=ci.upper))
+}
+
+# Define function to compute the CI with basic bootstrap.
+BasicBootstrapCI <- function(B, statistic, simulator, t.hat, data, alpha) {
+  tboots <- rboot(B, statistic, simulator, data)
+  ci.lower <- 2 * t.hat - quantile(tboots, 1 - alpha/2)
+  ci.upper <- 2 * t.hat - quantile(tboots, alpha/2)
+  return(list(ci.lower=ci.lower,ci.upper=ci.upper))
+}
+
+# Define function to compute the CI with percentile bootstrap.
+PercentileBootstrapCI <- function(B, statistic, simulator, data, alpha) {
+  tboots <- rboot(B, statistic, simulator, data)
+  ci.lower <- quantile(tboots, alpha/2)
+  ci.upper <- quantile(tboots, 1 - alpha/2)
+  return(list(ci.lower=ci.lower,ci.upper=ci.upper))
+}
+
+# Compute t.hat
+t.hat <- logmean(cpu)
+
+# Compute bootstrap distribution.
+cpu.boot <- rboot(1000, logmean, resample, cpu)
+
+# Compute standard error of theta hat.
+t.hat.se <- bootstrap.se(1000, logmean, resample, cpu)
+
+# Compute bias of theta hat.
+t.hat.bias <- bootstrap.bias(1000, logmean, resample, logmean(cpu), cpu)
+
+# Compute 2.5th and 97.5th percentiles of the theta hat.
+bootstrap.alphaquantile(1000, logmean, resample, cpu, 0.025)
+bootstrap.alphaquantile(1000, logmean, resample, cpu, 0.975)
+
+# Compute 2.5th and 97.5th percentiles of the bias of theta hat.
+bootstrap.alphaquantile.hat(1000, logmean, resample, logmean(cpu), cpu, 0.025)
+bootstrap.alphaquantile.hat(1000, logmean, resample, logmean(cpu), cpu, 0.975)
+
+# Compute normal approximation of CI.
+NormalCI(1000, logmean, resample, logmean(cpu), cpu, 0.05)
+
+# Compute basic bootstrap CI.
+BasicBootstrapCI(1000, logmean, resample, logmean(cpu), cpu, 0.05)
+
+# Compute normal approximation of CI.
+PercentileBootstrapCI(1000, logmean, resample, cpu, 0.05)
+
+# Draw histogram and qqplot for bootstrap distribution
+# Create fig folder to store plot.
+if(!dir.exists("fig")) dir.create("fig")
+pdf("fig/hist.pdf", width=5, height=7)
+hist(cpu.boot)
+dev.off()
+pdf("fig/qqplot.pdf", width=5, height=7)
+qqnorm(cpu.boot)
+qqline(cpu.boot)
+dev.off()
+
+# Verification
+library(boot)
+nlm.hat <- function(x, indices){
+  result <- log(mean(x[indices]))
+  return(result)
+}
+nlm.hat.boot <- boot(cpu, nlm.hat, R = 1000, sim = "ordinary", stype = "i")
+names(nlm.hat.boot)
+log(mean(cpu))
+nlm.hat.boot$t0
+mean(nlm.hat.boot$t) - nlm.hat.boot$t0
+quantile(mean(nlm.hat.boot$t) - nlm.hat.boot$t0,0.975)
+sd(nlm.hat.boot$t)
+plot(nlm.hat.boot)
+boot.ci(nlm.hat.boot)
+
+
+@
+
+\end{document}
