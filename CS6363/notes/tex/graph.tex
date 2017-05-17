@@ -915,7 +915,7 @@ Union Find is a data structure which can do the following:
     \item \ProcedureName{Find}{u}: return set id (some vertex in tree).
     \item \ProcedureName{Union}{u,v}: merges sets containing $u$ and $v$.
 \end{itemize}
-All operation of Union Find take \bigO{\varpropto(n)} time.
+All operation of Union Find take \bigO{\alpha(n)} time.
 
 The algorithm is shown in \cref{algo:kruskal}
 
@@ -948,7 +948,7 @@ The running time:
     \item \bigO{n} union operations.
     \item \bigO{n} makeset operations.
 \end{itemize}
-So other than sorting, total time is \bigO{m\varpropto(n)}.
+So other than sorting, total time is \bigO{m\alpha(n)}.
 
 Sorting takes \bigO{m\log m} = \bigO{m \log n} time,
 dominating the total running.
