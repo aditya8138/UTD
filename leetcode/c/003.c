@@ -2,26 +2,29 @@
 #include<string.h>
 
 int lengthOfLongestSubstring(char* s) {
-    int i = 0;
     int max = 0;
-    while (s[i] != '\0') {
-        int hashtable[127] = {0};
-        int j = i;
-        int count = 0;
-        while (hashtable[s[j]] != 1 && s[j] != '\0') {
-            hashtable[s[j]] = 1;
-            count++;
+    int hashtable[127] = {0};
+    int i = 0;
+    int j = 0;
+    while (s[j] != '\0') {
+        while (hashtable[s[j]] < i + 1 && s[j] != '\0') {
+            hashtable[s[j]] = j + 1;
             j++;
         }
-        max = max < count ? count : max;
-        i++;
+        printf("%d %d\n", i, j);
+        max = max < j - i ? j - i: max;
+        if (s[j] != '\0') {
+            i = hashtable[s[j]];
+            hashtable[s[j]] = j + 1;
+            j++;
+        }
     }
     return max;
 }
 
 int main() {
 
-    char* s = "asdfasdfgasdfgh";
+    char* s = "c";
 
     printf("%s\t%d\n", s, lengthOfLongestSubstring(s));
 
