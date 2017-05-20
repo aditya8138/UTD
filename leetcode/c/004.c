@@ -7,17 +7,18 @@
 #define HalfCeil(x) (x % 2 ? x/2 + 1 : x/2)
 
 double findK(int* n1, int s1, int* n2, int s2, int k) {
-    /* Used for debugging. 
-    printf("\nnums1: ");
-    for (int i = 0; i < s1; i++) {
-        printf("%d ",n1[i]);
-    }
-    printf("\nnums2: ");
-    for (int i = 0; i < s2; i++) {
-        printf("%d ",n2[i]);
-    }
-    printf("\nk: %d ",k);
-    */
+
+    /*
+     *printf("\nnums1: ");
+     *for (int i = 0; i < s1; i++) {
+     *    printf("%d ",n1[i]);
+     *}
+     *printf("\nnums2: ");
+     *for (int i = 0; i < s2; i++) {
+     *    printf("%d ",n2[i]);
+     *}
+     *printf("\nk: %d ",k);
+     */
 
     if (s1 == 0)
         return n2[k-1];
