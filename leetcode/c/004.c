@@ -7,12 +7,20 @@
 #define HalfCeil(x) (x % 2 ? x/2 + 1 : x/2)
 
 double findK(int* n1, int s1, int* n2, int s2, int k) {
+    /* Used for debugging. 
+    printf("\nnums1: ");
+    for (int i = 0; i < s1; i++) {
+        printf("%d ",n1[i]);
+    }
+    printf("\nnums2: ");
+    for (int i = 0; i < s2; i++) {
+        printf("%d ",n2[i]);
+    }
+    printf("\nk: %d ",k);
+    */
 
     if (s1 == 0)
         return n2[k-1];
-
-    if (s2 == 0)
-        return n1[k-1];
 
     if (n1[s1-1] <= n2[0])
         return (double)(k > s1 ? n2[k-s1-1] : n1[k-1]);
@@ -22,52 +30,31 @@ double findK(int* n1, int s1, int* n2, int s2, int k) {
 
     if (s1 == 1) {
         if (n1[0] < n2[s2/2]) {
-            if (k < s2/2 + 1)
-                return findK(n1,s1,n2,s2/2,k);
-            else if (k > s2/2 + 1)
-                return findK(n1,s1,&(n2[s2/2]),HalfCeil(s2),k-s2/2);
-            else
-                return findK(n1,s1,n2,s2/2,k);
+            if (k <= s2/2 + 1)
+                return findK(n2, s2/2, n1, s1, k);
+            else /* if (k > s2/2 + 1) */
+                return findK(&(n2[s2/2]), HalfCeil(s2), n1, s1, k-s2/2);
         } else {
-            if (k < s2/2)
-                return findK(n1,0,n2,s2/2,k);
-            else if (k > s2/2)
-                return findK(n1,s1,&(n2[s2/2]),HalfCeil(s2),k-s2/2);
-            else
-                return findK(n1,0,n2,s2/2,k);
+            if (k <= s2/2)
+                return findK(n1, 0, n2, s2/2,k);
+            else /* if (k > s2/2)  */
+                return findK(n1, s1, &(n2[s2/2]), HalfCeil(s2), k-s2/2);
         }
     }
     if (s2 == 1) {
-        if (n2[0] < n1[s1/2]) {
-            if (k < s1/2 + 1)
-                return findK(n1,s1/2,n2,s2,k);
-            else if (k > s1/2 + 1)
-                return findK(&(n1[s1/2]),HalfCeil(s1),n2,s2,k-s1/2);
-            else
-                return findK(n1,s1/2,n2,s2,k);
-        } else {
-            if (k < s1/2)
-                return findK(n2,0,n1,s1/2,k);
-            else if (k > s1/2)
-                return findK(n2,s2,&(n1[s1/2]),HalfCeil(s1),k-s1/2);
-            else
-                return findK(n2,0,n1,s1/2,k);
-        }
+        return findK (n2, s2, n1, s1, k);
     }
-    /* s1/2 denotes the number of integers that are less than n1[s1/2]. */
-    if (n1[s1/2] > n2[s2/2]) {
+
+    if (n1[s1/2] >= n2[s2/2]) {
         if (k <= s1/2 + s2/2)
             return findK(n1,s1/2,n2,s2,k);
         else
-            return findK(n1,s1, &(n2[s2/2]), HalfCeil(s2), k-s2/2);
-    } else {
-        if (k <= s1/2 + s2/2)
-            return findK(n2,s2/2,n1,s1,k);
-        else
-            return findK(n2,s2, &(n1[s1/2]), HalfCeil(s1), k-s1/2);
-    }
+            return findK(&(n2[s2/2]), HalfCeil(s2), n1,s1, k-s2/2);
+    } else
+        return findK(n2, s2, n1, s1, k);
 }
 
+/* Generalize the problem to find the k-th number in two array. */
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
     int k = (nums1Size + nums2Size) / 2;
     if ((nums1Size + nums2Size) % 2)
@@ -82,7 +69,7 @@ int main() {
     /* Generate array 1, with size no more than 10.  */
     int s1 = rand() % 10 + 1;
     int* nums1 = (int*)malloc(s1 * sizeof(int));
-    printf("\nnums1[%d]: {", s1);
+    printf("Generating Arrays:\nnums1[%d]:\t {", s1);
     for (int i = 0; i < s1; i++) {
         nums1[i] = i ? nums1[i-1] + rand() % 100 : rand() % 100;
         printf(" %d ", nums1[i]);
@@ -90,7 +77,7 @@ int main() {
     /* Generate array 2, with size no more than 15. */
     int s2 = rand() % 15 + 1;
     int* nums2 = (int*)malloc(s2 * sizeof(int));
-    printf("}\nnums2[%d]: {", s2);
+    printf("}\nnums2[%d]:\t {", s2);
     for (int i = 0; i < s2; i++) {
         nums2[i] = i ? nums2[i-1] + rand() % 100 : rand() % 100;
         printf(" %d ", nums2[i]);
