@@ -1,4 +1,5 @@
-/* 004.Median of Two Sorted Arrays */
+/* 005.Longest Palindromic Substring */
+/* A naive solution, brutle force. */
 
 #include<stdio.h>
 #include<stdlib.h>
