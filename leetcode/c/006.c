@@ -1,4 +1,6 @@
 /* 006. ZigZag Conversion */
+/* The main idea is traverse the new string, copy the corresponding character 
+ * from the original string. */
 
 #include<stdio.h>
 #include<stdlib.h>
