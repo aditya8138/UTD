@@ -10,24 +10,8 @@
 
 #define print_triple(t) printf("[%d, %d, %d]\n", t[0], t[1], t[2])
 
-/* In memory sort. */
-void quick_sort(int *array, int maxlength, int left, int right) {
-    if (maxlength <= 0)
-        return;
-    if (left >= right)
-        return;
-    int i = left;
-    int j = right;
-    int key = array[left];
-    while (i < j) {
-        for (; i < j && key <= array[j]; j--);
-        array[i] = array[j];
-        for (; i < j && key >= array[i]; i++);
-        array[j] = array[i];
-    }
-    array[i] = key;
-    quick_sort(array, i - 1 - left, left, i - 1);
-    quick_sort(array, right - i - 1, i + 1, right);
+int comp (const void * a, const void * b) {
+    return *(int *)a - *(int *)b;
 }
 
 int** twoSum(int target, int* nums, int numsSize, int* returnSize) {
@@ -66,7 +50,7 @@ int** twoSum(int target, int* nums, int numsSize, int* returnSize) {
 
 int** threeSum(int* nums, int numsSize, int* returnSize) {
     /* Sort the array before other operation. */
-    quick_sort(nums, numsSize, 0, numsSize - 1);
+    qsort(nums, numsSize, sizeof (int), comp);
 
     int** threeSum = (int**)malloc(65535 * sizeof(int*));
 
