@@ -1,0 +1,55 @@
+\documentclass[varwidth]{standalone}
+
+\begin{document}
+
+
+\section{3Sum (P015)}
+\subsection{Based on Two Sum}
+First idea is based on 001.Two Sum. It's rather intuitive.
+Since two sum can get two number with target sum,
+if we set the target as the negative of $\mathtt{nums[i]}$,
+and get another two number $\mathtt{nums[j]}$ and $\mathtt{nums[k]}$ with sum of
+$-\mathtt{nums[i]}$, we automatically get a triplet with sum of
+$\mathtt{nums[i]} + \mathtt{nums[j]} + \mathtt{nums[k]} = 0$.
+We can repeat the process for all number in the array to get all the possible
+triplets. The running time is intuitively $\mathcal{O}(n^2)$,  since two sum take
+$\mathcal{O}(n)$ and was repeated $n$ times.
+
+To simplify the operation of duplicating number, we may sort the array first.
+Since sorting takes $\mathcal{O}(n \log n)$ time, less than $\mathcal{O}(n^2)$,
+sorting time can be discard.
+
+Although the solution is after all $\mathcal{O}(n^2)$, the overall running time
+is unacceptably slow, with my C implementation.
+
+The main reason is to simplify the hash function, I let the index equals to the
+number itself plus a rather big number, so that even negative number can
+directly map into an array. The big number is unfortunately set to $100000$.
+And to check the existance of an integer, the condition became
+\lstinline[language=c]{if (h[x + IMAX + 1] != 0)}.
+Therefore, each time hash table was accessed, it must move at least $100000$ to
+get the hash value, greatly consuming time without any alarm.
+
+\subsection{Two Pointers}
+Although previous solution used solution for two sum, it failed to see another
+chance to reduce time and space.
+\begin{quote}
+    \emph{The array is sorted in the first step.}
+\end{quote}
+
+An sorted array is each to manipulate.
+We can still use the idea of turning three sum into two sum, but when dealing
+with sorted array, two sum can easily implemented using two pointers
+
+Let two pointers \texttt{i j} start at each side, where $i < j$.
+For a given $target$, if $\mathtt{nums[i]} + \mathtt{nums[j]} < target$.
+We can move $i$ rightward to increase the sum of the two.
+Or on the other hand if $\mathtt{nums[i]} + \mathtt{nums[j]} > target$.
+We can move $j$ leftward to decrease the sum of the two.
+Until otherwise, if $\mathtt{nums[i]} + \mathtt{nums[j]} = target$, we
+found one answer, or $i > j$, there is no possible answer.
+
+The biggest advantage is this solution does not use hash table. Only traverse
+through the array is enough to get all possible answers.
+
+\end{document}
