@@ -7,6 +7,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionCodecFactory;
+import org.apache.hadoop.util.Progressable;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -58,7 +59,11 @@ public class DownloadAndDecompress {
             FileSystem fs = FileSystem.get(URI.create(dst), conf);
 
             Path dstPath = new Path(dst);
-            out = fs.create(dstPath);
+            out = fs.create(dstPath, new Progressable() {
+                public void progress() {
+                    System.out.print(".");
+                }
+            });
 
             IOUtils.copyBytes(in, out, 4096, true);
 

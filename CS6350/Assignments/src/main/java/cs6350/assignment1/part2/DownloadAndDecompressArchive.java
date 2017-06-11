@@ -59,8 +59,7 @@ public class DownloadAndDecompressArchive {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             IOUtils.closeStream(zin);
             IOUtils.closeStream(in);
         }
