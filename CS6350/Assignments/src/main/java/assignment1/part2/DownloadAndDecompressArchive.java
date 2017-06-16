@@ -1,4 +1,4 @@
-package cs6350.assignment1.part2;
+package assignment1.part2;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;

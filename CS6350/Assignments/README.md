@@ -27,7 +27,7 @@ All execution need to be performed on department machine with hadoop configured.
 		
 	# Download files from link.txt and upload to HDFS and decompress afterward.
 	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    cs6350.assignment1.part1.DownloadAndDecompress \
+	    assignment1.part1.DownloadAndDecompress \
 	    link.txt hdfs://cshadoop1/user/netID/assignment1/part1/
 	
 	# Display result
@@ -42,13 +42,13 @@ All execution need to be performed on department machine with hadoop configured.
 	
 	# Download Wikipedia (1.8 billion)
 	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    cs6350.assignment1.part2.DownloadAndDecompressArchive \
+	    assignment1.part2.DownloadAndDecompressArchive \
 	    http://corpus.byu.edu/wikitext-samples/text.zip \
 	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki/
 	
 	# Download GloWbE (1.8 billion)
 	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    cs6350.assignment1.part2.DownloadAndDecompressArchive \
+	    assignment1.part2.DownloadAndDecompressArchive \
 	    http://corpus.byu.edu/cohatext/samples/text.zip \
 	    hdfs://cshadoop1/user/netID/assignment1/part2/cohatext/
 	    

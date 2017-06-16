@@ -1,4 +1,4 @@
-package cs6350.assignment1.part1;
+package assignment1.part1;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -42,7 +42,7 @@ public class DownloadAndDecompress {
     }
 
     private static void ddd (String uri, String dst) {
-        URL url = null;
+        URL url;
         InputStream in = null;
         OutputStream out = null;
         try {
