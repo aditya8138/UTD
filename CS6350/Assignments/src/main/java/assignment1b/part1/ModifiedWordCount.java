@@ -54,7 +54,7 @@ public class ModifiedWordCount extends Configured implements Tool {
         System.exit(res);
     }
 
-    public static class ModifiedWordCountMapper
+    private static class ModifiedWordCountMapper
             extends Mapper<LongWritable, Text, Text, IntWritable> {
         private final static IntWritable one = new IntWritable(1);
         private final static Text pos = new Text("Total count of positive words:");
@@ -102,7 +102,7 @@ public class ModifiedWordCount extends Configured implements Tool {
         }
     }
 
-    public static class ModifiedWordCountReducer
+    private static class ModifiedWordCountReducer
             extends Reducer<Text, IntWritable, Text, IntWritable> {
         @Override
         public void reduce(Text word, Iterable<IntWritable> counts, Context context)

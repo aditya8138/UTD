@@ -55,4 +55,19 @@ All execution need to be performed on department machine with hadoop configured.
 	# Display result
 	hdfs dfs -ls assignment1/part2
 	```
+### Assignment 1b
+- Part 1
+
+	```bash
+	# Delete if directory exist.
+	hdfs dfs -rm -r assignment1b/part1/
+		
+	# Process files in specified folder.
+	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+	    assignment1b.part1.ModifiedWordCount \
+	    hdfs://cshadoop1/user/netID/assignment1/part1 \
+	    hdfs://cshadoop1/user/netID/assignment1b/part1
 	
+	# Display result
+	hdfs dfs -cat assignment1b/part1/part-r-00000
+	```
