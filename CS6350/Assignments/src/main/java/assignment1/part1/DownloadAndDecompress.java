@@ -20,9 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * Created by hanlin on 6/9/17.
- */
 public class DownloadAndDecompress {
     public static void main(String[] args) {
         String source = args[0], dst = args[1];

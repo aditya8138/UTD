@@ -15,9 +15,6 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/**
- * Created by hanlin on 6/10/17.
- */
 public class DownloadAndDecompressArchive {
     public static void main(String[] args) {
         String pdst = args[1];

@@ -39,8 +39,13 @@ public class ModifiedWordCount extends Configured implements Tool {
         return job.waitForCompletion(true) ? 0 : 1;
     }
 
-    public static void main(String[] args) throws Exception {
-        int res = ToolRunner.run(new ModifiedWordCount(), args);
+    public static void main(String[] args) {
+        int res = 0;
+        try {
+            res = ToolRunner.run(new ModifiedWordCount(), args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.exit(res);
     }
 
