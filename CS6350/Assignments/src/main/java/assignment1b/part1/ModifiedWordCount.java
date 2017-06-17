@@ -36,7 +36,12 @@ public class ModifiedWordCount extends Configured implements Tool {
         job.setReducerClass(ModifiedWordCountReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        return job.waitForCompletion(true) ? 0 : 1;
+        if (job.waitForCompletion(args.length == 3 && args[2].equalsIgnoreCase("verbose"))) {
+            System.out.println("Job's Done.");
+            return 0;
+        }
+        System.out.println("Job's Failed, please retry with 'verbose' option to see detail.");
+        return 1;
     }
 
     public static void main(String[] args) {
