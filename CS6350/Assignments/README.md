@@ -71,3 +71,11 @@ All execution need to be performed on department machine with hadoop configured.
 	# Display result
 	hdfs dfs -cat assignment1b/part1/part-r-00000
 	```
+- Part 2
+	```bash
+	# Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+	    assignment1b.part2.POSCount \
+	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki \
+        hdfs://cshadoop1/user/netID/assignment1b/part2
+	```

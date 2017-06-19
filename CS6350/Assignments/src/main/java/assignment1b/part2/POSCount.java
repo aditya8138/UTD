@@ -2,7 +2,6 @@ package assignment1b.part2;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -15,7 +14,6 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -53,16 +51,9 @@ public class POSCount extends Configured implements Tool {
             res = ToolRunner.run(new POSCount(), args);
 
             if (res == 0) {
-                Configuration conf = new Configuration();
-                Path resultPath = new Path(args[1] + "/part-r-00000");
-                FileSystem fs = FileSystem.get(conf);
-                BufferedInputStream bf = new BufferedInputStream(fs.open(resultPath));
-                Scanner scanner = new Scanner(bf);
-                while (scanner.hasNextLine()) {
-                    System.out.println(scanner.nextLine());
-                }
-                scanner.close();
-                bf.close();
+                ResultPrinter rp = new ResultPrinter(args[1] + "/part-r-00000");
+                rp.printResult();
+                rp.writeResult();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +85,8 @@ public class POSCount extends Configured implements Tool {
                     continue;
                 if (pos.containsKey(word))
                     context.write(new IntWritable(word.length()), new Text(pos.get(word).toString()));
+                else
+                    context.write(new IntWritable(word.length()), new Text("n"));
                 context.write(new IntWritable(word.length()), new Text("T"));
                 if (this.isPalindrome(word))
                     context.write(new IntWritable(word.length()), new Text("x"));
@@ -120,7 +113,7 @@ public class POSCount extends Configured implements Tool {
         }
 
         private boolean isPalindrome(String word) {
-            for (int i = 0, j = word.length() - 1; i > j; ++i, --j)
+            for (int i = 0, j = word.length() - 1; i < j; ++i, --j)
                 if (word.charAt(i) != word.charAt(j))
                     return false;
             return true;
@@ -144,25 +137,25 @@ public class POSCount extends Configured implements Tool {
             myMap.put("C", 8);  // Conjunction
             myMap.put("P", 9);  // Preposition
             myMap.put("!", 10); // Interjection
-            myMap.put("p", 11); // Palindromes
+            myMap.put("p", 12); // Palindromes
+            myMap.put("n", 11); // No Match POS
             return myMap;
         }
 
         @Override
         public void reduce(IntWritable len, Iterable<Text> pos, Context context)
                 throws IOException, InterruptedException {
-            int[] sum = { 0,0,0,  0,0,0,  0,0,0,  0,0,0 };
+            int[] sum = { 0,0,0,  0,0,0,  0,0,0,  0,0,0,  0 };
 
             for (Text p : pos) {
                 if (POSCountReducer.pmap.containsKey(p.toString()))
                     sum[POSCountReducer.pmap.get(p.toString())] += 1;
             }
             StringBuilder sb = new StringBuilder("");
-            for (int i = 0; i <= 11; i++)
+            for (int i = 0; i <= 12; i++)
                 sb.append(sum[i]).append("\t");
 
             context.write(len, new Text(sb.toString()));
-
         }
     }
 }
