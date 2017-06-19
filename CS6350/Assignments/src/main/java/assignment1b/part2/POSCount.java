@@ -2,6 +2,7 @@ package assignment1b.part2;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -14,6 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -49,6 +51,19 @@ public class POSCount extends Configured implements Tool {
         int res = 0;
         try {
             res = ToolRunner.run(new POSCount(), args);
+
+            if (res == 0) {
+                Configuration conf = new Configuration();
+                Path resultPath = new Path(args[1] + "/part-r-00000");
+                FileSystem fs = FileSystem.get(conf);
+                BufferedInputStream bf = new BufferedInputStream(fs.open(resultPath));
+                Scanner scanner = new Scanner(bf);
+                while (scanner.hasNextLine()) {
+                    System.out.println(scanner.nextLine());
+                }
+                scanner.close();
+                bf.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +105,7 @@ public class POSCount extends Configured implements Tool {
         private static HashMap<String, Character> getWordSet(String filename) {
             HashMap<String, Character> pos = new HashMap<>();
 
-            /* Load file from resource folder to construct positive/negative word HashSet. */
+            /* Load file from resource folder to construct POS HashMap. */
             InputStream inputStream =
                     POSCountMapper.class.getClassLoader()
                             .getResourceAsStream(filename);
