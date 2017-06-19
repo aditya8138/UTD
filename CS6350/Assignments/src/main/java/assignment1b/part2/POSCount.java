@@ -72,8 +72,6 @@ public class POSCount extends Configured implements Tool {
 
     private static class POSCountMapper
             extends Mapper<LongWritable, Text, IntWritable, Text> {
-        private final static IntWritable one = new IntWritable(1);
-        private final static Text neg = new Text("Total count of negative words:");
         private final static HashMap<String, Character> pos = getWordSet("mpos/mobyposi.i");
         private boolean caseSensitive = false;
         private final Pattern WORD_BOUNDARY = Pattern.compile("\\s*\\b\\s*");
@@ -97,7 +95,7 @@ public class POSCount extends Configured implements Tool {
                 if (pos.containsKey(word))
                     context.write(new IntWritable(word.length()), new Text(pos.get(word).toString()));
                 context.write(new IntWritable(word.length()), new Text("T"));
-                if (istPalindrom(word))
+                if (this.isPalindrome(word))
                     context.write(new IntWritable(word.length()), new Text("x"));
             }
         }
@@ -121,16 +119,10 @@ public class POSCount extends Configured implements Tool {
             return pos;
         }
 
-        private static boolean istPalindrom(String word){
-            int i1 = 0;
-            int i2 = word.length() - 1;
-            while (i2 > i1) {
-                if (word.charAt(i1) != word.charAt(i2)) {
+        private boolean isPalindrome(String word) {
+            for (int i = 0, j = word.length() - 1; i > j; ++i, --j)
+                if (word.charAt(i) != word.charAt(j))
                     return false;
-                }
-                ++i1;
-                --i2;
-            }
             return true;
         }
     }
@@ -141,16 +133,16 @@ public class POSCount extends Configured implements Tool {
 
         private static HashMap<String, Integer> createMap() {
             HashMap<String, Integer> myMap = new HashMap<>();
-            myMap.put("T", 0); // Total
-            myMap.put("N", 1); // Noun
-            myMap.put("r", 2); // Pronoun
-            myMap.put("V", 3); // Verb (usu participle)
-            myMap.put("t", 4); // Verb (transitive)
-            myMap.put("i", 5); // Verb (intransitive)
-            myMap.put("v", 6); // Adverb
-            myMap.put("A", 7); // Adjective
-            myMap.put("C", 8); // Conjunction
-            myMap.put("P", 9); // Preposition
+            myMap.put("T", 0);  // Total
+            myMap.put("N", 1);  // Noun
+            myMap.put("r", 2);  // Pronoun
+            myMap.put("V", 3);  // Verb (usu participle)
+            myMap.put("t", 4);  // Verb (transitive)
+            myMap.put("i", 5);  // Verb (intransitive)
+            myMap.put("v", 6);  // Adverb
+            myMap.put("A", 7);  // Adjective
+            myMap.put("C", 8);  // Conjunction
+            myMap.put("P", 9);  // Preposition
             myMap.put("!", 10); // Interjection
             myMap.put("p", 11); // Palindromes
             return myMap;
