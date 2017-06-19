@@ -74,7 +74,7 @@ public class POSCount extends Configured implements Tool {
             extends Mapper<LongWritable, Text, IntWritable, Text> {
         private final static IntWritable one = new IntWritable(1);
         private final static Text neg = new Text("Total count of negative words:");
-        private final static HashMap<String, Character> pos = getWordSet("mobyposi.i");
+        private final static HashMap<String, Character> pos = getWordSet("mpos/mobyposi.i");
         private boolean caseSensitive = false;
         private final Pattern WORD_BOUNDARY = Pattern.compile("\\s*\\b\\s*");
 
