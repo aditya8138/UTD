@@ -59,8 +59,8 @@ public class ModifiedWordCount extends Configured implements Tool {
         private final static IntWritable one = new IntWritable(1);
         private final static Text pos = new Text("Total count of positive words:");
         private final static Text neg = new Text("Total count of negative words:");
-        private final static HashSet<String> negative = getWordSet("negative-words.txt");
-        private final static HashSet<String> positive = getWordSet("positive-words.txt");
+        private final static HashSet<String> negative = getWordSet("opinion-lexicon-English/negative-words.txt");
+        private final static HashSet<String> positive = getWordSet("opinion-lexicon-English/positive-words.txt");
         private boolean caseSensitive = false;
         private final Pattern WORD_BOUNDARY = Pattern.compile("\\s*\\b\\s*");
 
