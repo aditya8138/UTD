@@ -1,5 +1,5 @@
 # Assignments Solutions for CS6350 2017 Summer Big Data
-The solutiuons for each assignment are packaged as `cs6350.assignmentX.partY`.
+The solutions for each assignment are packaged as `cs6350.assignmentX.partY`.
 
 *All the solutions are not graded.*
 
@@ -8,7 +8,7 @@ The solutiuons for each assignment are packaged as `cs6350.assignmentX.partY`.
 To compile, simply using maven command `mvn package`, a package named *CS6350Assignment-1.0-SNAPSHOT.jar* would be generated in `target` folder.
 
 ## Execution
-All execution need to be performed on department machine with hadoop configured.
+All execution need to be performed on department machine with Hadoop configured.
 
 ### Assignment 1
 - Part 1
@@ -76,8 +76,8 @@ All execution need to be performed on department machine with hadoop configured.
 	# Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
 	    assignment1b.part2.POSCount \
-	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki \
-        hdfs://cshadoop1/user/netID/assignment1b/part2
+	    hdfs://cshadoop1/user/hxh160630/assignment1/part2/wiki \
+        hdfs://cshadoop1/user/hxh160630/assignment1b/part2
 
     # The result would print on screen automatically, and store in the
     # following path with name result.txt
@@ -143,4 +143,15 @@ InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filena
 ```
 
 #### Mapper and Reducer Design of Part 2
-To-do.
+The previous solution works just fine. However, it does not have a combiner
+class, hence might be slow in some cases. If we are to reuse the reducer
+class for the combiner directly, the reducer must output the same
+`<key,value>` pair as the mapper does.
+
+To fix this, we can move the array, which is used to count the occurrence of
+each POS, from reducer to mapper. Each time encountered a POS, the map write an
+vector of all `0` and a `1` indicating that POS. Then in reducer, we simply
+need to implement a vector plus function to sum up all the receiving vector.
+The `<key,value>` pair would be `<Length of Word, Vector of POS Count>`
+
+The coding is left To-do.
