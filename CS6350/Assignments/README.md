@@ -78,10 +78,15 @@ All execution need to be performed on department machine with hadoop configured.
 	    assignment1b.part2.POSCount \
 	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki \
         hdfs://cshadoop1/user/netID/assignment1b/part2
+
+    # The result would print on screen automatically, and store in the
+    # following path with name result.txt
+    hdfs dfs -cat hdfs://cshadoop1/user/netID/assignment1b/part2/result
 	```
 
 ## Some Remarks
 ### Assignment 1b
+#### Load Dependency File
 A challenge in this assignment is to generate the HashMap/HashSet needed when
 filtering word in Mapper.
 The files to generate HashMap/HashSet can be downloaded from Internet. In other
@@ -136,3 +141,6 @@ method to get current class.
 ```java
 InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename);
 ```
+
+#### Mapper and Reducer Design of Part 2
+To-do.
