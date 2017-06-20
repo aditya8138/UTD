@@ -79,3 +79,60 @@ All execution need to be performed on department machine with hadoop configured.
 	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki \
         hdfs://cshadoop1/user/netID/assignment1b/part2
 	```
+
+## Some Remarks
+### Assignment 1b
+A challenge in this assignment is to generate the HashMap/HashSet needed when
+filtering word in Mapper.
+The files to generate HashMap/HashSet can be downloaded from Internet. In other
+word, these dependency file is part of the program.
+
+Since the generation of the HashMap/HashSet is during Mapper class, if the file
+is store on one local machine, the actual JVM running the Mapper class may not
+have access to that particular location.
+Thus, we came up with two kinds of solution to load the file during runtime.
+- __Upload the file to HDFS first,__ since file in HDFS can be accessed by all
+  JVM that runs Mapper. In particular, there are two ways to load file in HDFS.
+    1. Use distributed cache. However, the cluster of UTD CS department did not
+       allow distributed cache.
+    1. Use `FileSystem` class to open an `InputStream` of the file, and read
+       input stream.
+- __Package the file inside jar,__ and load the resource file from the resource
+  folder.
+
+The first solution requires user to upload files to HDFS before execution and
+must provide the location of the dependency file, which makes the solution not
+friendly to use. Thus, the second solution was adapted.
+
+Nevertheless, the second solution has its subtle point too.
+
+In general, Java provide several methods in classes `Class` and `ClassLoader`
+to locate resources. More reference see [Location-Independent Access to 
+Resources](https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html)
+In particular, to read text file in resource folder, we can use
+`getResourceAsStream` method.
+
+In our MapReduce situation, Mapper class is statically defined, so is the
+HashSet instance. So the resource file need to be statically loaded. Here is
+the code segment in class `ModifiedWordCountMapper`.
+```java
+private static HashSet<String> getWordSet(String filename) {
+    HashSet<String> words = new HashSet<>();
+
+    /* Statically load file from resource folder to construct positive/negative word HashSet. */
+    InputStream inputStream = ModifiedWordCountMapper.class.getClassLoader()
+            .getResourceAsStream(filename);
+
+    Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+    while (scanner.hasNextLine())
+        words.add(scanner.nextLine().trim());
+    scanner.close();
+    return words;
+}
+```
+To load resource normally (dynamically), we can directly use `getClass()`
+method to get current class.
+[[Ref]](https://www.mkyong.com/java/java-getresourceasstream-in-static-method/)
+```java
+InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename);
+```
