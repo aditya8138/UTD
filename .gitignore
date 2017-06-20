@@ -401,3 +401,6 @@ buildNumber.properties
 ## Intellij Setting
 .idea/
 *.iml
+
+## Markdown preview
+vim-markdown-preview.html
