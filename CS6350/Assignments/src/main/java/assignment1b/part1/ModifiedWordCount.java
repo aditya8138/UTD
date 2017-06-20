@@ -93,10 +93,8 @@ public class ModifiedWordCount extends Configured implements Tool {
                     ModifiedWordCountMapper.class.getClassLoader()
                             .getResourceAsStream(filename);
             Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                words.add(line.trim());
-            }
+            while (scanner.hasNextLine())
+                words.add(scanner.nextLine().trim());
             scanner.close();
             return words;
         }
