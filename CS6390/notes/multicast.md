@@ -104,4 +104,13 @@ subtree of a single shortest-path spanning (i.e. broadcast) tree rooted at this
 sender.
 
 ### Reverse Path Flooding (RPF) algorithm
+This is not a standard protocol, is just a general method to do broadcast
+(actually, flooding a message) using the broadcast tree predefined by the
+unicast routing tables.
 
+When a router receives a broadcast packet from source S:
+- If the packet *arrives via the next-hop router to S*, then forward the packet
+  to all outgoing interfaces (except the incoming one, of course),
+- Otherwise, throw the packet away.
+
+You don't need to keep track of a history of messages forwarded.
