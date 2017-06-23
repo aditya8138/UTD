@@ -24,7 +24,7 @@ public class ModifiedWordCount extends Configured implements Tool {
     @Override
     public int run(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        conf.addResource("configuration-1b.xml");
+        conf.addResource("configuration/configuration-1b.xml");
 
         Job job = Job.getInstance(conf, "wordcount");
         job.setJarByClass(this.getClass());

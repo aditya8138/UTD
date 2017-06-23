@@ -9,7 +9,7 @@ import java.util.Map;
 public class ConfigurationPrinter extends Configured implements Tool {
 
     static {
-        Configuration.addDefaultResource("configuration-1b.xml");
+        Configuration.addDefaultResource("configuration/configuration-1b.xml");
 //        Configuration.addDefaultResource("hdfs-site.xml");
 //        Configuration.addDefaultResource("yarn-default.xml");
 //        Configuration.addDefaultResource("yarn-site.xml");

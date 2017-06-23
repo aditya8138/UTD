@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>mapred.job.tracker</name>
+        <value>hdfs://cshadoop1:61120</value>
+    </property>
+
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>cshadoop1.utdallas.edu:8032</value>
+    </property>
+
+    <property>
+        <name>q2.state</name>
+        <value>NY</value>
+    </property>
+
+    <property>
+        <name>q2.category</name>
+        <value>Restaurants</value>
+    </property>
+
+    <property>
+        <name>q3.topn</name>
+        <value>10</value>
+    </property>
+
+    <property>
+        <name>q4.topn</name>
+        <value>10</value>
+    </property>
+
+</configuration>
