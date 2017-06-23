@@ -41,7 +41,7 @@ public class q5 {
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             Configuration config = context.getConfiguration();
-            Reduce.topn = config.getInt("q4.topn", 10);
+            Reduce.topn = config.getInt("q5.topn", 10);
         }
 
         @Override
