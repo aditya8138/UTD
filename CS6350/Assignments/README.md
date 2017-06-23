@@ -13,70 +13,70 @@ All execution need to be performed on department machine with Hadoop configured.
 ### Assignment 1
 - Part 1
 
-	```bash
-	# Delete if directory exist.
-	hdfs dfs -rm -r assignment1/part1
-		
-	# Generate links configuration file.
-	echo "http://www.utdallas.edu/~axn112530/cs6350/lab2/input/20417.txt.bz2
-	http://www.utdallas.edu/~axn112530/cs6350/lab2/input/5000-8.txt.bz2
-	http://www.utdallas.edu/~axn112530/cs6350/lab2/input/132.txt.bz2
-	http://www.utdallas.edu/~axn112530/cs6350/lab2/input/1661-8.txt.bz2
-	http://www.utdallas.edu/~axn112530/cs6350/lab2/input/972.txt.bz2
-	http://www.utdallas.edu/~axn112530/cs6350/lab2/input/19699.txt.bz2" > link.txt
-		
-	# Download files from link.txt and upload to HDFS and decompress afterward.
-	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    assignment1.part1.DownloadAndDecompress \
-	    link.txt hdfs://cshadoop1/user/netID/assignment1/part1/
-	
-	# Display result
-	hdfs dfs -ls assignment1/part1
-	```
-  
-- Part 2
+    ```bash
+    # Delete if directory exist.
+    hdfs dfs -rm -r assignment1/part1
 
-	```bash
-	# Delete if directory exist.
-	hdfs dfs -rm -r assignment1/part2
-	
-	# Download Wikipedia (1.8 billion)
-	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    assignment1.part2.DownloadAndDecompressArchive \
-	    http://corpus.byu.edu/wikitext-samples/text.zip \
-	    hdfs://cshadoop1/user/netID/assignment1/part2/wiki/
-	
-	# Download GloWbE (1.8 billion)
-	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    assignment1.part2.DownloadAndDecompressArchive \
-	    http://corpus.byu.edu/cohatext/samples/text.zip \
-	    hdfs://cshadoop1/user/netID/assignment1/part2/cohatext/
-	    
-	# Display result
-	hdfs dfs -ls assignment1/part2
-	```
+    # Generate links configuration file.
+    echo "http://www.utdallas.edu/~axn112530/cs6350/lab2/input/20417.txt.bz2
+    http://www.utdallas.edu/~axn112530/cs6350/lab2/input/5000-8.txt.bz2
+    http://www.utdallas.edu/~axn112530/cs6350/lab2/input/132.txt.bz2
+    http://www.utdallas.edu/~axn112530/cs6350/lab2/input/1661-8.txt.bz2
+    http://www.utdallas.edu/~axn112530/cs6350/lab2/input/972.txt.bz2
+    http://www.utdallas.edu/~axn112530/cs6350/lab2/input/19699.txt.bz2" > link.txt
+
+    # Download files from link.txt and upload to HDFS and decompress afterward.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment1.part1.DownloadAndDecompress \
+        link.txt hdfs://cshadoop1/user/netID/assignment1/part1/
+
+    # Display result
+    hdfs dfs -ls assignment1/part1
+    ```
+
+- Part 2
+    ```bash
+    # Delete if directory exist.
+    hdfs dfs -rm -r assignment1/part2
+
+    # Download Wikipedia (1.8 billion)
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment1.part2.DownloadAndDecompressArchive \
+        http://corpus.byu.edu/wikitext-samples/text.zip \
+        hdfs://cshadoop1/user/netID/assignment1/part2/wiki/
+
+    # Download GloWbE (1.8 billion)
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment1.part2.DownloadAndDecompressArchive \
+        http://corpus.byu.edu/cohatext/samples/text.zip \
+        hdfs://cshadoop1/user/netID/assignment1/part2/cohatext
+
+    # Display result
+    hdfs dfs -ls assignment1/part2
+    ```
+
 ### Assignment 1b
 - Part 1
 
-	```bash
-	# Delete if directory exist.
-	hdfs dfs -rm -r assignment1b/part1/
-		
-	# Process files in specified folder.
-	hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    assignment1b.part1.ModifiedWordCount \
-	    hdfs://cshadoop1/user/netID/assignment1/part1 \
-	    hdfs://cshadoop1/user/netID/assignment1b/part1
-	
-	# Display result
-	hdfs dfs -cat assignment1b/part1/part-r-00000
-	```
-- Part 2
-	```bash
-	# Process files in specified folder.
+    ```bash
+    # Delete if directory exist.
+    hdfs dfs -rm -r assignment1b/part1/
+
+    # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-	    assignment1b.part2.POSCount \
-	    hdfs://cshadoop1/user/hxh160630/assignment1/part2/wiki \
+        assignment1b.part1.ModifiedWordCount \
+        hdfs://cshadoop1/user/netID/assignment1/part1 \
+        hdfs://cshadoop1/user/netID/assignment1b/part1
+
+    # Display result
+    hdfs dfs -cat assignment1b/part1/part-r-00000
+    ```
+- Part 2
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment1b.part2.POSCount \
+        hdfs://cshadoop1/user/hxh160630/assignment1/part2/wiki \
         hdfs://cshadoop1/user/hxh160630/assignment1b/part2
 
     # The result would print on screen automatically, and store in the
@@ -84,6 +84,52 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat hdfs://cshadoop1/user/netID/assignment1b/part2/result
 	```
 
+### Assignment 2
+- Q1
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment2.q1 /yelp/business/business.csv assignment2/1
+
+    # Display result
+    hdfs dfs -cat assignment2/1/part-r-00000
+    ```
+- Q2
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment2.q2 /yelp/business/business.csv assignment2/2
+
+    # Display result
+    hdfs dfs -cat assignment2/2/part-r-00000
+    ```
+- Q3
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment2.q3 /yelp/business/business.csv assignment2/3
+
+    # Display result
+    hdfs dfs -cat assignment2/3/part-r-00000
+    ```
+- Q4
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment2.q4 /yelp/review/review.csv assignment2/4
+
+    # Display result
+    hdfs dfs -cat assignment2/4/part-r-00000
+    ```
+- Q5
+    ```bash
+    # Process files in specified folder.
+    hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
+        assignment2.q5 /yelp/business/business.csv assignment2/5
+
+    # Display result
+    hdfs dfs -cat assignment2/5/part-r-00000
+    ```
 ## Some Remarks
 ### Assignment 1b
 #### Load Dependency File
