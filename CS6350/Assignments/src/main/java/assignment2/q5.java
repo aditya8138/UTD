@@ -121,11 +121,11 @@ public class q5 {
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();		// get all args
         if (otherArgs.length != 2) {
-            System.err.println("Usage: assignment2.q3 <in> <out>");
+            System.err.println("Usage: assignment2.q5 <in> <out>");
             System.exit(2);
         }
 
-        Job job = Job.getInstance(conf, "ZipCodeCount");
+        Job job = Job.getInstance(conf, "ReviewCount");
         job.setJarByClass(q4.class);
 
         job.setMapperClass(Map.class);
