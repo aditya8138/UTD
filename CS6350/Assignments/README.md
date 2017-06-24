@@ -125,7 +125,7 @@ All execution need to be performed on department machine with Hadoop configured.
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
-        assignment2.q5 /yelp/business/business.csv assignment2/5
+        assignment2.q5 /yelp/review/review.csv assignment2/5
 
     # Display result
     hdfs dfs -cat assignment2/5/part-r-00000
