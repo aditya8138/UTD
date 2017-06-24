@@ -105,7 +105,7 @@ public class POSCount extends Configured implements Tool {
                 String line = scanner.nextLine();
                 int i;
                 for (i = line.length()-1; (int)line.charAt(i) != 65533 && i >= 0; i--);
-                pos.put(line.substring(0, i-1), line.charAt(i+1));
+                pos.put(line.substring(0, i), line.charAt(i+1));
             }
             scanner.close();
             return pos;
