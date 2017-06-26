@@ -1,0 +1,49 @@
+\ProvidesPackage{hw}
+
+%This package doesn’t do anything as long as your syntax is right.
+%Load the package in the first lines of your preamble (even before
+%the \documentclass command). It then checks for obsolete LaTeX
+%packages and outdated commands.
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\RequirePackage{tabu}
+
+%
+% AMS packages.
+%
+%\RequirePackage{amsmath}
+%\RequirePackage{amsthm}
+%\RequirePackage{amsfonts}
+%\RequirePackage{mathtools}
+%\RequirePackage{amssymb}
+
+%This package introduces the \includegraphics command, which is needed
+%for inserting figures.
+\RequirePackage{graphicx}
+
+\RequirePackage{caption}
+\captionsetup[table]{skip=5pt}
+
+\RequirePackage{enumitem}
+
+\RequirePackage{titlesec}
+\titlelabel{Question \thetitle. }
+\newcommand\sectionbreak{\clearpage}
+%\titleformat{\section}{\Large\raggedright\bfseries}{}{0em}{}[\titleline{\titlerule}]
+%\titlespacing{\section}{0pt}{1pt}{1pt}
+
+\RequirePackage{float}
+
+\RequirePackage{multirow}
+
+%As a rule of thumb it should be loaded at the end of the preamble,
+%after all the other packages. A few exceptions exist, such as the
+%cleveref package that is also mentioned in this post. Hence, cleveref
+%should be loaded after hyperref.
+\RequirePackage{hyperref}
+
+%This package introduces the \cref command. When using this command
+%to make cross-references, instead of \ref or \eqref, a word is placed
+%in front of the reference according to the type of reference: fig.
+%for figures, eq. for equations
+\RequirePackage{cleveref}

@@ -1,0 +1,68 @@
+\documentclass[12pt,titlepage,letterpaper]{article}
+
+\usepackage{hw}
+
+\title{Homework I}
+\author{Hanlin He (hxh160630)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{IP Addressing and Subnetting}
+\begin{enumerate}[label=\bfseries\alph*)]
+    \item To configure B and C as a subnet, it takes at least two available IP
+        address, plus the reserve address for broadcast and the subnet itself.
+        So it would be a subnet with subnet mask of \texttt{30}, or in
+        dot-decimal notation of \texttt{255.255.255.252}. In conclusion, the
+        number of addresses available for the Ethernet would be reduced by
+        four.
+    \item As ARP proxy, B would pretend to be C in front of A.
+        \begin{enumerate}[label=\bfseries\roman*. ]
+            \item Packets send sequence would be like \cref{1ai}.
+                \begin{table}[H]
+                \footnotesize
+                \centering
+                \caption{All Packets Sent}\label{1ai}
+                \begin{tabular}{c|c|c|c|c|c}
+                    Message & \multirow{2}{*}{Sender} & Sender's & Sender's &
+                    Target & Target \\
+                    Type & & MAC Addr & IP Addr & MAC Addr & IP Addr \\\hline\hline
+                    ARP Req & A & A's MAC addr & A's IP & 00-00-00-00-00-00 &
+                    C's IP \\
+                    ARP reply & B & B's MAC addr & C's IP & A's MAC addr &
+                    A's IP \\%\hline
+                    %&&&&&\\
+                    IP msg & A & A's MAC addr & A's IP & B's MAC addr &
+                    C's IP 
+                \end{tabular}
+                \end{table}
+            \item To implement the proxy ARP, B's routing table need to add
+                rules that for for all received or generated packets
+                destination at C's IP address, the packets would go through the
+                WIFI interface. And for packets received from C with
+                destination address not B, B would forward the message to the
+                Ethernet interface.
+        \end{enumerate}
+\end{enumerate}
+
+\section{CIDR}
+If the router actually containing that subset failed, the connected router
+would detect that the link become unavailable and delete the ``correct''
+routing policy. In the meantime, all the packets with the destination of that
+subset addresses would be forwarded to the router advertising the ``big''
+address blocks, since it's the only matching one, which lead to the wrong
+domain.
+
+\section{Internet Basics}
+\begin{enumerate}[label=\bfseries\alph*)]
+    \item The core router need to know the actual network number since the
+        router still based on the routing table to forward a packet. Because
+        the packet only contains a destination IP address, it does not contain
+        the AS number it wants to go to. In other word, BGP only helps the
+        router to build the routing table, it do not generate its own
+        forwarding table.
+    %\item 
+\end{enumerate}
+
+\end{document}
