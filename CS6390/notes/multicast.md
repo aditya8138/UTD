@@ -114,3 +114,46 @@ When a router receives a broadcast packet from source S:
 - Otherwise, throw the packet away.
 
 You don't need to keep track of a history of messages forwarded.
+
+<!--
+   -RPF check
+   -- If msg comes from parent from broadcast tree, then copy it to all other neighboring links.
+   -- else throw away.
+   -->
+
+#### Problems with Original RPF
+When multi-access (shared) links (Ethernet) are used between routers, two
+problems arise.
+
+### Reverse Path Broadcasting (RPB)
+Some note: as long as the message comes from the LAN (to which next hop
+belongs), will inherit the message whichever comes.
+
+Routers in the same LAN should know each other's cost to the source S.
+This is achieved by distance vector routing.
+Since in distance vector routing, each router would broadcast its own distance
+vector to its connected LAN so that routers within that LAN would know the
+distance vectors of each other. (P34).
+
+The information should be pre-computed so that messages forwarding would not be
+delayed.
+
+Add a Children Bitmap to the routing table.
+
+We take advantage that we already have a unicast routing table with an entry
+per LAN and who tells us who the next hop (parent) is.
+
+### Pruning the Tree
+Both RPF and RPB are broadcast algorithms. To provide shortest path multicast
+delivery from source S to group members, broadcast tree of S must be pruned
+back to reach only links with receivers.
+
+#### Truncated Reverse-Path Broadcast (TRPB)
+An alternative in which only non-member leaf LANs are deleted from each
+broadcast tree: a router truncates a child link if
+- no router uses this link to receive multicast messages from the source (i.e.,
+  it is a *leaf LAN*)
+- No host is a group member on this link (*non-member LAN*)
+
+DV with split-horizon and poisoned reverse.
+Lie to you next hop.
