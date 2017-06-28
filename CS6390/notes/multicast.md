@@ -115,17 +115,19 @@ When a router receives a broadcast packet from source S:
 
 You don't need to keep track of a history of messages forwarded.
 
-<!--
-   -RPF check
-   -- If msg comes from parent from broadcast tree, then copy it to all other neighboring links.
-   -- else throw away.
-   -->
-
 #### Problems with Original RPF
-When multi-access (shared) links (Ethernet) are used between routers, two
-problems arise.
+When multi-access (shared) links (Ethernet) are used between routers, one LAN
+may receive multiple messages forwarded by different routers.
 
 ### Reverse Path Broadcasting (RPB)
+__Object:__ eliminates duplicate broadcasts on shared links in RPF.
+In order to do that, a router R should determine, for each LAN λ:
+- Is ![](http://latex.codecogs.com/gif.latex?\lambda) the parent of R on the tree? -- so that the router accept the message.
+- Is ![](http://latex.codecogs.com/gif.latex?\lambda) a child of R on the tree? -- so that the router would copy the message
+  to LAN ![](http://latex.codecogs.com/gif.latex?\lambda).
+
+
+
 Some note: as long as the message comes from the LAN (to which next hop
 belongs), will inherit the message whichever comes.
 
@@ -156,4 +158,42 @@ broadcast tree: a router truncates a child link if
 - No host is a group member on this link (*non-member LAN*)
 
 DV with split-horizon and poisoned reverse.
-Lie to you next hop.
+> Lie to you next hop.
+
+Routing Table
+
+| Destination | Next Hop| Cost | Children Bitmap | Leaf Bitmap |
+| :---: | --- | --- | :---: | :---: |
+| Ls | .. | .. | 01011 | 00011 |
+
+
+### Extended OSPF - MOSPF
+
+#### A quick review
+A router X generate its link state advertisement periodically.
+
+| X | Cost |
+| --- | --- |
+| La | 20 |
+| Lb | 15 |
+| Lc | 5 |
+| Ld | 10 |
+
+Send group membership information in OSPF link state advertisement (LSA)
+message.
+
+
+
+
+
+If current router is not part of the tree, it better adds an entry of infinity
+to the cache so that next time it does not need to compute the whole tree
+again.
+
+#### Summary of MOSPF
+##### Pros:
+- If the link cost is not bixxx, the MOSPF will still find the optimal path
+  from source to receiver.
+##### Cons:
+- The first packet is delayed a lot. (compute tree at every hop)
+- Routers have to remember the receiver even though there are no sources.
