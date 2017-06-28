@@ -1,0 +1,231 @@
+# Border Gateway Protocol (BGP)
+Quote from abstract of [*The Stable Paths Problem and Interdomain
+Routing*](http://www.cs.princeton.edu/courses/archive/spring10/cos598D/gsw02.pdf)
+
+> Dynamic routing protocols such as RIP and OSPF essentially implement
+> distributed algorithms for solving the shortest paths problem. The border
+> gateway protocol (BGP) is currently the only interdomain routing protocol
+> deployed in the Internet. BGP does not solve a shortest paths problem since
+> any interdomain protocol is required to allow policy-based metrics to
+> override dis-tance-based metrics and enable autonomous systems to
+> independently define their routing policies with little or no global
+> coordination. It is then natural to ask if BGP can be viewed as a distributed
+> algorithm for solving some fundamental problem.
+
+## Stable Path Problem (SPP)
+An instance S of the stable paths problem is a triple,
+
+> ![](http://latex.codecogs.com/gif.latex?S=(G,\mathcal{P},\Lambda)) 
+
+- ![](http://latex.codecogs.com/gif.latex?G) is the network graph.
+  We assume that node 0, called the origin, is special in that it is the
+  destination to which all other nodes attempt to establish a path.
+- ![](http://latex.codecogs.com/gif.latex?\mathcal{P}) is the set of
+  permitted paths.
+  A path in is either the empty path, denoted by 
+  ![](http://latex.codecogs.com/gif.latex?\epsilon), or a sequence of
+  nodes,
+  ![](http://latex.codecogs.com/gif.latex?(v_kv_{k-1}\ldots{v_1}v_0)), such
+  that all edges are in ![](http://latex.codecogs.com/gif.latex?E)
+- ![](http://latex.codecogs.com/gif.latex?\Lambda) is the ranking function of
+  the permitted paths.
+
+A path assignment is a function ![](http://latex.codecogs.com/gif.latex?\pi)
+that maps each node to a path. A path assignment is stable at a node when the
+assignment is the best ranking route current node is able to choose.
+
+A SPP *S* is solvable iff there is a stable path assignment of *S*.Otherwise,
+*S* is called *unsolvable*. 
+A stable routing tree *T* is called a solution for the specification *S*.
+Note that __some
+nodes may have an empty path in a given solution__, that is if a node only have
+empty path currently, then the path assignment is the empty path.
+
+An SPP instance is said to converge iff from all
+possible initial states, and all possible executions from those states, a
+solution is always reached. __Solvable does not imply convergence.__
+
+## Solving SPP
+[Griffin and Wilfong](http://dl.acm.org/citation.cfm?id=316231) have shown that
+statically detecting solvability for real-world BGP is NP-hard.
+Similarly, the basic question of solvability is still
+NP-complete for the more abstract model of SPVP.
+
+We introduce two similar structure *dispute cycle* and *dispute wheel*.
+
+### Dispute Cycle (Dispute Digraph)
+There are two kinds of arcs in the dispute digraph, __transmission arcs__ and
+__dispute arcs__.
+
+- Suppose that nodes *u* and *v* are peers. If *Q* is a permitted path at *v*
+  and *P* is a permitted path at *u*, then a dispute arc from path *Q* to path
+  *P*, denoted ![](http://latex.codecogs.com/gif.latex?Q\rightarrow{P}),
+  represents a local policy dispute between peers *u* and *v* concerning the
+  relative ranking of paths *P* and *Q*.
+  Formal definition is as follow:
+    + *P* is a permitted path from *u* to 0 with next-hop *v*,
+    + *Q* is a path from *v* to 0, permitted at *v*,
+    + Path *(u,v)Q* is rejected at *u*, or has a lower preference than *P*.
+    + *P[v,0]* has lower preference than *Q*.
+
+  The following figure illustrates the condition.
+
+  ![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/disputearc.png)
+
+  Dispute arc is denoted in solid arcs.
+
+- There is a *transmission arc* from *vP* to *(u,v)P*, when nodes *u* and *v*
+  are peers, *vP* is permitted at *v* , and *(u,v)P* is permitted at *u*.
+  Transmission arc is denoted in dotted arcs.
+
+We usually refer to cycles in the dispute digraph as *dispute cycles*.
+
+__Lemma 1.__ _Any dispute cycle must contain at least two dispute arcs._
+
+### Dispute Wheel
+
+While dispute cycles are built from local relationships between the ranking
+functions of peers, dispute wheels are based on *long distance* relationships.
+
+A __dispute wheel__,
+![](http://latex.codecogs.com/gif.latex?\Pi=\(U,\mathcal{Q},\mathcal{R}\)),
+of size *k*, is a set of nodes
+![](http://latex.codecogs.com/gif.latex?U=\\{{u_0,u_1,\ldots,u_{k-1}\\}),
+and sets of paths
+![](http://latex.codecogs.com/gif.latex?\mathcal{Q}=\\{Q_0,Q_1\ldots,Q_{k-1}\\}),
+and
+![](http://latex.codecogs.com/gif.latex?\mathcal{R}=\\{R_0,R_1\ldots,R_{k-1}\\}),
+such that for each
+![](http://latex.codecogs.com/gif.latex?0\leq{i}\leq{k-1}) we have
+
+1. ![](http://latex.codecogs.com/gif.latex?R_i) is a path from
+   ![](http://latex.codecogs.com/gif.latex?u_i)
+   to
+   ![](http://latex.codecogs.com/gif.latex?u_{i+1}),
+1. ![](http://latex.codecogs.com/gif.latex?Q_i\in\mathcal{P}^{u_i}),
+1. ![](http://latex.codecogs.com/gif.latex?R_iQ_{i+1}\in\mathcal{P}^{u_i}),
+1. ![](http://latex.codecogs.com/gif.latex?\lambda^{u_i}\(Q_i\)\leq\lambda^{u_i}\(R_iQ_{i+1}\)),
+
+![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/disputewheel.png)
+
+## 2017/06/14
+
+Add a node u if out of all the ''consistent'' paths of u, the highest ranked
+one goes directly into the tree.
+
+- Node `x` is on the tree.
+- Any node not on tree has at least one consistent path directly into the tree.
+- An execution could contain one or more cycles, but still end in a stable
+  state.
+- If we eliminate cycles, we FORCE convergence!
+
+### Objective
+
+If there is a cycle C, then exists a dispute wheel.
+
+If there is not dispute wheel, then there is no cycle. => Converge.
+
+Definition: A node u is *changing* in C if in two states in C, it has different
+paths. Otherwise, u if *fixed*.
+
+**Lemma 1**  Let
+
+1. u be a node that is not fixed in C,
+1. P be a path that is taken by u in C,
+1. and v is the first *fixed node* of P.
+
+Then, each non-fixed node w in P[u,v], chooses the oath P[w,0] in some state in
+C.
+
+Note that w does not necessarily need to choose that same path as u at the
+moment. The lemma only implies that at some previous state, w has chosen that
+path.
+
+Theorem: If there is a cycle C in an execution, then there exists a dispute
+wheel (no dispute wheel implies no cycles, and hence, convergence).
+
+
+#### Stable Internet Routing Without Global Coordination
+Some problems:
+
+- Too much overhead to maintain path histories (dynamic execution solution).
+- Difficult to gather all policies and check for cycles in dispute graphs.
+- Can we select some practical guidelines?
+    - If the guidelines are followed, the system is stable.
+- Their approach: hierarchies
+    - You avoid circular conflicts by introducing hierarchies of nodes.
+    - Policies are based on the hierarchy,
+
+##### There are three types of policies:
+- Import policy: of the paths offered by my neighbors, which ones will I allow?
+- Path Selection: given the paths offered by my neighbors which satisfy my
+  import policy, which one do I like the best?
+- Export Policy: given my current path, will I tell my neighbor of this path or
+  tell my neighbor that I have no path?
+
+Note that a path is allowed in an "SPP instance" only if it exists in the
+export policy of my neighbour and in my import policy.
+
+##### Neighbor Relation
+- provider-to-customer
+- peer-to-peer
+- backup-link
+
+Provider-to-customer edges must form a directed acyclic graph (DAG).
+However, in terms of peer-to-peer, any body can be peer to any body else.
+
+Export policy restrictions:
+- Provider:
+    - Exporting to a provider: In exchanging routing information with a
+      provider:
+        - An AS can only export its networks and the routes of its customers.
+        - However, it can not export routes learned from other provider or
+          peers.
+        - That is, an AS does not provide transit services for its provider.
+    - Exporting to a peer: In exchanging routing information with a peer: same
+      restrictions.
+    - Exporting to a customer: In exchanging routing information with a
+      customer:
+        - An AS can export everything: its customer routes, as well as routes
+          learned from its providers and peers. 
+        - That is, an AS does provide transit services for its customers.
+
+In conclusion: A node can export to its peer and to its provider only paths that it has
+learned from its customers
+
+**Lemma 1:** A path exported by a provider g to a customer h can only be
+subsequently exported by providers to their customers (exported via provider ->
+customer edges).
+- If g exports the path to h, h cannot export it to y nor to x, h can export to
+  y or x only a path via a customer
+- You can repeat the argument between h and i, etc.
+
+Guide line A
+
+## 2017/06/19
+A quick recap:
+- Checking for a *nice* BGP is HP-hard.
+- No dispute wheel => system is *nice*.
+- People don't disclose routing policies.
+
+Thus we propose a general guideline/requirement for sanity:
+1. Provider to customer graph is acyclic.
+1. Export policy restrictions.
+1. Guide line A: you must prefer customer paths over peer or provider paths.
+
+### Theorem 1
+For a BGP system that has only customer-provider and peer-to-peer relationships
+(no backup links), if all ASms follow guideline A, and the provider-customer
+graph is acyclic, and the export policies are respected, then the BGP system is
+inherently safe (always converges).
+
+#### Proof
+First, these two statements are the same. We will prove the latter one.
+- All three properties satisfied => No dispute wheel.
+- Dispute wheel exists => at least one of properties violated.
+
+
+#### Remark
+If links and or nodes are added.deleted, or if the policies change, as long as
+they satisfy the given requirements, the system will remain stable.
+

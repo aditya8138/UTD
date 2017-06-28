@@ -197,3 +197,48 @@ again.
 ##### Cons:
 - The first packet is delayed a lot. (compute tree at every hop)
 - Routers have to remember the receiver even though there are no sources.
+
+
+### Protocol Independent Multicast - PIM
+Note that the dense version PIM is basically the same as DVMRP. We will focus
+on sparse version PIM in this section.
+
+Receivers and senders of are often sparsely populated.
+
+#### Type of Trees
+One Shared Tree (per group) used by all group receivers and senders.
+
+#### Receiver Driven
+- Trees are built using a form of reverse-path forwarding. Parent on the tree is
+the unicast next-hop to the root.
+    - The tree is optimal backward just like DVMRP.
+- Explicit join/prune tree management
+    - Routers with local (same LAN) *receivers send an explicit join* along the
+      path to the root (whatever the root may be!)
+    - *All routers along this path will join the multicast tree* (if not on it
+      already).
+    - *Prune messages remove tree branches* if receivers are no longer on their
+      sub-tree.
+    - __There are no join message in DVMRP, so DVMRP use some trick to
+      determine which router is child.__
+
+PIM is receiver driven and *unicast* protocol independent.
+__Only knowledge of the next-hop to a destination is needed.__
+
+#### Rendezvous Point
+The __root of the *shared tree*__ for group G is known as the *rendezvous
+point* (RP) of G. Thus, the shared tree is also known as the RP tree of G.
+Every router must know the RP for every group G by some means (broadcast or
+something).
+
+##### RP Problem
+- RP becomes a bottleneck. (Source send multicast message to RP(G))
+- Overhead-encapsulate/decapsulate. (Source send multicast message via
+  encapsulation)
+- Indirect routing.
+
+To solve these problems, we in stead build a shortest path tree rooted at the
+designated router for S.
+
+#### SPT 
+##### But how do routers discover sources?
