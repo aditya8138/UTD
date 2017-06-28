@@ -74,7 +74,10 @@ domain.
         the network traffic go through specific path due to some policy
         decisions. Only by know the entire AS-path can such requirement be
         fulfilled.
-    \item 
+    \item Internet supports broadcast.
+        Routers in Internet are able to forward broadcast messages to each LAN.
+        It's LAN's duty to continue the broadcast in its network segments.
+        Thus it is necessary for the LAN to be able to do a broadcast.
 \end{enumerate}
 
 \section{Routing Policies}
@@ -96,7 +99,7 @@ domain.
         \texttt{E} can advertising a longer AS path \texttt{[E,E]} to both
         \texttt{B} and \texttt{C}, and advertising the original AS path to
         \texttt{D}. By doing this, \texttt{A} would receive AS paths as:
-        \begin{itemize}
+        \begin{itemize}[label=-]
             \item \texttt{[B,E,E]} from \texttt{B},
             \item \texttt{[C,E,E]} from \texttt{C},
             \item \texttt{[D,E]} from \texttt{D}.
@@ -133,7 +136,7 @@ domain.
                 the system have two stable state as shown in \cref{53}.
                 \begin{figure}[H]
                     \centering
-                \caption{Two Stable State of the System}\label{53}
+                    \caption{Two Stable State of the System}\label{53}
                     \includegraphics[width=.45\textwidth]{531}
                     \hfill
                     \includegraphics[width=.45\textwidth]{532}
@@ -147,11 +150,98 @@ domain.
 \end{enumerate}
 
 \section{Hierarchical BGP}
+Consider network shown in \cref{6}, with destination \emph{Dst}.
+\begin{figure}[H]
+    \centering
+    \caption{Example}\label{6}
+    \includegraphics[width=.6\textwidth]{6}
+\end{figure}
+B is provider to A and Dst, D is provider to C and Dst.
+By export policies, B would export its path to Dst to A, and export its path to
+A and Dst to C. The same situation falls on D.
+Thus, C would learn a path to Dst through B.
+
+Based on local preference, D might prefer C than Dst since both of them are
+customers. And C might prefer B than. Since both of them are not customers
+of C, C can choose any of them. On the other hand, A might prefer D than B.
+In this way, it might result in not acyclic graph and dispute wheel, as shown
+in \cref{6d}.
+\begin{figure}[H]
+    \centering
+    \caption{Dispute Wheel Example}\label{6d}
+    \includegraphics[width=.25\textwidth]{6d}
+\end{figure}
 
 \section{Ethernet Multicast}
+\begin{enumerate}[label=\bfseries\alph*)]
+    \item If the membership reports only flooded some network segments, those
+        bridges which does not receive the report will not know whether its
+        connected LANs have multicast group members. In this case, if that
+        bridge received a multicast message, by default it will not forward it
+        to any connected LAN.
+    \item It is not possible for Ethernet multicast use flood-and-prune
+        approach for several reasons:
+        \begin{itemize}[label=-]
+            \item Ethernet network segments are connected by bridges, while
+                Internet segments are connected by routers. Bridges record the
+                outgoing interface for the hosts, while the routers keep a
+                routing table including information about next hop and cost.
+                A key method used in DVMRP is using the unicast routing table
+                to figure out whether the LAN is a child on the tree. Bridges
+                can't do that.
+            \item Besides, bridge cannot determine whether a connected network
+                segment is a `child link' or a `leaf link'. In DVMRP, this is
+                achieved via \emph{split horizon with poisoned reverse}.
+                However, bridges in Ethernet do not exchange routing
+                informations.
+        \end{itemize}
+\end{enumerate}
 
 \section{Reverse Path Flooding}
 
+\begin{enumerate}[label=\bfseries\alph*)]
+    \item In distance vector routing, routers will exchange each other's
+        distance vector. So a router would know its neighbor's distance to the
+        source. If neighbor's distance to source is smaller than the router's
+        distance plus the cost between them two, there is apparently no need to
+        send the broadcast messages to that neighbor, because the neighbor must
+        have a shorter path to get the that broadcast message.\\
+        In this way, each router would receive the broadcast message only once.
+    \item In link-state routing, each router could compute the shortest path to
+        every LANs. Thus the router only need to send broadcast message to
+        those paths and routers along that path would forward the message to
+        the rest of the network through their computed shortest paths.
+        Apparently, if the shortest path to some LANs is through the incoming
+        interface, that LAN don't need current router to forward the broadcast
+        message.\\
+        In this way, each router would receive the broadcast message only once.
+\end{enumerate}
+
 \section{DVMRP}
+\begin{enumerate}[label=\bfseries\roman*.]
+    \item The path of broadcast is shown in \cref{91}. Parent router for each
+        LAN is marked in the figure.
+        \begin{figure}[H]
+            \centering
+            \caption{Path of Broadcast Messages}\label{91}
+            \includegraphics[width=.9\textwidth]{91}
+        \end{figure}
+    \item In Truncated Reverse Path Broadcast, only LAN G is a leaf LAN.
+        Because R2 does not need to send broadcast message to LAN H, and LAN G
+        itself does not have a group member host.\pagebreak
+    \item Non-Membership Reports are shown in red dashed line in \cref{93}.
+        \begin{figure}[H]
+            \centering
+            \caption{Non-Membership Reports}\label{93}
+            \includegraphics[width=.65\textwidth]{93}
+        \end{figure}
+    \item After pruning, LANs over which multicast messages from S are sent to
+        are: \texttt{C D E H}, as shown in \cref{94}.
+        \begin{figure}[H]
+            \centering
+            \caption{After Pruning Message Flow}\label{94}
+            \includegraphics[width=.521\textwidth]{94}
+        \end{figure}
+\end{enumerate}
 
 \end{document}
