@@ -70,7 +70,7 @@ __dispute arcs__.
 
   The following figure illustrates the condition.
 
-  ![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/disputearc.png)
+  ![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/fig/disputearc.png)
 
   Dispute arc is denoted in solid arcs.
 
@@ -99,14 +99,32 @@ such that for each
 ![](http://latex.codecogs.com/gif.latex?0\leq{i}\leq{k-1}) we have
 
 1. ![](http://latex.codecogs.com/gif.latex?R_i) is a path from
-   ![](http://latex.codecogs.com/gif.latex?u_i)
-   to
+   ![](http://latex.codecogs.com/gif.latex?u_i) to 
    ![](http://latex.codecogs.com/gif.latex?u_{i+1}),
 1. ![](http://latex.codecogs.com/gif.latex?Q_i\in\mathcal{P}^{u_i}),
 1. ![](http://latex.codecogs.com/gif.latex?R_iQ_{i+1}\in\mathcal{P}^{u_i}),
-1. ![](http://latex.codecogs.com/gif.latex?\lambda^{u_i}\(Q_i\)\leq\lambda^{u_i}\(R_iQ_{i+1}\)),
+1. ![](http://latex.codecogs.com/gif.latex?\lambda^{u_i}\(Q_i\)\leq\lambda^{u_i}\(R_iQ_{i+1}\))_
 
-![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/disputewheel.png)
+![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/fig/disputewheel.png)
+
+__Lemma 2.__ _Every dispute wheel contains a minimal sub-wheel._
+
+__Lemma 3.__ _If the dispute digraph contains a cycle, then S has a dispute wheel._
+
+In general, an SPVP specification may have more than one solution. In this case
+the dispute digraph has a cycle. To simplify proof, assume that all solutions
+of _S_ are spanning tree (it does not have to be).
+For any specification _S_, we can construct an essentially equivalent
+specification ![](http://latex.codecogs.com/gif.latex?\hat{S}) all of whose
+solutions are spanning trees.
+
+__Theorem 1.__ _If a specification __S__ has more than one solution, then it
+has a dispute wheel._
+
+__Theorem 2.__ _Let __S__ be an SPVP specification. If __S__ has no dispute
+wheel, then __S__ is solvable._
+
+Note that no dispute wheel is a sufficient but not necessary condition.
 
 ## 2017/06/14
 
@@ -175,6 +193,7 @@ Provider-to-customer edges must form a directed acyclic graph (DAG).
 However, in terms of peer-to-peer, any body can be peer to any body else.
 
 Export policy restrictions:
+
 - Provider:
     - Exporting to a provider: In exchanging routing information with a
       provider:
