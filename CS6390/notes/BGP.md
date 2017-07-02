@@ -15,7 +15,7 @@ Routing*](http://www.cs.princeton.edu/courses/archive/spring10/cos598D/gsw02.pdf
 ## Stable Path Problem (SPP)
 An instance S of the stable paths problem is a triple,
 
-> ![](http://latex.codecogs.com/gif.latex?S=(G,\mathcal{P},\Lambda)) 
+> ![](http://latex.codecogs.com/gif.latex?S=\(G,\mathcal{P},\Lambda\)) 
 
 - ![](http://latex.codecogs.com/gif.latex?G) is the network graph.
   We assume that node 0, called the origin, is special in that it is the
@@ -111,13 +111,6 @@ __Lemma 2.__ _Every dispute wheel contains a minimal sub-wheel._
 
 __Lemma 3.__ _If the dispute digraph contains a cycle, then S has a dispute wheel._
 
-In general, an SPVP specification may have more than one solution. In this case
-the dispute digraph has a cycle. To simplify proof, assume that all solutions
-of _S_ are spanning tree (it does not have to be).
-For any specification _S_, we can construct an essentially equivalent
-specification ![](http://latex.codecogs.com/gif.latex?\hat{S}) all of whose
-solutions are spanning trees.
-
 __Theorem 1.__ _If a specification __S__ has more than one solution, then it
 has a dispute wheel._
 
@@ -126,44 +119,69 @@ wheel, then __S__ is solvable._
 
 Note that no dispute wheel is a sufficient but not necessary condition.
 
-## 2017/06/14
+In general, an SPVP specification may have more than one solution. In this case
+the dispute digraph has a cycle. To simplify proof, assume that all solutions
+of _S_ are spanning tree (it does not have to be).
+For any specification _S_, we can construct an essentially equivalent
+specification ![](http://latex.codecogs.com/gif.latex?\hat{S}) all of whose
+solutions are spanning trees.
 
-Add a node u if out of all the ''consistent'' paths of u, the highest ranked
+Some key points:
+
+- Some solutions have some nodes with an empty path (not a spanning tree). We
+  modify the SPP instance by adding an additional node *x*, and adding for each
+  node *u*, the path (*u x 0*), that is ranked lowest among all paths at *u*.
+  It is obvious that the solution remains the same, except no one has an empty
+  path.
+- A path P is said to be __consistent with tree__ *T* if once P encounters a node
+  in *T*, the rest of P is along *T*.
+- A path P is said to be __direct path to tree__ *T* if it is consistent with
+  tree *T* and the node next to the starting point is in *T*.
+
+Each time, consider any node *u* not in *T* such that has a direct path into
+*T*, and is the highest ranking among those paths. If such *u* is found, add
+*u* to *T*. Otherwise, "stuck", means there is a dispute wheel.
+
+#### Observation
+Since each time when we try to 
+add a node u if out of all the ''consistent'' paths of u, the highest ranked
 one goes directly into the tree.
 
-- Node `x` is on the tree.
+- Node *x* is on the tree.
 - Any node not on tree has at least one consistent path directly into the tree.
 - An execution could contain one or more cycles, but still end in a stable
   state.
 - If we eliminate cycles, we FORCE convergence!
 
-### Objective
+After construction, *T* is a stable spanning tree (since every step in
+construction yields a stable tree)
 
-If there is a cycle C, then exists a dispute wheel.
+### Next Objective
 
-If there is not dispute wheel, then there is no cycle. => Converge.
+We want to prove:
+> If there is a cycle C, then exists a dispute wheel.
+> (Originally we try to prove: *If there is not dispute wheel, then there is no cycle. => Converge.*)
 
-Definition: A node u is *changing* in C if in two states in C, it has different
-paths. Otherwise, u if *fixed*.
 
-**Lemma 1**  Let
+__Definition:__ A node *u* is *changing* in *C* if in two states in *C*, it has
+different paths. Otherwise, *u* if *fixed*.
 
-1. u be a node that is not fixed in C,
-1. P be a path that is taken by u in C,
-1. and v is the first *fixed node* of P.
-
-Then, each non-fixed node w in P[u,v], chooses the oath P[w,0] in some state in
+**Lemma 4.**  Let __i.__ *u* be a node that is not fixed in *C*,
+__ii__ *P* be a path that is taken by *u* in *C*,
+__iii__ and *v* is the first *fixed node* of *P*.
+Then, each non-fixed node *w* in *P*[*u,v*], chooses the path *P*[*w,0*] in some state in
 C.
 
 Note that w does not necessarily need to choose that same path as u at the
 moment. The lemma only implies that at some previous state, w has chosen that
 path.
 
-Theorem: If there is a cycle C in an execution, then there exists a dispute
+Based on the lemma, it is intuitively easy to prove the theorem.
+
+__Theorem 3.__ If there is a cycle C in an execution, then there exists a dispute
 wheel (no dispute wheel implies no cycles, and hence, convergence).
 
-
-#### Stable Internet Routing Without Global Coordination
+## Stable Internet Routing Without Global Coordination
 Some problems:
 
 - Too much overhead to maintain path histories (dynamic execution solution).
@@ -174,17 +192,18 @@ Some problems:
     - You avoid circular conflicts by introducing hierarchies of nodes.
     - Policies are based on the hierarchy,
 
-##### There are three types of policies:
-- Import policy: of the paths offered by my neighbors, which ones will I allow?
-- Path Selection: given the paths offered by my neighbors which satisfy my
+There are three types of policies:
+
+- __Import policy:__ of the paths offered by my neighbors, which ones will I allow?
+- __Path Selection:__ given the paths offered by my neighbors which satisfy my
   import policy, which one do I like the best?
-- Export Policy: given my current path, will I tell my neighbor of this path or
+- __Export Policy:__ given my current path, will I tell my neighbor of this path or
   tell my neighbor that I have no path?
 
 Note that a path is allowed in an "SPP instance" only if it exists in the
 export policy of my neighbour and in my import policy.
 
-##### Neighbor Relation
+### Neighbor Relation
 - provider-to-customer
 - peer-to-peer
 - backup-link
@@ -192,59 +211,57 @@ export policy of my neighbour and in my import policy.
 Provider-to-customer edges must form a directed acyclic graph (DAG).
 However, in terms of peer-to-peer, any body can be peer to any body else.
 
-Export policy restrictions:
+The customer-provider and peer-to-peer agreements translate into several rules
+governing BGP export policies:
 
-- Provider:
-    - Exporting to a provider: In exchanging routing information with a
-      provider:
-        - An AS can only export its networks and the routes of its customers.
-        - However, it can not export routes learned from other provider or
-          peers.
-        - That is, an AS does not provide transit services for its provider.
-    - Exporting to a peer: In exchanging routing information with a peer: same
-      restrictions.
-    - Exporting to a customer: In exchanging routing information with a
-      customer:
-        - An AS can export everything: its customer routes, as well as routes
-          learned from its providers and peers. 
-        - That is, an AS does provide transit services for its customers.
+- Exporting to a provider: In exchanging routing information with a
+    provider:
+    - An AS can only export its networks and the routes of its customers.
+    - However, it can not export routes learned from other provider or
+        peers.
+    - That is, an AS does not provide transit services for its provider.
+- Exporting to a peer: In exchanging routing information with a peer: same
+    restrictions.
+- Exporting to a customer: In exchanging routing information with a
+    customer:
+    - An AS can export everything: its customer routes, as well as routes
+        learned from its providers and peers. 
+    - That is, an AS does provide transit services for its customers.
 
 In conclusion: A node can export to its peer and to its provider only paths that it has
 learned from its customers
 
-**Lemma 1:** A path exported by a provider g to a customer h can only be
+**Lemma 5:** A path exported by a provider g to a customer h can only be
 subsequently exported by providers to their customers (exported via provider ->
 customer edges).
 - If g exports the path to h, h cannot export it to y nor to x, h can export to
   y or x only a path via a customer
 - You can repeat the argument between h and i, etc.
 
-Guide line A
+__Guide line A:__ _Must prefer customer paths over those of peers and providers_
 
-## 2017/06/19
-A quick recap:
-- Checking for a *nice* BGP is HP-hard.
-- No dispute wheel => system is *nice*.
-- People don't disclose routing policies.
-
-Thus we propose a general guideline/requirement for sanity:
-1. Provider to customer graph is acyclic.
-1. Export policy restrictions.
-1. Guide line A: you must prefer customer paths over peer or provider paths.
-
-### Theorem 1
+__Theorem 4:__
 For a BGP system that has only customer-provider and peer-to-peer relationships
 (no backup links), if all ASms follow guideline A, and the provider-customer
 graph is acyclic, and the export policies are respected, then the BGP system is
 inherently safe (always converges).
 
-#### Proof
+__Proof:__
 First, these two statements are the same. We will prove the latter one.
+
 - All three properties satisfied => No dispute wheel.
 - Dispute wheel exists => at least one of properties violated.
 
 
-#### Remark
+#### Some Remark
 If links and or nodes are added.deleted, or if the policies change, as long as
 they satisfy the given requirements, the system will remain stable.
 
+## Path Selection Policy
+If we have multiple BGP speakers per AS then, path selection is as follows:
+
+1. Choose the greatest `local_pref`
+1. Choose the least AS hops.
+1. Choose the lowest `MED` value
+1. Choose the least internal cost to border router.
+1. Choose the lowest peer IP address.
