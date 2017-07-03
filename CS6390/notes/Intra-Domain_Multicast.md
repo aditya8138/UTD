@@ -1,6 +1,6 @@
 # Multicast
 
-### Multicast semantics
+## Multicast semantics
 - Multicast *group*
     + Is represented by a class D IP address (more later)
     + Zero or more receivers from a multicast group
@@ -19,9 +19,19 @@
     + Sources do not need to know individual receivers (they just send)
     + Receivers do not need to know the sources either.
 - Disadvantages
+    + Diffcult to protext from unauthorized senders/receivers.
 
+### Forwarding State is _Dynamic_
+- __Created__ when receivers join a multicast group and when sources send
+  packets addressed to the group.
+- __Deleted__ after receivers leave a multicast group or senders stop sending
+  packets addressed to the group.
 
-### Bridges and Extended LANs Review
+### Intra-Domain Multicast Routing
+- Dense Mode Protocols:  __DVMRP__, __MOSPF__, PIM-DM(dense mode)
+- Sparse Mode Protocols: __PIM-SM(sparse mode)__, SSM
+
+## Bridges and Extended LANs Review
 - LANs have physical limitations (e.g., 2500m)
 - Bridges connect two or more LAN segments (i.e. collision domains) together.
   They are *transparent* to hosts (does not change packets in any way).
@@ -50,15 +60,16 @@ something. Yet, the receiver might not send anything.
 
 To learn the location of receivers, we force receivers (i.e., group members) to
 periodically transmit a membership-report, with the form of:
+
 - LAN source address = `G`,
 - LAN destination address = `ALL-BRIDGES` multicast address.
 
-#### Bridge Multicast Table.
+### Bridge Multicast Table.
 - A bridge receiving a report records the incoming interface of the report as
   an outgoing interface for group G.
 - It then forwards the report over all of its interfaces in the extended LAN.
 
-#### Bridge algorithm (summary)
+### Bridge algorithm (summary)
 1. If a packet arrives and its source address is a multicast group,
     1. record arriving interface as an outgoing-interface with an age of zero
        for this multicast address,
@@ -71,33 +82,31 @@ periodically transmit a membership-report, with the form of:
    every outgoing-interface recorded in the table entry for that address
    excluding the arriving interface.
 
-#### Some Improvements
+### Some Improvements
 In the algorithm, if a LAN segment have many host in one group, then all of
 them would send membership-report. But the bridges connecting to that LAN
 segment only need one report to record the outgoing-interface in table, which
 leads to some waste.
 
 Thus, an efficient improvement to suppress unnecessary membership reports:
+
 - Hosts send membership-reports as `(G,G)`, rather than `(G, ALL-BRIDGES)`.
 - Then members of group `G` in the same LAN will not send a report if they
   receive the first membership-report.
-
   All the member in the same LAN will receive the membership-report because to
   join group `G`, their local network card is programmed to receive packets with
   destination address of `G`.
 
 - Bridge on receiving a packet with address `(G,G)`, will changes it to
   `(G, ALL-BRIDGES)` and forwards to other interfaces.
+  __This change is vital.__
 
-  This change is vital.
-
-## DVMRP (Distance Vector Multicast Routing Protocol)
+## Distance Vector Multicast Routing Protocol (DVMRP)
 ### Basic Idea
 Compute a `spanning (i.e. broadcast) tree` across all the links and prune it to
 become a multicast tree. Specifically, a source-based shortest path spanning
-tree.
-Tree is rooted at the source site.
-It corresponds to shortest path from each receiver to the source
+tree. Tree is rooted at the source site.
+It corresponds to *shortest path from each receiver to the source*.
 
 __Observation:__ Every shortest-path multicast tree rooted at the sender is a
 subtree of a single shortest-path spanning (i.e. broadcast) tree rooted at this
@@ -109,6 +118,7 @@ This is not a standard protocol, is just a general method to do broadcast
 unicast routing tables.
 
 When a router receives a broadcast packet from source S:
+
 - If the packet *arrives via the next-hop router to S*, then forward the packet
   to all outgoing interfaces (except the incoming one, of course),
 - Otherwise, throw the packet away.
@@ -121,14 +131,16 @@ may receive multiple messages forwarded by different routers.
 
 ### Reverse Path Broadcasting (RPB)
 __Object:__ eliminates duplicate broadcasts on shared links in RPF.
-In order to do that, a router R should determine, for each LAN λ:
-- Is ![](http://latex.codecogs.com/gif.latex?\lambda) the parent of R on the tree? -- so that the router accept the message.
-- Is ![](http://latex.codecogs.com/gif.latex?\lambda) a child of R on the tree? -- so that the router would copy the message
+In order to do that, a router *R* should determine,
+for each LAN ![](http://latex.codecogs.com/gif.latex?\lambda):
+
+- Is ![](http://latex.codecogs.com/gif.latex?\lambda) the parent of R on the tree?
+  -- so that the router accept the message.
+- Is ![](http://latex.codecogs.com/gif.latex?\lambda) a child of R on the tree?
+  -- so that the router would copy the message
   to LAN ![](http://latex.codecogs.com/gif.latex?\lambda).
 
-
-
-Some note: as long as the message comes from the LAN (to which next hop
+__Some note:__ as long as the message comes from the LAN (to which next hop
 belongs), will inherit the message whichever comes.
 
 Routers in the same LAN should know each other's cost to the source S.
@@ -153,23 +165,51 @@ back to reach only links with receivers.
 #### Truncated Reverse-Path Broadcast (TRPB)
 An alternative in which only non-member leaf LANs are deleted from each
 broadcast tree: a router truncates a child link if
+
 - no router uses this link to receive multicast messages from the source (i.e.,
   it is a *leaf LAN*)
 - No host is a group member on this link (*non-member LAN*)
 
-DV with split-horizon and poisoned reverse.
-> Lie to you next hop.
+Distance vectors only tells the distance not the next hop, so we use DV with
+split-horizon and poisoned reverse, that if _at least one router_ gives me a
+distance of _infinity_, then it uses my LAN as the next hop.
 
-Routing Table
+__DV with split-horizon and poisoned reverse.__ -- ___Lie to you next hop.___
+
+#### Routing Table Example
 
 | Destination | Next Hop| Cost | Children Bitmap | Leaf Bitmap |
 | :---: | --- | --- | :---: | :---: |
 | Ls | .. | .. | 01011 | 00011 |
 
+### Reverse Path Multicasting (RPM)
+Based on TRPB, __Leaf Routers with *no attached members*__ send a
+__*non membership report* (NMR)__ to the parent router on the LAN.
+If a router receives NMR from all of its children routers and itself has no
+directly attached members, then it also send NMR to its parent router on the
+tree.
 
-### Extended OSPF - MOSPF
+Of course, NMR report include an age field, when it expires data flows all the
+way to leaves again and gets re-prunec back.
 
-#### A quick review
+Furthermore, routers remember NMR reports that they sent, so that when a new
+host joins _G_, then send a cancellation message to undo the effect of NMR.
+
+### Pros and Cons
+Reverse path multicasting, when used with distance vector
+routing, is known as distance-vector multicast routing protocol (DVMRP)
+
+- Advantages: good when there are many receivers, since multicast messages are
+  initially flooded to the entire network.
+- Disadvantages:
+    + Bad if there are few receivers.
+    + The _path from source to receiver may not be optimal_ if the cost of
+      links is not bi-directional.
+
+
+## Extended OSPF (MOSPF)
+
+### A quick review
 A router X generate its link state advertisement periodically.
 
 | X | Cost |
@@ -182,24 +222,30 @@ A router X generate its link state advertisement periodically.
 Send group membership information in OSPF link state advertisement (LSA)
 message.
 
+The router maintain MOSPF cache with the entries like: `(Ls, G, iif, MHV)`.
 
-
-
+- `iif` means _incoming interface_.
+- MHV is a vector with an entry per output link, i.e. a list of pairs
+`(`![](http://latex.codecogs.com/gif.latex?\lambda)`, min-hops)`.
+- If a packet is received from S to G from the `iif`, the packet is sent over
+  all links such that the time-to-live of the packet is at least the link's
+  entry in min-hops.
+- If no cache-entry of `(S, G)`, compute the tree on the fly (incurring delay).
 
 If current router is not part of the tree, it better adds an entry of infinity
 to the cache so that next time it does not need to compute the whole tree
 again.
 
-#### Summary of MOSPF
-##### Pros:
-- If the link cost is not bixxx, the MOSPF will still find the optimal path
-  from source to receiver.
-##### Cons:
-- The first packet is delayed a lot. (compute tree at every hop)
-- Routers have to remember the receiver even though there are no sources.
+### Summary of MOSPF
+- Pros:
+    + If the link cost is not bi-directional, the MOSPF will still find the optimal
+    path from source to receiver.
+- Cons:
+    + The first packet is delayed a lot. (compute tree at every hop)
+    + Routers have to remember the receiver even though there are no sources.
 
 
-### Protocol Independent Multicast - PIM
+## Protocol Independent Multicast (PIM)
 Note that the dense version PIM is basically the same as DVMRP. We will focus
 on sparse version PIM in this section.
 
