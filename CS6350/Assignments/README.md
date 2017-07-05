@@ -35,6 +35,7 @@ All execution need to be performed on department machine with Hadoop configured.
     ```
 
 - Part 2
+
     ```bash
     # Delete if directory exist.
     hdfs dfs -rm -r assignment1/part2
@@ -72,20 +73,29 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat assignment1b/part1/part-r-00000
     ```
 - Part 2
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
         assignment1b.part2.POSCount \
-        hdfs://cshadoop1/user/hxh160630/assignment1/part2/wiki \
-        hdfs://cshadoop1/user/hxh160630/assignment1b/part2
+        hdfs://cshadoop1/user/netID/assignment1/part2/wiki \
+        hdfs://cshadoop1/user/netID/assignment1b/part2
 
     # The result would print on screen automatically, and store in the
     # following path with name result.txt
     hdfs dfs -cat hdfs://cshadoop1/user/netID/assignment1b/part2/result
-	```
+    ```
 
 ### Assignment 2
+From this assignment, relative path is used, if not specified.
+For example
+> hdfs://cshadoop1/user/netID/assignment1/part2/wiki
+
+becomes
+> assignment1/part2/wiki
+
 - Q1
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
@@ -95,6 +105,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat assignment2/1/part-r-00000
     ```
 - Q2
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
@@ -104,6 +115,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat assignment2/2/part-r-00000
     ```
 - Q3
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
@@ -113,6 +125,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat assignment2/3/part-r-00000
     ```
 - Q4
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
@@ -122,6 +135,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat assignment2/4/part-r-00000
     ```
 - Q5
+
     ```bash
     # Process files in specified folder.
     hadoop jar CS6350Assignment-1.0-SNAPSHOT.jar \
@@ -130,6 +144,69 @@ All execution need to be performed on department machine with Hadoop configured.
     # Display result
     hdfs dfs -cat assignment2/5/part-r-00000
     ```
+
+### Assignment 3
+This assignment is run on spark. One can either choose to use the _spark-shell_
+or _spark-submit_ to execute. Note the in _spark-shell_ a spark-context object
+`sc` is created automatically. There is no need to created again.
+
+Below instruction used __spark-submit__.
+
+- Q1
+
+    ```bash
+    # Execution
+    spark-submit --class assignment3.Q1 --master yarn-cluster \
+        CS6350Assignment-1.0-SNAPSHOT.jar assignment3/1
+
+    # Display result
+    hdfs dfs -cat assignment3/1/part-00000
+    ```
+
+- Q2
+
+    ```bash
+    # Execution
+    spark-submit --class assignment3.Q2 --master yarn-cluster \
+        CS6350Assignment-1.0-SNAPSHOT.jar "Matt J." assignment3/2
+
+    # Display result
+    hdfs dfs -cat assignment3/2/part-00000
+    ```
+
+- Q3
+
+    ```bash
+    # Execution
+    spark-submit --class assignment3.Q3 --master yarn-cluster \
+        CS6350Assignment-1.0-SNAPSHOT.jar Stanford assignment3/3
+
+    # Display result
+    hdfs dfs -cat assignment3/3/part-00000
+    ```
+
+- Q4
+
+    ```bash
+    # Execution
+    spark-submit --class assignment3.Q4 --master yarn-cluster \
+        CS6350Assignment-1.0-SNAPSHOT.jar assignment3/4
+
+    # Display result
+    hdfs dfs -cat assignment3/4/part-00000
+    ```
+
+- Q5
+
+    ```bash
+    # Execution
+    spark-submit --class assignment3.Q5 --master yarn-cluster \
+        CS6350Assignment-1.0-SNAPSHOT.jar assignment3/5
+
+    # Display result
+    hdfs dfs -cat assignment3/5/part-00000
+    ```
+
 ## Some Remarks
 ### Assignment 1b
 #### Load Dependency File
@@ -201,3 +278,76 @@ need to implement a vector plus function to sum up all the receiving vector.
 The `<key,value>` pair would be `<Length of Word, Vector of POS Count>`
 
 The coding is left To-do.
+
+### Assignment 3
+To compile a java/scala mixed project, we need to add following content to
+`pom.xml`
+
+```xml
+<!-- Scala dependency -->
+<dependencies>
+    <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/net.alchim31.maven/scala-maven-plugin -->
+    <dependency>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.2.2</version>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <version>2.15.2</version>
+        </plugin>
+
+        <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+                <execution>
+                    <id>scala-compile-first</id>
+                    <phase>process-resources</phase>
+                    <goals>
+                        <goal>add-source</goal>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>scala-test-compile</id>
+                    <phase>process-test-resources</phase>
+                    <goals>
+                        <goal>testCompile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.6.1</version>
+            <executions>
+                <execution>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
