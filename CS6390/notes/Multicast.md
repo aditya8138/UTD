@@ -27,9 +27,11 @@
 - __Deleted__ after receivers leave a multicast group or senders stop sending
   packets addressed to the group.
 
-### Intra-Domain Multicast Routing
-- Dense Mode Protocols:  __DVMRP__, __MOSPF__, PIM-DM(dense mode)
-- Sparse Mode Protocols: __PIM-SM(sparse mode)__, SSM
+# Intra-Domain Multicast Routing
+<!--
+   -- Dense Mode Protocols:  __DVMRP__, __MOSPF__, PIM-DM(dense mode)
+   -- Sparse Mode Protocols: __PIM-SM(sparse mode)__, SSM
+   -->
 
 ## Bridges and Extended LANs Review
 - LANs have physical limitations (e.g., 2500m)
@@ -288,3 +290,15 @@ designated router for S.
 
 #### SPT 
 ##### But how do routers discover sources?
+
+# Inter-Domain Multicast Routing
+Note that PIM-SM is a good candidate.
+
+## Source Specific Multicast (SSM)
+
+Provide support for large-scale multicast applications by extending the IP
+Multicast service model to support multicast channels.
+
+
+Prune myself from source, but would remeber that there is a source at this
+direction.
