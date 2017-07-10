@@ -1,10 +1,20 @@
 # Multicast
 
+> *Multicasting* in a datagram or connectionless network is the transmission of
+> a packet to a subset of the hosts in the network. An efficient multicast
+> facility provides packet delivery to groups of hosts at a lower network and
+> host overhead than broadcasting to all hosts or unicasting to each host in a
+> group.
+>
+> A multicast service offers two important benefits to network applications.
+> - Efficient multidestination delivery.
+> - Robust unknown destination delivery.
+
 ## Multicast semantics
 - Multicast *group*
     + Is represented by a class D IP address (more later)
     + Zero or more receivers from a multicast group
-    + Senders are not part of the group
+    + __Senders are not part of the group__
 - *Open group semantics*
     + Receivers can join/leave at will.
     + Anyone knowing group address can send to it.
@@ -16,10 +26,10 @@
 
 ### Open group semantics
 - Advantages
-    + Sources do not need to know individual receivers (they just send)
+    + Sources do not need to know individual receivers (they just send).
     + Receivers do not need to know the sources either.
 - Disadvantages
-    + Diffcult to protext from unauthorized senders/receivers.
+    + Difficult to protect from unauthorized senders/receivers.
 
 ### Forwarding State is _Dynamic_
 - __Created__ when receivers join a multicast group and when sources send
@@ -27,13 +37,36 @@
 - __Deleted__ after receivers leave a multicast group or senders stop sending
   packets addressed to the group.
 
-# Intra-Domain Multicast Routing
-<!--
-   -- Dense Mode Protocols:  __DVMRP__, __MOSPF__, PIM-DM(dense mode)
-   -- Sparse Mode Protocols: __PIM-SM(sparse mode)__, SSM
-   -->
+## Multicast Tree Construction
+Building forwarding trees between sources and receivers. In general there are
+three ways:
 
-## Bridges and Extended LANs Review
+- Flood and prune:
+    + Begin by flooding traffic to entire network (Create a broadcast tree).
+    + Prune branches with no receivers.
+
+  Some examples of this way: DVMRP, PIM-DM.
+
+  Disadvantages:
+    + unwanted (prune) state in routers not on the multicast tree.
+    + Initial flood consume network bandwidth.
+
+- Link-state multicast protocols:
+    + Routers advertise groups for which they have senders/receivers to entire
+      network.
+    + Compute trees on demand.
+
+  An example: MOSPF.
+
+  Disadvantages:
+    + Link-state is not scalable.
+    + Unwanted state in routers not on the multicast tree.
+
+- Receiver driven:
+    + Tree is built from the receivers up towards the tree root.
+    + Disadvantage: path from source to receiver may not be optimal.
+
+# Bridges and Extended LANs Review
 - LANs have physical limitations (e.g., 2500m)
 - Bridges connect two or more LAN segments (i.e. collision domains) together.
   They are *transparent* to hosts (does not change packets in any way).
@@ -50,7 +83,7 @@
       another.
 - Bridges run a distributed spanning tree algorithm.
 
-### Multicast in Extended LANs
+## Multicast in Extended LANs
 A simple way: bridges propagate multicast packets across every segment of the
 extended LAN. But way too inefficient, especially for multicast applications
 with sparsely located receivers.
@@ -66,12 +99,12 @@ periodically transmit a membership-report, with the form of:
 - LAN source address = `G`,
 - LAN destination address = `ALL-BRIDGES` multicast address.
 
-### Bridge Multicast Table.
+## Bridge Multicast Table.
 - A bridge receiving a report records the incoming interface of the report as
   an outgoing interface for group G.
 - It then forwards the report over all of its interfaces in the extended LAN.
 
-### Bridge algorithm (summary)
+## Bridge algorithm (summary)
 1. If a packet arrives and its source address is a multicast group,
     1. record arriving interface as an outgoing-interface with an age of zero
        for this multicast address,
@@ -84,7 +117,9 @@ periodically transmit a membership-report, with the form of:
    every outgoing-interface recorded in the table entry for that address
    excluding the arriving interface.
 
-### Some Improvements
+![disputearc](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6390/notes/fig/bridgegroup.png)
+
+## Some Improvements
 In the algorithm, if a LAN segment have many host in one group, then all of
 them would send membership-report. But the bridges connecting to that LAN
 segment only need one report to record the outgoing-interface in table, which
@@ -103,12 +138,13 @@ Thus, an efficient improvement to suppress unnecessary membership reports:
   `(G, ALL-BRIDGES)` and forwards to other interfaces.
   __This change is vital.__
 
+# Intra-Domain Multicast Routing
 ## Distance Vector Multicast Routing Protocol (DVMRP)
 ### Basic Idea
 Compute a `spanning (i.e. broadcast) tree` across all the links and prune it to
 become a multicast tree. Specifically, a source-based shortest path spanning
-tree. Tree is rooted at the source site.
-It corresponds to *shortest path from each receiver to the source*.
+tree. Tree is rooted at the source site. It corresponds to *shortest path from
+each receiver to the source*.
 
 __Observation:__ Every shortest-path multicast tree rooted at the sender is a
 subtree of a single shortest-path spanning (i.e. broadcast) tree rooted at this
@@ -154,7 +190,8 @@ distance vectors of each other. (P34).
 The information should be pre-computed so that messages forwarding would not be
 delayed.
 
-Add a Children Bitmap to the routing table.
+Add a Children Bitmap to each routing table entry (i.e. each destination LAN
+could be a possible source LAN Ls).
 
 We take advantage that we already have a unicast routing table with an entry
 per LAN and who tells us who the next hop (parent) is.
@@ -177,6 +214,9 @@ split-horizon and poisoned reverse, that if _at least one router_ gives me a
 distance of _infinity_, then it uses my LAN as the next hop.
 
 __DV with split-horizon and poisoned reverse.__ -- ___Lie to you next hop.___
+
+Leaf pruning requires that routers add a leaf bitmap to each routing table
+entry (i.e. for each possible source)
 
 #### Routing Table Example
 
@@ -224,6 +264,12 @@ A router X generate its link state advertisement periodically.
 Send group membership information in OSPF link state advertisement (LSA)
 message.
 
+Each router can (when necessary) compute the minimum cost path from every
+source to the current set of receivers of the multicast group. But if the
+router precompute, for every group G, a tree for every source LAN, it's way too
+expensive. In stead, the router compute the tree only when needed and use
+caching to achieve efficiency.
+
 The router maintain MOSPF cache with the entries like: `(Ls, G, iif, MHV)`.
 
 - `iif` means _incoming interface_.
@@ -234,9 +280,9 @@ The router maintain MOSPF cache with the entries like: `(Ls, G, iif, MHV)`.
   entry in min-hops.
 - If no cache-entry of `(S, G)`, compute the tree on the fly (incurring delay).
 
-If current router is not part of the tree, it better adds an entry of infinity
-to the cache so that next time it does not need to compute the whole tree
-again.
+__Another interesting point:__ If current router is not part of the tree, it
+better adds an entry of infinity to the cache so that next time it does not
+need to compute the whole tree again.
 
 ### Summary of MOSPF
 - Pros:
@@ -246,23 +292,38 @@ again.
     + The first packet is delayed a lot. (compute tree at every hop)
     + Routers have to remember the receiver even though there are no sources.
 
-
 ## Protocol Independent Multicast (PIM)
 Note that the dense version PIM is basically the same as DVMRP. We will focus
 on sparse version PIM in this section.
 
-Receivers and senders of are often sparsely populated.
+### Motivation
+> Flood and prune protocols discover receivers by sending packets everywhere,
+> and pruning back when there are no receivers.
 
-#### Type of Trees
-One Shared Tree (per group) used by all group receivers and senders.
+In reality, receivers and senders of are often sparsely populated.
+Thus, flood and prune is inefficient in a very large internetwork (i.e. AS)
 
-#### Receiver Driven
-- Trees are built using a form of reverse-path forwarding. Parent on the tree is
-the unicast next-hop to the root.
-    - The tree is optimal backward just like DVMRP.
+### Basic Idea
+
+__Type of Trees:__ Use one Shared Tree (per group) used by all group receivers
+and senders.
+
+- Allows very large scale.
+- All sources can send data via this tree
+- All receivers receive data via this tree
+- Routers only need to keep track of information for one tree
+
+Note that __Shortest-Path Trees__ (one per (S,G) pair, rooted at S) are
+possible (but not necessary).
+
+__Receiver Driven__
+
+- Trees are built using a form of _reverse-path forwarding_. Parent on the tree
+  is the unicast next-hop to the root. (The tree is optimal backward just like
+  DVMRP.)
 - Explicit join/prune tree management
-    - Routers with local (same LAN) *receivers send an explicit join* along the
-      path to the root (whatever the root may be!)
+    - Routers with local (same LAN) receivers *send an explicit join* along the
+      path to the root (wherever the root may be!)
     - *All routers along this path will join the multicast tree* (if not on it
       already).
     - *Prune messages remove tree branches* if receivers are no longer on their
@@ -273,13 +334,24 @@ the unicast next-hop to the root.
 PIM is receiver driven and *unicast* protocol independent.
 __Only knowledge of the next-hop to a destination is needed.__
 
-#### Rendezvous Point
+### Rendezvous Point (RP)
 The __root of the *shared tree*__ for group G is known as the *rendezvous
 point* (RP) of G. Thus, the shared tree is also known as the RP tree of G.
 Every router must know the RP for every group G by some means (broadcast or
 something).
 
-##### RP Problem
+RP(G) denotes the unicast IP address of the RP of G
+
+### Overall Steps
+
+1. A receiver sends an IGMP message to its designated router (`DR`) wishing to
+   join group _G_.
+2. `DR` of receiver joins the shared tree rooted at `RP(G)`. Its join message
+   indicates `(*,G)`, i.e., wishes data from all sources.
+3. Source routers send multicast data messages to `RP(G)` via _encapsulation_.
+
+
+#### RP Problem
 - RP becomes a bottleneck. (Source send multicast message to RP(G))
 - Overhead-encapsulate/decapsulate. (Source send multicast message via
   encapsulation)
@@ -288,7 +360,7 @@ something).
 To solve these problems, we in stead build a shortest path tree rooted at the
 designated router for S.
 
-#### SPT 
+### Shortest Path Trees (SPT)
 ##### But how do routers discover sources?
 
 # Inter-Domain Multicast Routing
