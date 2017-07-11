@@ -358,19 +358,71 @@ RP(G) denotes the unicast IP address of the RP of G
 - Indirect routing.
 
 To solve these problems, we in stead build a shortest path tree rooted at the
-designated router for S.
+designated router for _S_.
 
 ### Shortest Path Trees (SPT)
-##### But how do routers discover sources?
+The __shortest path tree__ (SPT) for a source _S_ of a group _G_ is a tree
+_rooted at the designated router_ for S. For every receiving host _R_, the path
+between _R_ and _S_ is the __shortest path from *R* to *S*__.
+
+_Note that the optimum path from __S__ to __R__ may not be the optimum path
+from __R__ to __S__ if link costs are not bidirectional._
+
+If the traffic from _S_ is high, the `RP(G)` may wish to avoid
+encapsulation/decapsulation.
+
+Due to traffic load, the _DR_ of a receiver may decide to join the SPT of _S_.
+Thus, the DR will be connected to two trees, both shared tree and the SPT of
+_S_. __Once messages arrive along the parent of the SPT of _S_, the router
+_PRUNES_ itself from the Shared Tree.__ This prune is selective only for the
+source _S_, data from other sources will continue to be received via the shared
+tree.
+
+### Pros and Cons
+
+- Pros:
+    + Good in sparsely populated networks (few receivers)
+    + Only one tree is necessary (other trees for efficiency if desired)
+- Cons:
+    - If no sources are sending data right now, the routers still need to
+      maintain information about the shared tree
+    - The SPT is shortest from receiver to source, not from source to receiver.
 
 # Inter-Domain Multicast Routing
-Note that PIM-SM is a good candidate.
+Note that PIM-SM is a good candidate, since receivers are usually sparsely
+located. But a single shared tree is not desirable. For example, if the
+receiver and sender are in the same domain, but the RP is many domains away.
+Building a single shared tree is way too expensive.
 
-## Source Specific Multicast (SSM)
+The solution is intuitive: one shared tree in each domain, and each domain has
+its own RP.
 
-Provide support for large-scale multicast applications by extending the IP
-Multicast service model to support multicast channels.
+The problem now becomes: How to find each source?
 
+## Multicast Source Discovery Protocol (MSDP)
+The receiver joins the tree of its local RP as before, and the sources send
+data to their local RP. RPs use the _Multicast Source Discovery Protocol
+(MSDP)_ to learn about each source.
 
-Prune myself from source, but would remeber that there is a source at this
-direction.
+MSDP runs in the RP at each domain. When a new source joins the RP, MSDP
+informs all other domain RP’s of the new source in its domain.
+
+Each MSDP router (i.e., each RP) maintains a TCP connection with the MSDP
+router (i.e. the RP) of each neighboring domain.
+
+# Source Specific Multicast (SSM)
+
+Source Specific Multicast (SSM) is intended to *provide support for large-scale
+multicast applications by extending the IP Multicast service model to support
+__multicast channels__.*
+
+__IP Multicast Channels__ is _a multicast channel is a datagram delivery
+service identified by a tuple_ `(S,E)` _where_ `S` _is the sender’s IP address
+(which is stored in the source IP address field of the IP header), and_ `E`  _is
+the channel number (which is stored in the destination IP address field of the
+IP header)._
+
+It means only the source host `S` may send to `(S,E)`.
+
+The receiver may prune itself from source, but would remember that there is a
+source at this direction.
