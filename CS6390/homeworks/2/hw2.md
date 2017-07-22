@@ -10,6 +10,8 @@ entry that each router would build after the source begins to send multicast
 messages to the group. The metric is minimum hop, and you break ties by lower
 router number (e.g. R3 and R6, break ties in favor of R3). 
 
+![](MOSPF.jpg)
+
 
 
 ## Question 2 (PIM)
@@ -77,8 +79,9 @@ route reply.
    and C are not aware of the individual circuits, and a single virtual circuit
    ID is used.  Only A and D are aware of the individual circuits. (i) How
    would you accomplish this? (ii) Show me the virtual circuit tables of A and
-   D. 
+   D.
 
+![](VC-Photo.jpg)
 
 ## Question 7: MPLS
 <!--==============-->
