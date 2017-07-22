@@ -10,7 +10,7 @@ entry that each router would build after the source begins to send multicast
 messages to the group. The metric is minimum hop, and you break ties by lower
 router number (e.g. R3 and R6, break ties in favor of R3). 
 
-![](MOSPF.jpg)
+<img width="500" alt="portfolio_view" src="https://github.com/hanlin-he/UTD/raw/master/CS6390/homeworks/2/MOSPF.jpg">
 
 
 
@@ -81,7 +81,7 @@ route reply.
    would you accomplish this? (ii) Show me the virtual circuit tables of A and
    D.
 
-![](VC-Photo.jpg)
+<img width="500" alt="portfolio_view" src="https://github.com/hanlin-he/UTD/raw/master/CS6390/homeworks/2/VC-Photo.jpg">
 
 ## Question 7: MPLS
 <!--==============-->
