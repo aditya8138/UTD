@@ -1,139 +1,78 @@
-import time
-import sys
+from time import sleep
+from threading import Thread
+from _thread import interrupt_main
+from queue import Queue
+from topology import Topology
 
-# def follow(filename):
-    # try:
-        # thefile = open(filename,"r")
-    # except IOError:
-        # open(filename, 'w').close()
-        # thefile = open(filename,"r")
-    # while True:
-        # line = thefile.readline()
-        # if not line:
-            # time.sleep(0.1)
-            # continue
-        # yield line
+class Controller:
 
-def parse_topology_file(_network_conf=None):
-    topo = dict()
-    send_nodes = set()
-    receive_nodes = set()
-    if _network_conf is None:
-        _network_conf = "topology.txt"
-    netconf = open(_network_conf, "r")
-    for line in netconf:
-        time, status, node1, node2 = line.split()
-        send_nodes.add(node1)
-        receive_nodes.add(node2)
-        if int(time) in topo:
-            topo[int(time)] = topo[int(time)] + [(status,node1,node2)]
+    def __init__(self, _network_conf = None):
+        self.topology = Topology(_network_conf)
+        self._update_topology_thread = Thread(target=self._update_topology,
+                args=())
+        # print("Topology file is parsed as:\n{}\n".format(self.topology.topo))
+        # for i in self.topology.topo:
+            # self.topology.update(i)
+            # print("Topology at timestamp {} is:\n{}\n".format(i,
+                # self.topology.get_current_topology()))
+
+    def _update_topology(self):
+        for i in range(120):
+            self.topology.update(i)
+            sleep(1)
+        interrupt_main()
+
+    def _broadcast_message(self, dsts, msg):
+        """Copy msg to all node in dsts.
+        Simply call unicast_message function for all dst in dsts.
+        """
+        for dst in dsts:
+            self._unicast_message(dst, msg)
+
+    def _unicast_message(self, dst, msg):
+        """Copy msg to specific dst."""
+        with open("to"+dst+".txt", "a") as toX:
+            toX.write(msg)
+
+    def _forward_message(self, dsts, msg):
+        if msg[0] == '*':
+            self._broadcast_message(dsts, msg)
         else:
-            topo[int(time)] = [(status,node1,node2)]
-    return topo, send_nodes, receive_nodes
+            self._unicast_message(msg[0], msg)
 
-def follow_from_file(send_nodes):
-    file_handler = dict()
-    for node in send_nodes:
-        filename = 'from' + node + '.txt'
+    def _follow_from_file(self, senders):
+        file_handler = dict()
+        for node in senders:
+            filename = 'from' + node + '.txt'
+            try:
+                thefile = open(filename,"r")
+                thefile.seek(0,2)
+            except IOError:
+                open(filename, 'w').close()
+                thefile = open(filename,"r")
+            file_handler[node] = thefile
+
+        while True:
+            for node in senders:
+                line = file_handler[node].readline()
+                if not line:
+                    continue
+                yield node, line
+            sleep(0.1)
+
+    def start(self):
+        self._update_topology_thread.start()
+        messages = self._follow_from_file(self.topology.sender)
         try:
-            thefile = open(filename,"r")
-            thefile.seek(0,2)
-        except IOError:
-            open(filename, 'w').close()
-            thefile = open(filename,"r")
-        file_handler[node] = thefile
-
-    while True:
-        for node in send_nodes:
-            line = file_handler[node].readline()
-            if not line:
-                continue
-            yield node, line
-        time.sleep(0.1)
-
-
-def follow_to_file(a):
-    pass
-
-def update_topology(network_changes, current_topology=None):
-
-    def add_link(cur_topo, node1, node2):
-        """Add specific link to current_topology."""
-        if node1 in cur_topo:
-            cur_topo[node1].add(node2)
-        else:
-            cur_topo[node1] = {node2}
-
-    def del_link(cur_topo, node1, node2):
-        """Delete specific link to current_topology."""
-        try:
-            cur_topo[node1].remove(node2)
-            if cur_topo[node1] == set():
-                del cur_topo[node1]
-        except KeyError:
-            print("Invalid link to remove.")
-
-    if current_topology is None:
-        current_topology = dict()
-    for status,node1,node2 in network_changes:
-        # print(status,node1,node2)
-        if status == 'UP':
-            add_link(current_topology, node1, node2)
-            pass
-        elif status == "DOWN":
-            del_link(current_topology, node1, node2)
-            pass
-        else:
-            print("no")
-    return current_topology
-
-def broadcast_message(dsts, msg):
-    pass
-
-def unicast_message(dst, msg):
-    pass
-
-def forward_message(dsts, msg):
-    if msg[0] == '*':
-        broadcast_message(dsts, msg)
-    else:
-        unicast_message(msg[0], msg)
-    pass
+            for sender, message in messages:
+                self._forward_message(self.topology.get_connected_node(sender),
+                        message)
+        except KeyboardInterrupt:
+            print("END.")
 
 def main():
-    topo,send_nodes,receive_nodes = parse_topology_file()
-    # print(topo)
-    # print(send_nodes)
-    # print(receive_nodes)
-    # topo = parse_topology_file("topology1.txt")
-
-    # current_topology = update_topology(topo["0"])
-    # print(current_topology)
-    # print(update_topology(topo["80"], current_topology))
-
-    current_topology = None
-    messages = follow_from_file(send_nodes)
-    # to_file_generators = follow_to_file(receive_nodes)
-    for i in range(120): # 120 seconds execution.
-        # First update network topology if changes happened.
-        try:
-            current_topology = update_topology(topo[i], current_topology)
-            # print(current_topology)
-        except KeyError:
-            # print("No change in network at time", i)
-            continue
-        for sender,message in messages:
-            forward_message(current_topology[sender], message)
-
-
-    print("END.")
-
-
-
-    # for i in range(120):
-        # print(i)
-
+    c = Controller()
+    c.start()
 
 if __name__ == '__main__':
     main()
-
