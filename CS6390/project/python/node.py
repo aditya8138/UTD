@@ -3,11 +3,13 @@ from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 from sys import argv
 from time import sleep
+from clock import Clock
 
 
 class LinkState(Enum):
     BIDIRECTIONAL = 1
     UNIDIRECTIONAL = 2
+
 
 class Node:
 
