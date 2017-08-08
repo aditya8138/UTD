@@ -20,14 +20,21 @@ class Clock(object):
             self.lock.release()
         return self
 
+    def reset(self):
+        self.lock.acquire()
+        try:
+            self.val = 0
+        finally:
+            self.lock.release()
+        return self
+
     @property
     def time(self):
         self.lock.acquire()
         try:
-            cur_time = self.val
+            return self.val
         finally:
             self.lock.release()
-        return cur_time
 
 def main():
     c = Clock()
