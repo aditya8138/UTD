@@ -404,3 +404,6 @@ buildNumber.properties
 
 ## Markdown preview
 vim-markdown-preview.html
+
+## vim tmp
+*.swp
