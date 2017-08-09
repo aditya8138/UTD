@@ -10,7 +10,7 @@ class Topology:
         self.sender = set()
         self.receiver = set()
         if _network_conf is None:
-            _network_conf = "net/topology.txt"
+            _network_conf = "topology.txt"
         with open(_network_conf, "r") as netconf:
             for line in netconf:
                 time, status, node1, node2 = line.split()
