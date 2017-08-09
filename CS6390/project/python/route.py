@@ -99,11 +99,19 @@ class Route:
 
     @property
     def mpr(self):
-        return self.__mpr__, self.__mpr_seqno__
+        return self.__mpr__
+
+    @property
+    def mpr_seqno(self):
+        return self.__mpr_seqno__
 
     @property
     def ms(self):
-        return self.__ms__, self.__ms_seqno__
+        return self.__ms__
+
+    @property
+    def ms_seqno(self):
+        return self.__ms_seqno__
 
     @property
     def topo(self):
@@ -139,12 +147,14 @@ class Route:
             2. Invoke select_mpr to reselect mpr set.
             3. Invode _update_ms to update MS set.
         """
+        # print(self.unidir, self.bidir, self.mpr, self.mpr_seqno)
         self._update_neighbor(neighbor, unidir, bidir)
         self._select_mpr()
         self._update_ms(neighbor, mpr)
         pass
 
     def _update_neighbor(self, neighbor, unidir, bidir):
+
         """ Update neighbor information of specific neighbor.
         Args:
             - neighbor (str): The id of the neighbor, which is the originator
@@ -245,7 +255,7 @@ class Route:
         Args:
             - last_hop (str): Originator of the TC message, last-hop to dst.
             - ms (Set[str]): The MS set of the message originator.
-            - ms_seqno (str): Sequence number of the MS set.
+            - ms_seqno (int): Sequence number of the MS set.
         """
         cur_time = Clock().time
 
@@ -278,6 +288,7 @@ class Route:
             self.__topo__[(dst, last_hop)] = (ms_seqno, cur_time)
 
         self.calc_route_table()
+        # print(self.topo)
 
     def __remove_neighbor__(self, neighbors):
         """ Remove neighbor information in the specific set.
@@ -415,59 +426,59 @@ class TestRoute(unittest.TestCase):
         route = Route('a')
         route._update_neighbor('b', {'c','d'}, {'e','f'})
         route._select_mpr()
-        self.assertEqual(route.mpr, (set(),0))
+        self.assertEqual((route.mpr, route.mpr_seqno), (set(),0))
 
         route._update_neighbor('c', {'d','a'}, {'g'})
         route._select_mpr()
-        self.assertEqual(route.mpr, ({'c'},1))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c'},1))
 
         route._update_neighbor('b', {'c','d'}, {'e','f','a','p'})
         route._select_mpr()
-        self.assertEqual(route.mpr, ({'c','b'},2))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c','b'},2))
 
         route._update_neighbor('d', {'d','a'}, {'x'})
         route._select_mpr()
-        self.assertEqual(route.mpr, ({'c','b','d'},3))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c','b','d'},3))
 
         route._update_neighbor('d', {'d','a'}, {'x','g'})
         route._select_mpr()
-        self.assertEqual(route.mpr, ({'b','d'},4))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
 
         route._update_neighbor('e', {'d','a'}, {'f'})
         route._select_mpr()
-        self.assertEqual(route.mpr, ({'b','d'},4))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
 
     def test_hello_update(self):
         Clock().reset()
         route = Route('a')
 
         route.hello_update('b', {'c','d'}, {'e','f'}, {})
-        self.assertEqual(route.mpr, (set(),0))
-        self.assertEqual(route.ms, (set(),0))
+        self.assertEqual((route.mpr, route.mpr_seqno), (set(),0))
+        self.assertEqual((route.ms, route.ms_seqno), (set(),0))
 
         route.hello_update('c', {'d','a'}, {'g'}, {'g'})
-        self.assertEqual(route.mpr, ({'c'},1))
-        self.assertEqual(route.ms, (set(),0))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c'},1))
+        self.assertEqual((route.ms, route.ms_seqno), (set(),0))
 
         route.hello_update('b', {'c','d'}, {'e','f','a','p'}, {'a'})
-        self.assertEqual(route.mpr, ({'c','b'},2))
-        self.assertEqual(route.ms, ({'b'},1))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c','b'},2))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b'},1))
 
         route.hello_update('d', {'d','a'}, {'x'}, {'x'})
-        self.assertEqual(route.mpr, ({'c','b','d'},3))
-        self.assertEqual(route.ms, ({'b'},1))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'c','b','d'},3))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b'},1))
 
         route.hello_update('d', {'d'}, {'a','x','g'}, {'g','a'})
-        self.assertEqual(route.mpr, ({'b','d'},4))
-        self.assertEqual(route.ms, ({'b','d'},2))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b','d'},2))
 
         route.hello_update('e', {'d','a'}, {'f'}, {'f'})
-        self.assertEqual(route.mpr, ({'b','d'},4))
-        self.assertEqual(route.ms, ({'b','d'},2))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b','d'},2))
 
         route.hello_update('d', {'d'}, {'a','x','g'}, {'g','x'})
-        self.assertEqual(route.mpr, ({'b','d'},4))
-        self.assertEqual(route.ms, ({'b'},3))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b'},3))
 
     def test_tc_update(self):
         Clock().reset()
@@ -521,8 +532,8 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(route.neighbor_timestamp, {'c':1, 'b':2, 'd':6, 'e':5,
             'f':7})
 
-        self.assertEqual(route.mpr, ({'b','d'},4))
-        self.assertEqual(route.ms, ({'b'},3))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},4))
+        self.assertEqual((route.ms, route.ms_seqno), ({'b'},3))
 
         Clock().tick() # time = 9
         route.tc_update('f', {'e'}, 1)
@@ -579,8 +590,8 @@ class TestRoute(unittest.TestCase):
         route.hello_update('d', set(), {'c','a','e'}, {'c','e'})
         self.assertEqual(route.unidir, {'c'})
         self.assertEqual(route.bidir, {'b','d'})
-        self.assertEqual(route.mpr, ({'b','d'},2))
-        self.assertEqual(route.ms, (set(),0))
+        self.assertEqual((route.mpr, route.mpr_seqno), ({'b','d'},2))
+        self.assertEqual((route.ms, route.ms_seqno), (set(),0))
 
         route.tc_update('b',{'c','f','a'},1)
         self.assertEqual(route.route, {'b':('b',1), 'd':('d',1), 'c':('b',2),
