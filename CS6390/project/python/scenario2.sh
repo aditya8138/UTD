@@ -1,4 +1,4 @@
-python3 controller.py "net/topology2.txt" &
+python3 controller.py "topology2.txt" &
 python3 node.py 0 4 "A message from 0 to 4"   40   &
 python3 node.py 1 1 &
 python3 node.py 2 2 &
