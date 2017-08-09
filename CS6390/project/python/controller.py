@@ -1,4 +1,5 @@
 from time import sleep
+from sys import argv
 from threading import Thread
 from _thread import interrupt_main
 from queue import Queue
@@ -70,8 +71,8 @@ class Controller:
         except KeyboardInterrupt:
             print("END.")
 
-def main():
-    c = Controller()
+def main(): 
+    c = Controller() if len(argv) == 1 else Controller(argv[1])
     c.start()
 
 if __name__ == '__main__':
