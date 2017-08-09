@@ -18,7 +18,7 @@ class Controller:
                 # self.topology.get_current_topology()))
 
     def _update_topology(self):
-        for i in range(120):
+        for i in range(125):
             self.topology.update(i)
             sleep(1)
         interrupt_main()
