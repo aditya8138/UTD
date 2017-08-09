@@ -141,6 +141,9 @@ class Route:
         finally:
             self.__lock__.release()
 
+    def mpr_of(self, neighbor):
+        return neighbor in self.__ms__
+
     def hello_update(self, neighbor, unidir, bidir, mpr):
         """ Update triggered by HELLO message.
             1. Invoke _update_neighbor to update neighbor table.
@@ -151,7 +154,7 @@ class Route:
         self._update_neighbor(neighbor, unidir, bidir)
         self._select_mpr()
         self._update_ms(neighbor, mpr)
-        pass
+        self.calc_route_table()
 
     def _update_neighbor(self, neighbor, unidir, bidir):
 
@@ -246,9 +249,11 @@ class Route:
                 return
             self.__ms__.add(neighbor)
             self.__ms_seqno__ += 1
-        if neighbor in self.__ms__ and self.nid not in mpr:
+            return
+        if neighbor in self.__ms__:
             self.__ms__.discard(neighbor)
             self.__ms_seqno__ += 1
+            return
 
     def tc_update(self, last_hop, ms, ms_seqno):
         """ Update triggered by TC message.
