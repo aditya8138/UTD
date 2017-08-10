@@ -174,7 +174,7 @@ seek to the end of `fromX.txt`/`toX.txt`, discard all existing contents and
 process any new line thereafter. Therefore, if controller was started after
 nodes, some messages might be lost if they were sent before controller started.
 
-## Multi-machine Execution
+### Multi-machine Execution
 
 To deal with the limit of 100 threads per machine on campus Unix. A
 multi-machine script is used.
