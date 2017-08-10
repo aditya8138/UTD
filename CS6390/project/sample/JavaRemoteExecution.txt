@@ -1,0 +1,47 @@
+Greetings again.
+
+This announcement is only for java programmers.
+
+We may have an issue with the java programs. The java virtual machine environment creates too many threads (10 to 20) of its own, even if you don’t create your own threads. It uses them for garbage collection and a whole other bunch of stuff.
+
+The problem is that you have a limit of 100 threads per machine. Thus, if you run your project on csgrads1, and the scenario has six nodes (0, 1, up to 5) then you will have over 120 threads, and some of your nodes will crash due to lack of resources. 
+
+To go around this, you can run each node on a separate machine.
+
+The department has machines whose names are net01, net02, etc. up to at least net40. You can run node 0 in net01, and node 1 in net02, etc. Of course, since students most likely use net01 and net02 etc rather then the higher numbers, you could use net30, net31, net32, etc for the project.
+
+So, how to do this? First, you need to setup ssh so that you can login from csgrads1 to the net01 etc machines WITHOUT using a password. Instructions for doing this in general can be found at the link below.
+
+http://www.linuxproblem.org/art_9.html
+
+Above, replace the “A” machine for csgrads1 (or whatever CS machine you are at moment and that you will use to spawn your nodes from) and replace machine “B” for net01
+
+If all goes well, then if you are logged into csgrads1, then you could do
+
+ssh net01
+
+and it will log you in without asking you for a password
+
+Next, what we need to do is do a small change to you shellscripts that run your project.
+
+Assume that you have the following simple shell script from scenario 1
+
+java foo 0 100 1 "EFABCXXFEGHI" 40 1 &
+java foo 1 100 1 0 &
+
+To run it in net01 and net02, you do so as follows
+
+ssh jcobb@net01 ‘ java foo 0 100 1 "EFABCXXFEGHI" 40 1 ‘ & 
+ssh jcobb@net02 ‘ java foo 1 100 1 0 ‘ &
+
+That should do it. The single quotes ‘   ‘   are necessary to go around the command that you will execute in the remote machine. Of course, my netid is jcobb, use your own instead.
+
+The first time you run a remove job on any of the net machines the shell may ask you to add the fingerprint of the remote machine to you .ssh file; simply answer y for yes. The second time it will not do so again since the fingerprint is stored and is now trusted.
+
+You will probably only need to do this for scenarios that have at least 4 nodes, perhaps only for the ones that have 5 or more nodes.
+
+Good luck! Let me know if it works or if there are any issues.
+
+Best wishes
+
+J Cobb
