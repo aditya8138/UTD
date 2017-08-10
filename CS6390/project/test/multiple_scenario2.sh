@@ -1,4 +1,11 @@
+# Script Filename: multiple_scenario2.sh
+# To execute: bash multiple_scenario2.sh <user-id>
+
+# Start Controller first.
+# Topology configuration file is set as 'topology.txt'
 ssh $1@dc20 ' python3 controller.py "topology2.txt" ' &
+
+# Start all Nodes.
 ssh $1@dc10 ' python3 node.py 0 4 "A message from 0 to 4"   40   ' &
 ssh $1@dc11 ' python3 node.py 1 1 ' &
 ssh $1@dc12 ' python3 node.py 2 2 ' &
