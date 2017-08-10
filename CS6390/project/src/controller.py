@@ -59,7 +59,10 @@ class Controller:
                 if not line:
                     continue
                 yield node, line
-            sleep(0.1)
+            try:
+                sleep(0.1)
+            except TypeError:
+                break
 
     def start(self):
         self._update_topology_thread.start()

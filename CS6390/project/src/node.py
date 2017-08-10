@@ -236,8 +236,8 @@ class Node:
 def main():
     if len(argv) == 5:
         c = Node(argv[1], argv[2], argv[3], int(argv[4]))
-    elif len(argv) == 3:
-        c = Node(argv[1], argv[2])
+    else:
+        c = Node(argv[1])
     # print(c.nid, c.msg, c.timestamp, c.__route__)
     c.start()
     print("Node {} end.".format(argv[1]))
