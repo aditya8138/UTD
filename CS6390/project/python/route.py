@@ -280,7 +280,7 @@ class Route:
             # sequence number in the received message, then that topology table
             # entry is removed.
             # Will re-add the entries again.
-            if _last_hop == last_hop and prev_seq < ms_seqno:
+            if _last_hop == last_hop and prev_seq <= ms_seqno:
                 self.__topo__.pop((dst,_last_hop))
 
         # If there exist some entry in the topology table whose destination
@@ -303,13 +303,16 @@ class Route:
             - True:  If some information was deleted.
             - False: If nothing was changed.
         """
+        # if neighbors:
+        #     print(self.nid, 'deleting neighbors:', neighbors)
         if neighbors == set():
             return False
         for node_id in neighbors:
             self.__neighbor_map__.pop(node_id)
-            self.neighbor_timestamp.pop(node_id)
+            self.__neighbor_timestamp__.pop(node_id)
             self.__bidir__.discard(node_id)
             self.__unidir__.discard(node_id)
+            self.__ms__.discard(node_id)
         return True
 
     def __remove_topo__(self, last_hops):
@@ -320,6 +323,8 @@ class Route:
             - True:  If some information was deleted.
             - False: If nothing was changed.
         """
+        # if last_hops:
+        #     print(self.nid, 'deleting last_hops:', last_hops)
         deleted = False
         for last_hop in last_hops:
             for (dst,_last_hop),(_,_) in self.topo.items():
@@ -332,7 +337,7 @@ class Route:
         neighbor_timeout_timestamp = self.neighbor_timeout_stamp
         neighbor_filter = lambda x: x[1] < neighbor_timeout_timestamp
         neighbor_status = self.__remove_neighbor__(set(map(lambda x:x[0],
-            filter(neighbor_filter, self.__neighbor_timestamp__.items()))))
+            filter(neighbor_filter, self.neighbor_timestamp.items()))))
         if neighbor_status:
             self._select_mpr()
 
@@ -341,7 +346,8 @@ class Route:
         topo_status = self.__remove_topo__(set(map(lambda x:x[0][1],
             filter(topo_filter, self.topo.items()))))
 
-        if neighbor_status and topo_status:
+        if neighbor_status or topo_status:
+            # print("Route table change at " + str(Clock().time))
             self.calc_route_table()
 
     def __calc_route_table__(self, topo, bidir):
@@ -400,7 +406,10 @@ class Route:
             self.__lock__.release()
 
     def get_route(self, dst):
-        return self.route[dst][0]
+        try:
+            return self.route[dst][0]
+        except KeyError:
+            return None
 
 class TestRoute(unittest.TestCase):
     """ This class is for testing the function of Route class. """
@@ -643,6 +652,7 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(route.get_route('d'), 'd')
         self.assertEqual(route.get_route('e'), 'd')
         self.assertEqual(route.get_route('f'), 'b')
+        self.assertEqual(route.get_route('x'), None)
 
 
 if __name__ == '__main__':
