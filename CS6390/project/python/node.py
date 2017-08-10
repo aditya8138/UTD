@@ -13,7 +13,6 @@ class Node:
     __clock__     = Clock()
     __msg_queue__ = None
     __terminate__ = False
-    __msg_cache__ = dict()
 
     def __init__(self, node_id, dst=None, msg=None, timestamp=None):
         self.nid = node_id
@@ -27,7 +26,12 @@ class Node:
         self.__message_processor__ = {'HELLO' : self.__receive_hello__,
                                       'TC'    : self.__receive_tc__,
                                       'DATA'  : self.__receive_data__}
+        self.__msg_cache__ = dict()
         self.__route__ = Route(node_id)
+
+    def __msg_cache_reset__(self):
+        """ Reset cache for new message forwading period. """
+        self.__msg_cache__ = dict()
 
     @property
     def time(self):
@@ -69,16 +73,23 @@ class Node:
     __data__ = '{} {} DATA {} {} {}\n'
 
     def __send_data__(self):
-        print("send data")
+        # print("send data")
         next_hop = self.__route__.get_route(self.dst)
-        sender = self.nid
-        originator = self.nid
-        dst = self.dst
-        msg = self.msg
-        data = self.__data__.format(next_hop, sender, originator, msg)
-        print(data)
-        with open(self.fromfilename, 'a') as from_me:
-            from_me.write(data)
+
+        # If next_hop is not None, send message to that node.
+        if next_hop:
+            sender = self.nid
+            originator = self.nid
+            dst = self.dst
+            msg = self.msg
+            data = self.__data__.format(next_hop, sender, originator, dst, msg)
+            # print(data)
+            with open(self.fromfilename, 'a') as from_me:
+                from_me.write(data)
+        # Otherwise, delay the message for 30 seconds.
+        else:
+            self.timestamp += 30
+
 
     def __check_timeout__(self):
         self.__route__.check_timeout()
@@ -103,7 +114,7 @@ class Node:
         with open(self.receivefilename, 'a') as received:
             received.write(msg)
         msg = msg[:-1]
-        print(self.nid + " received " + msg +'%')
+        # print(self.nid + " received " + msg +'%')
         neighbor = msg[2]
         unidir, rest = msg.split('UNIDIR ')[1].split(' BIDIR ')
         # print(unidir)
@@ -120,7 +131,7 @@ class Node:
         with open(self.receivefilename, 'a') as received:
             received.write(msg)
         msg = msg[:-1]
-        print(self.nid + " received " + msg + '%')
+        # print(self.nid + " received " + msg + '%')
         neighbor = msg[2]
         s, ms = msg.split(' TC ')[1].split(' MS ')
         source, seqno = s.split(' ')
@@ -142,7 +153,7 @@ class Node:
             self.__msg_cache__[source] = seqno
 
         to_set = lambda x: set() if x == '' else set(x.split(' '))
-        # print(neighbor, source, to_set(ms), ms_seqno)
+        # print(neighbor, source, to_set(ms), seqno)
         self.__route__.tc_update(source, to_set(ms), int(seqno))
 
         # Forward message if node itself is sender's mpr and TTL is greater
@@ -153,8 +164,28 @@ class Node:
                 from_me.write(tc)
 
     def __receive_data__(self, msg):
-        print("received data")
-        pass
+        with open(self.receivefilename, 'a') as received:
+            received.write(msg)
+        # print(self.nid + " received data: " + msg)
+        msg_list = msg[:-1].split(' ')
+
+        # If current node is the destination of the message, no further
+        # operation is needed.
+        if self.nid == msg_list[4]:
+            return
+
+        # Otherwise, get next hop to the destination, forward the message.
+        next_hop = self.__route__.get_route(msg_list[4])
+
+        # If next_hop is not None, forward the message to that node. Change
+        # next_hop and fromnbr before sending.
+        if next_hop:
+            new_msg  = ' '.join([next_hop, self.nid] + msg_list[2:]) + '\n'
+            with open(self.fromfilename, 'a') as from_me:
+                from_me.write(new_msg)
+        # Otherwise, just drop the message.
+        else:
+            pass
 
     def __msg_processor__(self):
         for msg in self.__msg_queue__:
@@ -167,7 +198,15 @@ class Node:
                 (self.__executor__.submit(self.__follow_to_file__)).result()
         self.__executor__.submit(self.__msg_processor__)
         while self.time <= 122:
-            print(self.__clock__.time)
+            # if self.nid == '1':
+                # print(self.__route__.two_hop)
+                # print(self.__route__.bidir)
+                # print(self.__route__.unidir)
+                # print(self.__route__.mpr)
+                # print(self.__route__.ms)
+                # print(self.__route__.topo_tuple)
+                # print(self.__route__.route)
+                # print(self.__clock__.time)
             self.__executor__.submit(self.__check_timeout__)
 
             # Send message at specific timestamp.
@@ -177,6 +216,10 @@ class Node:
             # Each node sends a hello message every 5 seconds.
             if self.time % 5 == 0:
                 self.__executor__.submit(self.__send_hello__)
+
+            # Reset message cache before each TC flood time cycle.
+            if self.time % 10 == 8:
+                self.__executor__.submit(self.__msg_cache_reset__)
 
             # Every node with a non-empty MS sets creates and floods a TC
             # message every 10 seconds.
@@ -265,7 +308,7 @@ class TestNode(unittest.TestCase):
         tc1 = '* 4 TC 4 1 MS 9 8 0\n'
         n.__receive_tc__(tc1)
         self.assertEqual(n.__route__.topo_tuple,
-                         {('9','4'), ('8','4'), ('0','4')})
+                        {('9','4'), ('8','4'), ('0','4')})
         self.assertEqual(n.__route__.route, 
                         {'4':('4',1), '3':('3',1), '9':('4',2), '8':('4',2)})
 
@@ -308,8 +351,40 @@ class TestNode(unittest.TestCase):
             self.assertEqual(n.__route__.route,
                             {'1':('1',1), '5':('5',1), '2':('1',2),
                             '4':('5',2), '3':('5',3)})
-
         n.__send_data__()
+
+    def test_receive_data(self):
+        n = Node('0', '4', 'A message from 0 to 4', 40)
+        hello1 = '* 1 HELLO UNIDIR  BIDIR 2 0 MPR 2 0\n'
+        hello2 = '* 5 HELLO UNIDIR  BIDIR 0 4 MPR 0 4\n'
+        tc1     = '* 1 TC 1 2 MS 0 2\n'
+        tc2     = '* 1 TC 2 2 MS 1 3\n'
+        tc3     = '* 5 TC 3 2 MS 2 4\n'
+        tc4     = '* 1 TC 4 2 MS 3 5\n'
+        tc5     = '* 5 TC 5 2 MS 0 4\n'
+        n.__receive_hello__(hello1)
+        n.__receive_hello__(hello2)
+        n.__receive_tc__(tc1)
+        n.__receive_tc__(tc2)
+        n.__receive_tc__(tc3)
+        n.__receive_tc__(tc4)
+        n.__receive_tc__(tc5)
+
+        self.assertEqual(n.__route__.bidir, {'1', '5'})
+        self.assertEqual(n.__route__.unidir, set())
+        self.assertEqual(n.__route__.two_hop, {'2', '4'})
+        self.assertEqual(n.__route__.mpr, {'1', '5'})
+        self.assertEqual(n.__route__.ms, {'1', '5'})
+        try:
+            self.assertEqual(n.__route__.route,
+                            {'1':('1',1), '5':('5',1), '2':('1',2),
+                            '4':('5',2), '3':('1',3)})
+        except AssertionError:
+            self.assertEqual(n.__route__.route,
+                            {'1':('1',1), '5':('5',1), '2':('1',2),
+                            '4':('5',2), '3':('5',3)})
+        n.__receive_data__('0 5 DATA 5 2 A message from 5 to 2\n')
+
 
 if __name__ == '__main__':
     main()
