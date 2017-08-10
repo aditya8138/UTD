@@ -308,6 +308,8 @@ class Route:
         for node_id in neighbors:
             self.__neighbor_map__.pop(node_id)
             self.neighbor_timestamp.pop(node_id)
+            self.__bidir__.discard(node_id)
+            self.__unidir__.discard(node_id)
         return True
 
     def __remove_topo__(self, last_hops):
@@ -381,7 +383,7 @@ class Route:
             for dst,last_hop in topo:
                 if (dst not in route and last_hop in route
                         and route[last_hop][1] == h and dst != self.nid):
-                    route[dst] = (last_hop, h+1)
+                    route[dst] = (route[last_hop][0], h+1)
                     changed = changed or True
             h += 1
 
@@ -599,24 +601,32 @@ class TestRoute(unittest.TestCase):
         self.assertEqual((route.ms, route.ms_seqno), (set(),0))
 
         route.tc_update('b',{'c','f','a'},1)
-        self.assertEqual(route.route, {'b':('b',1), 'd':('d',1), 'c':('b',2),
-            'f':('b',2)})
+        self.assertEqual(route.route, 
+                        {'b':('b',1), 'd':('d',1),
+                         'c':('b',2), 'f':('b',2)})
 
         route.tc_update('c',{'b','e'},1)
-        self.assertEqual(route.route, {'b':('b',1), 'd':('d',1), 'c':('b',2),
-            'f':('b',2), 'e':('c',3)})
+        self.assertEqual(route.route, 
+                        {'b':('b',1), 'd':('d',1),
+                         'c':('b',2), 'f':('b',2),
+                         'e':('b',3)})
 
         route.tc_update('e',{'c','d','f'},1)
-        self.assertEqual(route.route, {'b':('b',1), 'd':('d',1), 'c':('b',2),
-            'f':('b',2), 'e':('c',3)})
+        self.assertEqual(route.route, 
+                        {'b':('b',1), 'd':('d',1),
+                         'c':('b',2), 'f':('b',2),
+                         'e':('b',3)})
 
         route.tc_update('d',{'e','a'},1)
-        self.assertEqual(route.route, {'b':('b',1), 'd':('d',1), 'c':('b',2),
-            'e':('d',2), 'f':('b',2)})
+        self.assertEqual(route.route,
+                        {'b':('b',1), 'd':('d',1),
+                         'c':('b',2), 'e':('d',2),
+                         'f':('b',2)})
 
-        self.assertEqual(route.topo_tuple, {('f','b'), ('c','b'), ('b','c'),
-            ('e','c'), ('c','e'), ('d','e'), ('f','e'), ('e','d'), ('a', 'd'),
-            ('a', 'b')})
+        self.assertEqual(route.topo_tuple, 
+                        {('f','b'), ('c','b'), ('b','c'), ('e','c'),
+                         ('c','e'), ('d','e'), ('f','e'), ('e','d'),
+                         ('a','d'), ('a', 'b')})
 
     def test_get_route(self):
         Clock().reset()
