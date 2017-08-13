@@ -1,7 +1,13 @@
 # Assignments Solutions for CS6350 2017 Summer Big Data
-The solutions for each assignment are packaged as `cs6350.assignmentX.partY`.
+Note that there are normally 6 programming assignments, 5 reading assignments
+and some classroom assignments in this course. From the forth assignment,
+programming platform moves to Databricks, and the course became a mess from
+this point on. I found it meaningless to track changes with git.
 
-*All the solutions are not graded.*
+Thus, this repository only include my personal solutions for programming
+assignment 1 to 3. The solutions are packaged as `cs6350.assignmentX.partY`.
+
+___All the solutions are not graded.___
 
 ## Compilation
 
