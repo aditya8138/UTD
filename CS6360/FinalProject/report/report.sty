@@ -1,0 +1,63 @@
+\ProvidesPackage{report}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\headsep=0.2in
+
+\headheight=15pt
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName\ \footnotesize{(\hmwkAuthorNetID)}}
+\rhead{\hmwkTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.2pt}
+\renewcommand\footrulewidth{0.2pt}
+
+%\setlength\parindent{0pt}
+
+%
+% Create Problem Sections
+%
+% Java Code Display Settings
+\lstdefinestyle{customSQL}{
+    %belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=lines,
+    %xleftmargin=10pt,
+    language=SQL,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\footnotesize\ttfamily,
+    stepnumber=1,
+    numbersep=5pt,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries\color{blue!40!black},
+    commentstyle=\itshape\color{gray!80!black},
+    stringstyle=\color{orange},
+    morekeywords={
+        LOOP,
+        replace,
+        procedure,
+        cursor,
+        begin,
+        open,
+        end,
+        close,
+        is,
+        fetch,
+        if,
+        declare,
+        references,
+        exit,
+        elsif,
+        for,
+        each,
+        row,
+        after
+    }
+}
+
