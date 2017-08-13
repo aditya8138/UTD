@@ -1,0 +1,3 @@
+ALTER TABLE EQUIPMENT
+ADD CONSTRAINT CheckEquipAge
+  CHECK (EquipAge <= 5);
