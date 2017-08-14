@@ -28,7 +28,7 @@ class Solution(object):
 
         discard = list()
         if len(candidates) > 1:
-            _discard = self.combinationSum(candidates[1:], target)
+            _discard = self.__combinationSum__(candidates[1:], target)
             discard = filter(empty_filter, _discard)
         return include + discard
 
