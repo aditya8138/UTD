@@ -1,4 +1,4 @@
-# CS 6313 
+# CS6313
 
 Course Title: Statistical Methods for Data Science
 
