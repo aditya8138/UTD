@@ -1,7 +1,12 @@
 # CS 6313 
-## Statistical Methods for Data Science 
-### Instructor: Pankaj Choudhary
-#### Project Score
+
+Course Title: Statistical Methods for Data Science
+
+Class Section: CS6313.001.17S
+
+Instructor: Pankaj Choudhary
+
+## Project Score
 
 1. 20/20
 1. 22/20
