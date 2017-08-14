@@ -13,7 +13,7 @@ Computer Science assignments and projects at UT Dallas.
 
 - CS6371 Advanced Programming Languages
 
-- CS6378 Advanced Operating Systems
+- [CS6378 Advanced Operating Systems](./CS6378)
 
 - [CS6390 Advanced Computer Networks](./CS6390)
 
