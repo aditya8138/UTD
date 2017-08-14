@@ -1,0 +1,9 @@
+package log;
+
+public enum EventType {
+    WRITE_SUCCESS,
+    WRITE_REQUEST_SUCCESS,
+    WRITE_FAIL_WITH_NACK,
+    WRITE_FAIL_NO_DISTINGUISH,
+    WRITE_ABORT
+}
