@@ -1,6 +1,11 @@
 
 # CS6363
-Course note and homework of CS6363.
+
+Course Title: Design and Analysis of Computer Algorithms
+
+Class Section: CS6363.005.16F
+
+Instructor(s): Benjamin Raichel
 
 ## The Syllabus
 * Asymptotic  notation, recurrence.
