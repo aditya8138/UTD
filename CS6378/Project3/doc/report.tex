@@ -1,0 +1,141 @@
+\documentclass[12pt,letterpaper,en-US]{article}
+
+\usepackage{basicstyle}
+
+\usepackage{dirtree}
+\usepackage{caption}
+\captionsetup[lstlisting]{font={tt}}
+
+\title{CS6378 Advanced Operating System Project 3 \\Report}
+
+\author{Hanlin He (hxh160630)\\Tao Wang (txw162630)}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\pagenumbering{arabic}
+
+\section{Compilation}
+
+The directories structure is as follow
+
+\dirtree{%
+.1 /.
+.2 META-INF.
+.3 MANIFEST.MF.
+.2 Main.java.
+.2 core.
+.3 CLIEngine.java.
+.3 Message.java.
+.3 MessageProcessorThread.java.
+.3 MessageType.java.
+.3 Node.java.
+.3 VoteData.java.
+.2 log.
+.3 EventType.java.
+.3 log.java.
+.2 makefile.
+.2 net.
+.3 CommunicationThread.java.
+.3 ConnectionInitiator.java.
+.3 ListenerThread.java.
+}
+
+
+To compile, simply execute the \texttt{make} command in \emph{src} directory would generate the executable jar file named \texttt{DynamicVoting.jar}. A example is shown as follow:
+
+\begin{lstlisting}
+--- project3/src > make
+javac -g Main.java
+jar cvfm DynamicVoting.jar META-INF/MANIFEST.MF Main.class core/*.class net/*.class log/*.class
+added manifest
+adding: Main.class(in = 647) (out= 432)(deflated 33%)
+adding: core/CLIEngine.class(in = 3802) (out= 1995)(deflated 47%)
+adding: core/Message.class(in = 1430) (out= 677)(deflated 52%)
+adding: core/MessageProcessorThread$1.class(in = 924) (out= 564)(deflated 38%)
+adding: core/MessageProcessorThread.class(in = 2475) (out= 1349)(deflated 45%)
+adding: core/MessageType.class(in = 1211) (out= 679)(deflated 43%)
+adding: core/Node$1.class(in = 813) (out= 523)(deflated 35%)
+adding: core/Node.class(in = 15385) (out= 7483)(deflated 51%)
+adding: core/VoteData.class(in = 1609) (out= 763)(deflated 52%)
+adding: net/CommunicationThread.class(in = 4271) (out= 2141)(deflated 49%)
+adding: net/ConnectionInitiator.class(in = 2614) (out= 1370)(deflated 47%)
+adding: net/ListenerThread.class(in = 2397) (out= 1279)(deflated 46%)
+adding: log/EventType.class(in = 1116) (out= 637)(deflated 42%)
+adding: log/log$1.class(in = 791) (out= 522)(deflated 34%)
+adding: log/log.class(in = 2905) (out= 1458)(deflated 49%)
+--- project3/src > make install
+mv DynamicVoting.jar ..
+\end{lstlisting}
+
+After the execution, the executable jar file \texttt{DynamicVoting.jar} would be in the root directory of the project.
+
+
+\section{Execution}
+
+The command to execute the jar file is as follow:
+\begin{quote}
+\texttt{java -jar DynamicVoting.jar \emph{<label of the node>}}
+\end{quote}
+in which \emph{\texttt{<label of the node>}} should avoid using the same label for different node.
+
+There are seven commands that can be executing:
+\begin{itemize}
+    \item help: Display the helping information.
+    \item init: Initialize the voting data, must execute this command when all nodes are online for the first time.
+    \item display: There are three kinds of information can be displayed, status, vote and connection.
+    \item connect: Connect current to the nodes with specific node.
+    \item disconnect: Disconnect current to the nodes with specific node.
+    \item write: Write command for the object.
+    \item quit/exit/q: Exit the program.
+\end{itemize}
+
+You can use \texttt{help} command to check the function of each command as follow
+\begin{lstlisting}
+> help
+Usage:
+  <command> [options]
+
+Commands:
+  help                    Show help for commands.
+  init                    Initialize vote data for all connected nodes.
+  display [options]       Display current status.
+                          Available options:
+                              status,
+                              vote,
+                              connection/network.
+  connect [options]       Connect to some nodes.
+  connect [options]       Need to specify the label of the nodes.
+                          Example: connect B C D
+  disconnect [options]    Disconnect with some nodes.
+  disconnect [options]    Need to specify the label of the nodes.
+                          Example: disconnect B C D
+  write                   Write to the object.
+  quit/exit/q             Safe exit.
+\end{lstlisting}
+
+\pagebreak
+\section{Result}
+
+The log file of each node are shown from \cref{a} to \cref{h}.
+\lstinputlisting[label=a,caption=Node A Log]{log/a.log}
+\lstinputlisting[label=b,caption=Node B Log]{log/b.log}
+\lstinputlisting[label=c,caption=Node C Log]{log/c.log}
+\lstinputlisting[label=d,caption=Node D Log]{log/d.log}
+\lstinputlisting[label=e,caption=Node E Log]{log/e.log}
+\lstinputlisting[label=f,caption=Node F Log]{log/f.log}
+\lstinputlisting[label=g,caption=Node G Log]{log/g.log}
+\lstinputlisting[label=h,caption=Node H Log]{log/h.log}
+
+Note that:
+\begin{itemize}
+\item For each \texttt{write} operation on one node, \emph{all the connected nodes} would record an event whether that write operation is success or not.
+\item \texttt{Write operation success.} event on a node's log indicates that the \texttt{write} operation was on that node, i,e current node is the coordinator of the \texttt{write} operation.
+\item \texttt{Write request success.} event on a node's log indicates that the \texttt{write} operation was on another node, i,e current node is the cohort of the \texttt{write} operation.
+
+\end{itemize}
+
+\end{document}
+
+

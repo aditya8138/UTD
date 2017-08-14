@@ -1,0 +1,143 @@
+\ProvidesPackage{basicstyle}
+
+%This package doesn’t do anything as long as your syntax is right.
+%Load the package in the first lines of your preamble (even before
+%the \documentclass command). It then checks for obsolete LaTeX
+%packages and outdated commands.
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\RequirePackage{tabu}
+
+%\RequirePackage[letterpaper]{geometry}
+
+\RequirePackage{fancyhdr}
+
+\RequirePackage[titles]{tocloft}
+
+\RequirePackage{makeidx}
+
+\RequirePackage{extramarks}
+
+\RequirePackage{pdfpages}
+
+%This package introduces the \includegraphics command, which is needed
+%for inserting figures.
+\RequirePackage{graphicx}
+
+\RequirePackage{listings}
+
+%
+%Font Settings.
+%
+%\RequirePackage{zi4} %Use 'Inconsolata' as typewriter font.
+%\RequirePackage[scaled=1]{DejaVuSansMono} % Use DejaVu Sans Mono as typewriter font.
+
+\RequirePackage[american]{babel}
+\RequirePackage[useregional,% use regional style instead of default ISO format
+            showzoneminutes=false,% don't show time zone minutes
+            showdow% show the day of week name if supported
+           ]{datetime2}
+
+%The microtype package improves the spacing between words and letters.
+%It does a lot more and most people won’t notice the difference.
+%But still, the resulting document will be easier to read and looks
+%better when microtype is loaded. Load this package after fonts,
+%if any, as the package behavior is dependent on this font.
+\RequirePackage{microtype}
+
+\RequirePackage{enumitem}
+
+\RequirePackage{textcomp}
+
+\RequirePackage{booktabs}
+
+\RequirePackage{tabularx}
+
+\RequirePackage{float}
+
+\RequirePackage{alltt}
+
+%\RequirePackage[singlespacing]{setspace}
+
+%As a rule of thumb it should be loaded at the end of the preamble,
+%after all the other packages. A few exceptions exist, such as the
+%cleveref package that is also mentioned in this post. Hence, cleveref
+%should be loaded after hyperref.
+\RequirePackage{hyperref}
+
+%This package introduces the \cref command. When using this command
+%to make cross-references, instead of \ref or \eqref, a word is placed
+%in front of the reference according to the type of reference: fig.
+%for figures, eq. for equations
+\RequirePackage{cleveref}
+
+%Load algpseudocode after hyperref, eliminate some unknown warning.
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+%
+% Time Format Settings
+%
+% Use standard mappings for the time zones (if supported)
+\DTMlangsetup*{mapzone,zone=standard}
+\selectlanguage{american}
+\DTMsetstyle{en-US}
+
+%Setup hyperref package, and colours for links
+\definecolor{linkcolour}{rgb}{0,0.2,0.5}
+\hypersetup{
+%    bookmarks=true,         % show bookmarks bar?
+%    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    %pdftitle={Homework},    % title
+    pdfauthor={Hanlin He},     % author
+    %pdfsubject={Subject},   % subject of the document
+    pdfcreator={Hanlin He},   % creator of the document
+    %pdfproducer={Producer}, % producer of the document
+    %pdfkeywords={Algorithm, Homework}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor={1 0 0},
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    plainpages=false,
+    pageanchor=false,       %put an anchor on every page
+}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+    frame=top,frame=bottom,
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\scriptsize\ttfamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  %frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\bfseries\color{blue},       % keyword style
+  %language=,                 % the language of the code
+  morekeywords={make,install},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\footnotesize\ttfamily, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
