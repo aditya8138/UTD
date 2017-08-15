@@ -1,0 +1,35 @@
+\documentclass[varwidth]{standalone}
+
+\begin{document}
+
+\section{First Missing Positive (P041)}
+
+Requirement asked for $\mathcal{O}(n)$ time and $\mathcal{O}(1)$ space. The
+intuitive solution would be Bucket sort. The only subtle point is in memory
+bucket sort.
+
+Since only the first missing positive was demanded. We can can consider the
+array itself a bucket, and switch each number to its corresponding index. After
+a switch, switch again until the index was the same as the number. OR result in
+one of the following situations:
+
+\begin{itemize}
+    \item Negative number in current index.
+    \item Current number greater than the size of the array.
+    \item The target index (to be switched to) has already match (number within
+        is the same as the index).
+    \item (Redundant) Index reach array size.
+\end{itemize}
+
+After all switches, traverse the array. The first encountered index with number
+different from the index would be the first missing positive.
+
+Each number with range of the array size could be switched at most once. Hence
+switching is $\mathcal{O}(n)$.
+
+\emph{In actual implementation of C, to accommodate all possible integer less
+than the array size, the number could be placed in the minus one index, i.e., 1
+should be put in index 0.}
+
+\end{document}
+
