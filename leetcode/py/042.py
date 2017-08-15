@@ -15,53 +15,40 @@ class Solution(object):
         ret = 0
         index = 0
         hstack = list()
-        while height != []:
-            if hstack == []:
-                hstack.append((height[index], index))
-                height = height[1:]
-                index += 1
-                continue
+        while index < len(height):
+            cur = height[index]
+            try:
+                if hstack == []:
+                    continue
 
-            last_h, last_i = hstack[len(hstack) - 1]
+                last_h, _ = hstack[len(hstack) - 1]
 
-            if last_h > height[0]:
-                hstack.append((height[0], index))
-                height = height[1:]
-                index += 1
-                continue
+                if last_h > cur:
+                    continue
 
-            if last_h == height[0]:
-                hstack.pop()
-                hstack.append((height[0], index))
-                height = height[1:]
-                index += 1
-                continue
-
-            base_h,_ = hstack.pop()
-            if hstack == []:
-                hstack.append((height[0], index))
-                height = height[1:]
-                index += 1
-                continue
-
-            while hstack != []:
-                last_h, last_i = hstack[len(hstack) - 1]
-                if last_h > height[0]:
-                    ret += (height[0] - base_h) * (index - last_i - 1)
-                    break
-
-                if last_h == height[0]:
+                if last_h == cur:
                     hstack.pop()
-                    ret += (height[0] - base_h) * (index - last_i - 1)
-                    break
+                    continue
 
-                if last_h < height[0]:
-                    ret += (last_h - base_h) * (index - last_i - 1)
-                    base_h,_ = hstack.pop()
+                base_h, _ = hstack.pop()
+                if hstack == []:
+                    continue
 
-            hstack.append((height[0], index))
-            height = height[1:]
-            index += 1
+                while hstack != []:
+                    last_h, last_i = hstack[len(hstack) - 1]
+                    if last_h > cur:
+                        ret += (cur - base_h) * (index - last_i - 1)
+                        break
+                    if last_h == cur:
+                        hstack.pop()
+                        ret += (cur - base_h) * (index - last_i - 1)
+                        break
+                    if last_h < cur:
+                        ret += (last_h - base_h) * (index - last_i - 1)
+                        base_h,_ = hstack.pop()
+            finally:
+                hstack.append((cur, index))
+                index += 1
 
         return ret
 
