@@ -11,8 +11,8 @@ char* _addStrings(char* num1, char* num2, int len1, int len2) {
 
     int i1 = len1 - 1;
     int i2 = len2 - 1;
-    while (i2 >= 0) {
-        sum[i1 + 1] = num1[i1] + num2[i2] - '0' + carry;
+    while (i1 >= 0) {
+        sum[i1 + 1] = num1[i1] + carry + (i2 >= 0 ? num2[i2] - '0' : 0);
         if (sum[i1 + 1] > '9') {
             carry = 1;
             sum[i1 + 1] -= 10;
@@ -20,16 +20,6 @@ char* _addStrings(char* num1, char* num2, int len1, int len2) {
             carry = 0;
         i1--;
         i2--;
-    }
-
-    while (i1 >= 0) {
-        sum[i1 + 1] = num1[i1] + carry;
-        if (sum[i1 + 1] > '9') {
-            carry = 1;
-            sum[i1 + 1] -= 10;
-        } else
-            carry = 0;
-        i1--;
     }
 
     if (carry == 1) {
