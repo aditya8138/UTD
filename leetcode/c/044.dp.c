@@ -1,5 +1,8 @@
 /* 044. Wildcard Matching. */
 
+/* A small improvemetn could be made is recuce the length of p. Remove
+ * duplicate stars (*). This will also reduce size of the 2D array.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
