@@ -67,6 +67,8 @@ char* _multiply(char* num1, char n, int digit) {
 
 char* multiply(char* num1, char* num2) {
 
+    if(*num1=='0' || *num2=='0') return "0";
+
     int len1 = strlen(num1) - 1;
     char* base = (char*)malloc(2 * sizeof(char));
     base[0] = '0';
