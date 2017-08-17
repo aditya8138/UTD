@@ -7,8 +7,8 @@
  * number of jump) to each node (index) could easily be calculated in O(m)
  * time (where m is the number of edges). 
  *
- * This approach compute distance to all index, however it is not efficient in
- * this particular problem. */
+ * This approach compute distance to all index, however using linked list as
+ * queue is not efficient in this particular problem. */
 
 #include <stdio.h>
 #include <stdlib.h>
