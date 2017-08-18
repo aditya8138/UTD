@@ -6,10 +6,12 @@ class Solution(object):
         :type strs: List[str]
         :rtype: List[List[str]]
         """
-        prime = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47,
-                 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103]
+        prime = {'a':2,  'b':3,  'c':5,  'd':7,  'e':11, 'f':13, 'g':17, 
+                 'h':19, 'i':23, 'j':29, 'k':31, 'l':41, 'm':43, 'n':47, 
+                 'o':53, 'p':59, 'q':61, 'r':67, 's':71, 't':73, 
+                 'u':79, 'v':83, 'w':89, 'x':97, 'y':101, 'z':103}
 
-        nstrs = map(lambda x: (reduce(lambda x, y: x * y, map(lambda x: prime[x - ord('a')], map(ord, x)), -1), x), strs)
+        nstrs = map(lambda x: (reduce(lambda x, y: x * y, map(lambda x: prime[x], x), -1), x), strs)
 
         d = dict()
 
