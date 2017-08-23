@@ -13,22 +13,22 @@
 
 \usepackage[prefix=tikzsym]{tikzsymbols}
 
-%As a rule of thumb it should be loaded at the end of the preamble,
-%after all the other packages. A few exceptions exist, such as the
-%cleveref package that is also mentioned in this post. Hence, cleveref
-%should be loaded after hyperref.
+% As a rule of thumb it should be loaded at the end of the preamble, after all
+% the other packages. A few exceptions exist, such as the cleveref package that
+% is also mentioned in this post. Hence, cleveref should be loaded after
+% hyperref.
 \usepackage{hyperref}
 
-%This package introduces the \cref command. When using this command
-%to make cross-references, instead of \ref or \eqref, a word is placed
-%in front of the reference according to the type of reference: fig.
-%for figures, eq. for equations
+% This package introduces the \cref command. When using this command to make
+% cross-references, instead of \ref or \eqref, a word is placed in front of the
+% reference according to the type of reference: fig. for figures, eq. for
+% equations
 \usepackage{cleveref}
 
-%Setup hyperref package, and colours for links
+% Setup hyperref package, and colours for links
 \hypersetup{
 %    bookmarks=true,         % show bookmarks bar?
-    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    %unicode=false,          % non-Latin characters in Acrobat’s bookmarks
     pdftoolbar=true,        % show Acrobat’s toolbar?
     pdfmenubar=true,        % show Acrobat’s menu?
     pdffitwindow=false,     % window fit to page when opened
@@ -197,6 +197,135 @@ any lever, the more we put in, the more we can get out.
 
 Just like farming, learning lets nature do most of the work, rather than
 engineer doing a lot of work.
+
+\section{Overfitting}
+
+\subsection{What is Overfitting?}
+
+If the data is not sufficient to completely determine the correct classifier,
+then the classifier we computed would not be gounded in reality. This problem
+is called \emph{overfitting}
+
+Sometimes the learner outputs a classifier that is $100\%$ accurate on the
+training data but only $50\%$ accurate on test data. If we only look on the
+performance on training data, we might think the classifier works perfectly.
+
+\subsection{What is Meant by Bias and Variance?}
+
+\emph{Bias} is a learner’s tendency to consistently learn the same wrong thing.
+\emph{Variance} is the tendency to learn random things irrespective of the real
+signal.
+
+\subsection{What can help us combat overfitting?}
+
+Cross-validation can help to combat overfitting, for example by using it to
+choose the best size of decision tree to learn.
+
+One popular method is adding a \emph{regularization term} to the evaluation
+function. This can, for example, penalize classifiers with more structure,
+thereby favoring smaller ones with less room to overfit.
+
+Another option is to perform a statistical significance test like chi-square
+before adding new structure, to decide whether the distribution of the class
+really is different with and without this structure.
+
+\section{Intuition Fails in High Dimensions}
+
+\subsection{Why do algorithms that work well in lower dimensions fail at higher
+dimensions?}
+
+This is because generalizing correctly becomes \emph{exponentially harder} as
+the dimensionality (number of features) of the examples grows, because a
+fixed-size training set covers a dwindling fraction of the input space.
+
+And our intuitions, which come from a three-dimensional world, often do not
+apply in high-dimensional ones.
+
+\subsection{What is meant by ``blessing of non-uniformity''?}
+
+In most applications examples are not spread uniformly throughout the instance
+space, but are concentrated on or near a lower-dimensional manifold.
+
+For example, $k$-nearest neighbor works quite well for handwritten digit
+recognition even though images of digits have one dimension per pixel, because
+the space of digit images is much smaller than the space of all possible
+images. Learners can implicitly take advantage of this lower effective
+dimension, or algorithms for explicitly reducing the dimensionality can be
+used.
+
+\section{Theoretical Guarantees}
+
+\subsection*{What has been one of the major developments in the recent decades
+about results of induction?}
+
+The major development is the realization that in fact we can have guarantees on
+the results of induction, particularly if we’re willing to settle for
+probabilistic guarantees.
+
+\section{Feature Engineering}
+
+\subsection{What is the most important factor that determines whether a machine
+learning project succeeds?}
+
+The most important factor is the features used in the machine learning project.
+
+If the data have many independent features that each correlate well with the
+class, learning is easy. On the other hand, if the class is a very complex
+function of the features, you may not be able to learn it.
+
+\subsection{In a ML project, which is more time consuming – feature engineering
+or the actual learning process? Explain how ML is an iterative process?}
+
+Feature engineering is much more time consuming in a machine learning project.
+Feature engineering is more difficult because it’s domain-specific, while
+learners can be largely general-purpose.
+
+Machine learning is an iterative process of running the learner, analyzing the
+results, modifying the data and/or the learner, and repeating.
+
+\subsection{What, according to the author, is one of the holy grails of ML?}
+
+Quote from the paper:
+
+\begin{quote}
+    To automate more and more of the feature engineering process.
+\end{quote}
+
+One way this is often done today is by automatically generating large numbers
+of candidate features and selecting the best by (say) their information gain
+with respect to the class.
+
+\section{More Data Beats A Cleverer Algorithm}
+
+\subsection{If your ML solution is not performing well, what are two things
+that you can do? Which one is a better option?}
+
+There are two main choices:
+
+\begin{enumerate}
+    \item design a better learning algorithm,
+    \item gather more data (more examples, and possibly more raw features,
+        subject to the curse of dimensionality).
+\end{enumerate}
+
+The second one is the better option. As a rule of thumb, a dumb algorithm with
+lots and lots of data beats a clever one with modest amounts of it.
+
+\subsection{What are the 3 limited resources in ML computations? What is the
+bottleneck today? What is one of the solutions?}
+
+3 limited resources in machine learning computations are \emph{time},
+\emph{memory} and \emph{training data}. Which one is the bottleneck has changed
+from decade to decade. Today, it is time, since enormous mountains of data are
+available, but there is not enough time to process it, so it goes unused.
+
+A solution is to come up with fast ways to learn complex classifiers, and
+indeed there has been remarkable progress in this direction
+
+\subsection{A surprising fact mentioned by the author is that all
+representations (types of learners) essentially ``all do the same''. Can you
+explain? Which learners should you try first?}
+
 
 
 \bibliography{r1bib}{}
