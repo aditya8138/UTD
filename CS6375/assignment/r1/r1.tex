@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+
+\usepackage[l2tabu, orthodox]{nag}
+\usepackage{tabu}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+\usepackage{cite}
+
+\newtheorem{theorem}{Theorem}%[section]
+
+\usepackage[prefix=tikzsym]{tikzsymbols}
+
+%As a rule of thumb it should be loaded at the end of the preamble,
+%after all the other packages. A few exceptions exist, such as the
+%cleveref package that is also mentioned in this post. Hence, cleveref
+%should be loaded after hyperref.
+\usepackage{hyperref}
+
+%This package introduces the \cref command. When using this command
+%to make cross-references, instead of \ref or \eqref, a word is placed
+%in front of the reference according to the type of reference: fig.
+%for figures, eq. for equations
+\usepackage{cleveref}
+
+%Setup hyperref package, and colours for links
+\hypersetup{
+%    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={Assignment},    % title
+    pdfauthor={Hanlin He},     % author
+    %pdfsubject={Subject},   % subject of the document
+    pdfcreator={Hanlin He},   % creator of the document
+    %pdfproducer={Producer}, % producer of the document
+    %pdfkeywords={Algorithm, Homework}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=false,       % false: boxed links; true: colored links
+    %linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    %linkbordercolor={1 0 0},
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    plainpages=false,
+    pageanchor=false,       %put an anchor on every page
+}
+
+\title{Reading Assignment 1}
+\author{Hanlin He (hxh160630)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Questions from paper by Pedro Domingos
+\cite{Domingos:2012:FUT:2347736.2347755}.
+
+\section{Introduction}
+
+\subsection{What is the definition of ML?}
+
+Machine learning enables systems automatically learn programs from data.
+And according to Tom Mitchell, machine learning is:
+
+\begin{quote}
+    A computer program is said to learn from \emph{experience E} with respect
+    to some \emph{task T} and some \emph{performance measure P}, if its
+    performance on T, as measured by P, \textbf{improves} with experience E.
+\end{quote}
+
+\subsection{What is a classifier?}
+
+A \emph{classifier} is a system that inputs (typically) a vector of discrete
+and/or continuous \emph{feature values} and outputs a single discrete value,
+the \emph{class}.
+
+\section{Learning}
+
+\subsection{What are the 3 components of a learning system?}
+
+Three components are:
+
+\begin{itemize}
+    \item \textbf{Representation.} A classifier must be represented in some
+        formal language that the computer can handle. Conversely, choosing a
+        representation for a learner is tantamount to choosing the set of
+        classifiers that it can possibly learn.
+
+    \item \textbf{Evaluation.} An evaluation function (also called
+        \emph{objective function} or \emph{scoring function}) is needed to
+        distinguish good classifiers from bad ones. The evaluation function
+        used internally by the algorithm may differ from the external one that
+        we want the classifier to optimize, for ease of optimization (see
+        below) and due to the issues discussed in the next section.
+
+    \item \textbf{Optimization.} We need to search among the classifiers in the
+        language for the highest-scoring one, i.e., optimizing the model to
+        predict better.
+
+\end{itemize}
+
+\subsection{Define Information Gain}
+
+In machine learning, \textbf{Information Gain} is the same as \emph{mutual
+information}, the expected value of the Kullback–Leibler divergence of the
+univariate probability distribution of one variable from the conditional
+distribution of this variable given the other one.
+
+In general terms, the expected information gain is the change in
+\emph{information entropy} $H$ from a prior state to a state that takes some
+information as given:
+
+\begin{equation}
+    IG(T,a)=H(T) - H(T | a)
+\end{equation}
+
+Formally, let $T$ denote a set of training examples, each of the form
+$(\mathtt{x},y)=(x_1,x_2,x_3,\ldots,x_k,y)$ where $x_a \in vals(a)$ is the
+value of the $a$th attribute of example $\mathtt{x}$ and $y$ is the
+corresponding class label. The information gain for an attribute $a$ is defined
+in terms of entropy $H$ as follow:
+
+\begin{equation}
+    IG(T,a)=H(T)-\sum_{v \in vals(a)} \frac{|\{\mathtt{x}\in T |
+    x_a=v\}|}{|T|}\cdot H\left(\left\{\mathtt{x}\in T | x_a=v\right\}\right)
+\end{equation}
+
+The mutual information is equal to the total entropy for an attribute if for
+each of the attribute values a unique classification can be made for the result
+attribute. In this case, the relative entropies subtracted from the total
+entropy are 0.
+
+\section{Generalization}
+
+\subsection{Why is generalization more important?}
+
+Since no matter how much data we have, it is very unlikely that we will see
+those exact examples again at test time.
+
+\subsection{What is cross-validation? }
+
+\textbf{Cross-validation} is randomly dividing the training data into several
+subsets, holding out each one while training on the rest, testing each learned
+classifier on the examples it did not see, and averaging the results to see how
+well the particular parameter setting does.
+
+A big advantage of cross-validation is keep the data size for training, since
+every part of the data would be used to for training.
+
+\subsection{How is generalization different from other?}
+
+Unlike in most other optimization problems, in generalization we don’t have
+access to the function we want to optimize. We have to use training error as a
+surrogate for test error, and this is fraught with danger.
+
+\section{Data Alone is Not Enough}
+
+\subsection{Scenarios}
+
+With 10 boolean variables, there are $2^{10} = 1024$ possible examples. If we
+have seen 100 examples, we approximately have $10\%$ of all instance space.
+
+\subsection{What is the ``No Free Lunch'' Theorem?}
+
+The NFL theorem first hypothesizes that objective functions do not change while
+optimization is in progress, and then hypothesizes that objective functions may
+change.
+
+\begin{theorem}
+    For any algorithms $a_1$ and $a_2$, at iteration step $m$,
+    \[\sum_f P\left(d_m^y|f,m,a_1\right)=\sum_f P(d_m^y|f,m,a_2)\text{,}\]
+    where $d_m^y$ denotes the ordered set of size $m$ of the cost values $y$
+    associated to input values $x\in X$, $f:X \rightarrow Y$ is the function
+    being optimized and $P(d_m^y|f,m,a)$ is the conditional probability of
+    obtaining a given sequence of cost values from algorithm $a$ run $m$ times
+    on function $f$.
+\end{theorem}
+
+\subsection{General Assumptions and Meaning of Induction}
+
+\paragraph{The general assumption we are using is:} \emph{similar examples
+often having similar classes, limited dependences, or limited complexity}. This
+assumption is a large part of why machine learning has been so successful.
+
+\paragraph{As for Induction,} in general, induction turns a small amount of
+input knowledge into a large amount of output knowledge. It is very useful
+since induction requires much less input knowledge to produce useful results.
+Although induction still needs more than zero input knowledge to work, as with
+any lever, the more we put in, the more we can get out.
+
+\subsection{How is learning like farming? \tikzsymbolsuse{Smiley}}
+
+Just like farming, learning lets nature do most of the work, rather than
+engineer doing a lot of work.
+
+
+\bibliography{r1bib}{}
+\bibliographystyle{plain}
+
+\end{document}
