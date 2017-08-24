@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[10pt]{article}
 
 \usepackage[l2tabu, orthodox]{nag}
 \usepackage{tabu}
@@ -326,7 +326,64 @@ indeed there has been remarkable progress in this direction
 representations (types of learners) essentially ``all do the same''. Can you
 explain? Which learners should you try first?}
 
+Because all learners essentially work by grouping nearby examples into the
+same class. The key difference is in the meaning of ``nearby''. With
+non-uniformly distributed data, learners can produce widely different frontiers
+while still making the same predictions in the regions that matter (those with
+a substantial number of training examples, and therefore also where most test
+examples are likely to appear).
 
+As a rule, it pays to try the simplest learners first (e.g., naive Bayes before
+logistic regression, k-nearest neighbor before support vector machines). More
+sophisticated learners are seductive, but they are usually harder to use,
+because they have more knobs you need to turn to get good results, and because
+their internals are more opaque.
+
+\subsection{The author divides learners into two types based on their
+representation size. Write a brief summary.}
+
+Learners can be divided into two major types: those \emph{whose representation
+has a fixed size}, like linear classifiers, and those \emph{whose
+representation can grow with the data}, like decision trees.
+
+Fixed-size learners can only take advantage of so much data. Variable-size
+learners can in principle learn any function given sufficient data, but in
+practice they may not, because of limitations of the algorithm (e.g., greedy
+search falls into local optima) or computational cost.
+
+\section{Learn many models, not just one}
+
+\subsection*{Is it better to have variation of a single model or a combination
+of different models, known as ensemble or stacking? Explain briefly.}
+
+\paragraph{Creating such model ensembles is now standard.} In the simplest
+technique, called bagging, we simply generate random variations of the training
+set by resampling, learn a classifier on each, and combine the results by
+voting. This works because it greatly reduces variance while only slightly
+increasing bias.
+
+\section{Simplicity does not imply accuracy}
+
+\subsection{Read the last paragraph and explain why it makes sense to prefer
+simpler algorithms and hypotheses.}
+
+Because simplicity is a virtue in its own right, not because of a hypothetical connection with accuracy.
+
+\section{Representable does not imply learnable}
+
+\section{Correlation does not imply causation}
+
+\subsection{It has been established that correlation between independent
+variables and predicted variables does not imply causation, still correlation
+is used by many researchers. Explain briefly the reason.}
+
+Machine learning is usually applied to \emph{observational} data, where the
+predictive variables are not under the control of the learner, as opposed to
+\emph{experimental} data, where they are. Some learning algorithms can
+potentially extract causal information from observational data, but their
+applicability is rather restricted. On the other hand, correlation is a sign of
+a potential causal connection, and we can use it as a guide to further
+investigation.
 
 \bibliography{r1bib}{}
 \bibliographystyle{plain}
