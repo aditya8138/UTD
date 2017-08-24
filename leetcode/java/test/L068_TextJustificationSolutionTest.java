@@ -14,9 +14,8 @@ public class L068_TextJustificationSolutionTest {
         String[] ret = {"This    is    an", "example  of text", "justification.  "};
         assertArrayEquals(ret, solution.fullJustify(words, 16).toArray());
         String[] ret1 = {""};
-//        assertArrayEquals(ret2, solution.fullJustify(ret1, 10).toArray());
         assertArrayEquals(ret1, solution.fullJustify(ret1, 0).toArray());
-//
+
         String[] words2 = {"a", "b", "c", "d", "e"};
         assertArrayEquals(words2, solution.fullJustify(words2, 1).toArray());
 
@@ -33,9 +32,8 @@ public class L068_TextJustificationSolutionTest {
         String[] ret = {"This    is    an", "example  of text", "justification.  "};
         assertArrayEquals(ret, solution.fullJustify2(words, 16).toArray());
         String[] ret1 = {""};
-//        assertArrayEquals(ret2, solution.fullJustify(ret1, 10).toArray());
         assertArrayEquals(ret1, solution.fullJustify2(ret1, 0).toArray());
-//
+
         String[] words2 = {"a", "b", "c", "d", "e"};
         assertArrayEquals(words2, solution.fullJustify2(words2, 1).toArray());
 
