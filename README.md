@@ -1,4 +1,7 @@
 # UTD
+
+[![][license img]][license]
+
 Computer Science assignments and projects at UT Dallas.
 
 ## Course In Progress
