@@ -32,9 +32,8 @@ public class L077_Combinations {
         // Otherwise, first generate combination of length k-1 in [s+1, n]
         ret.addAll(combine(s + 1, n, k - 1));
 
-        // Add current integer (which is s) to the combinations just generated.
-        for (List<Integer> l : ret)
-            l.add(0, s); // Add at front to ease verification.
+        // Add current integer (which is s) to each list in the combinations just generated.
+        ret.forEach(l -> l.add(0, s));
 
         // Generate combination of length k in [s+1,n], i.e., combinations excluding current int.
         ret.addAll(combine(s + 1, n, k));
