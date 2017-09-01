@@ -11,7 +11,7 @@ public class L077_Combinations {
      * Note that, this solution is designed to be transformed to DP. Each recursive call is strictly
      * rely on a larger s and a less or equal k. By memoizing the result of each recursive call,
      * might reduce time complexity with cost of some increase in space complexity. However, during
-     * implementation, I realize that Java do not support generaic type array. Statement
+     * implementation, I realize that Java do not support generic type array. Statement
      * <code>List&lt;List&lt;Integer&gt;&gt;[][] m</code> can never be initialized.
      *
      * @param s : Current start integer in n.

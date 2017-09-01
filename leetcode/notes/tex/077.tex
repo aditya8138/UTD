@@ -1,0 +1,46 @@
+\documentclass[varwidth]{standalone}
+
+\begin{document}
+
+\section{Combination (P077)}
+
+Intuitive idea is first generate combination including current integer, by
+recursively call combine with $s+1$ and $k-1$. And recursively generate
+combination excluding current integer. Finally, return the union of two list.
+Algorithm is shown in \cref{077:rec}.
+
+\begin{algorithm}[H]
+    \caption{Intuitive Recursive Solution}\label{077:rec}
+    \begin{algorithmic}[1]
+        \Procedure{Combination}{$s,n,k$}
+            \If{$k = 0$}
+                \State\Return {List of Empty List}
+            \EndIf
+            \State $include \leftarrow \ProcedureName{Combination}{s+1,n,k-1}$
+            \State \ProcedureName{Map}{(l \rightarrow l.add(s)), include}
+            \State $exclude \leftarrow \ProcedureName{Combination}{s+1,n,k}$
+            \State\Return{$include \cap exclude$}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Note that, this solution is designed to be transformed to DP. Each recursive
+call is strictly rely on a larger $s$ and a less or equal $k$. By memoizing the
+result of each recursive call, we can reduce time complexity with cost of some
+increase in space complexity. However, during implementation, I realized that
+Java do not support generic type array. Variable
+\texttt{List<List<Integer>>[][] m} can never be initialized.
+
+Another thought is backtracking. Just like DFS, each time, a recursive call is
+aware its current status, if reaching the leaf node, the program add current
+path from root to leaf to the final return list, and then backtrack to upper
+level and continue traversing.
+
+This solution is relatively faster because there are less recursive call.
+However, it requires the final list be a global variable (or passed as
+parameter by reference in the recursive call), so does the variable storing 
+current state, which I believe is not a very good approach.
+
+
+\end{document}
+
