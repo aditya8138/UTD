@@ -20,7 +20,7 @@ public class L079_WordSearch {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (backtracking(board, word, visited, i, j))
+                if (backtracking(board, word, visited, i, j, 0))
                     return true;
             }
         }
@@ -39,30 +39,31 @@ public class L079_WordSearch {
      * @param visited Boolean flag recording whether the character has been visited.
      * @param x       X-coordinate of current check character on board.
      * @param y       Y-coordinate of current check character on board.
+     * @param i       Current checking index in the word.
      * @return {@code True} if there exist a valid construction of letter of word, and {@code False}
      */
-    private boolean backtracking(char[][] board, String word, boolean[][] visited, int x, int y) {
+    private boolean backtracking(char[][] board, String word, boolean[][] visited, int x, int y, int i) {
 
         // Base case: If there is only one char left.
-        if (word.length() == 1) {
-            return board[x][y] == word.charAt(0);
+        if (i == word.length() - 1) {
+            return board[x][y] == word.charAt(i);
         }
 
         // Otherwise, if current first letter of the string is not equal to board[x][y], return false.
-        if (board[x][y] != word.charAt(0))
+        if (board[x][y] != word.charAt(i))
             return false;
         // Inductive case: Recursively check four direction if the boundary allows.
         visited[x][y] = true;
-        if (x > 0 && !visited[x - 1][y] && backtracking(board, word.substring(1), visited, x - 1, y))
+        if (x > 0 && !visited[x - 1][y] && backtracking(board, word, visited, x - 1, y, i + 1))
             return true;
 
-        if (x < board.length - 1 && !visited[x + 1][y] && backtracking(board, word.substring(1), visited, x + 1, y))
+        if (x < board.length - 1 && !visited[x + 1][y] && backtracking(board, word, visited, x + 1, y, i + 1))
             return true;
 
-        if (y > 0 && !visited[x][y - 1] && backtracking(board, word.substring(1), visited, x, y - 1))
+        if (y > 0 && !visited[x][y - 1] && backtracking(board, word, visited, x, y - 1, i + 1))
             return true;
 
-        if (y < board[0].length - 1 && !visited[x][y + 1] && backtracking(board, word.substring(1), visited, x, y + 1))
+        if (y < board[0].length - 1 && !visited[x][y + 1] && backtracking(board, word, visited, x, y + 1, i + 1))
             return true;
 
         visited[x][y] = false;
