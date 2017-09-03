@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class L671_SecondMinimumNodeInBinaryTree {
 
     /**
-     * Recursively find seconde miminum value in the tree.
+     * Recursively find second minimum value in the tree.
      *
      * @param root Current tree root to be checked.
      * @return Second minimum value in current tree, if such number not exist, return {@code -1}.
@@ -28,7 +28,7 @@ public class L671_SecondMinimumNodeInBinaryTree {
 
         assert (root.left != null && root.right != null);
 
-        // Otherwise, recursively compute seconde minimum value in two children.
+        // Otherwise, recursively compute second minimum value in two children.
         int left = findSecondMinimumValueRecursive(root.left);
         int right = findSecondMinimumValueRecursive(root.right);
 
@@ -75,7 +75,7 @@ public class L671_SecondMinimumNodeInBinaryTree {
     }
 
     /**
-     * Find seconde miminum value in the tree using TreeSet. The elements in {@code TreeSet} are
+     * Find second minimum value in the tree using TreeSet. The elements in {@code TreeSet} are
      * ordered using their natural ordering. It's quite easy to extract the second minimum value.
      *
      * @param root Current tree root to be checked.
