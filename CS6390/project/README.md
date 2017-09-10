@@ -2,6 +2,8 @@
 
 This is the final project for CS6390 Advanced Computer Network.
 
+The requirement please [click here](./requirement.md)
+
 ## Deliverable Artifact
 
     .
