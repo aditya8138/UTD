@@ -5,7 +5,8 @@
 public class L674_LongestContinuousIncreasingSubsequence {
 
     /**
-     * @param nums
+     * Find the length of longest continuous increasing subsequence.
+     * @param nums Array to be checked.
      * @return
      */
     public int findLengthOfLCIS(int[] nums) {
@@ -13,12 +14,13 @@ public class L674_LongestContinuousIncreasingSubsequence {
         int max = 0;
         int tmp;
         while (i < nums.length) {
-            while (nums[j] > nums[j - 1] && j < nums.length)
+            while (j < nums.length && nums[j] > nums[j - 1])
                 j++;
             tmp = j - i;
             if (tmp > max)
                 max = tmp;
             i = j;
+            j += 1;
         }
         return max;
     }
