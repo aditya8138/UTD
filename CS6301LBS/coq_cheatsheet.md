@@ -17,8 +17,11 @@ Applying Theorem and Assumptions
 
 __assumption__ - goal is equivalent to one of the assumptions.
 
+_exact_ - specify a assumption
+
 __apply__ - use theorem A-\>B to reduce goal B to subgoal A or convert
 assumption A to assumption B.
+_apply is used for implication, and rewrite is used for equity._
 
 Term Simplification
 -------------------
