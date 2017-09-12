@@ -1,9 +1,9 @@
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * Given n pairs of parentheses, write a function to generate all combinations of well-formed
@@ -12,6 +12,17 @@ import java.util.List;
  * For example, given n = 3, a solution set is:
  */
 public class L022 {
+    @Test
+    public void generateParenthesis() throws Exception {
+        Solution solution = new Solution();
+        String[] ret3 = {"((()))", "(()())", "(())()", "()(())", "()()()"};
+        assertArrayEquals(solution.generateParenthesis(3).toArray(), ret3);
+
+        String[] ret4 = {"(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()",
+                "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"};
+        assertArrayEquals(solution.generateParenthesis(4).toArray(), ret4);
+    }
+
     class Solution {
         /**
          * DFS solution.
@@ -48,16 +59,5 @@ public class L022 {
                 // return;
             }
         }
-    }
-
-    @Test
-    public void generateParenthesis() throws Exception {
-        Solution solution = new Solution();
-        String[] ret3 = {"((()))", "(()())", "(())()", "()(())", "()()()"};
-        assertArrayEquals(solution.generateParenthesis(3).toArray(), ret3);
-
-        String[] ret4 = {"(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()",
-                "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"};
-        assertArrayEquals(solution.generateParenthesis(4).toArray(), ret4);
     }
 }

@@ -1,8 +1,9 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Implement a magic directory with buildDict, and search methods.
@@ -14,6 +15,21 @@ import java.util.ArrayList;
  * built.
  */
 public class L676 {
+
+    @Test
+    public void search() throws Exception {
+        MagicDictionary dict = new MagicDictionary();
+        // Input: buildDict(["hello", "leetcode"]), Output: Null
+        // Input: search("hello"), Output: False
+        // Input: search("hhllo"), Output: True
+        // Input: search("hell"), Output: False
+        // Input: search("leetcoded"), Output: False
+        dict.buildDict(new String[]{"hello", "leetcode"});
+        assertFalse(dict.search("hello"));
+        assertTrue(dict.search("hhllo"));
+        assertFalse(dict.search("hell"));
+        assertFalse(dict.search("leetcoded"));
+    }
 
     class MagicDictionary {
 
@@ -53,21 +69,6 @@ public class L676 {
         public boolean search(String word) {
             return this.dict.contains(word);
         }
-    }
-
-    @Test
-    public void search() throws Exception {
-        MagicDictionary dict = new MagicDictionary();
-        // Input: buildDict(["hello", "leetcode"]), Output: Null
-        // Input: search("hello"), Output: False
-        // Input: search("hhllo"), Output: True
-        // Input: search("hell"), Output: False
-        // Input: search("leetcoded"), Output: False
-        dict.buildDict(new String[]{"hello", "leetcode"});
-        assertFalse(dict.search("hello"));
-        assertTrue(dict.search("hhllo"));
-        assertFalse(dict.search("hell"));
-        assertFalse(dict.search("leetcoded"));
     }
 
 }

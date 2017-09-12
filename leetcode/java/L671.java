@@ -1,10 +1,9 @@
+import basic.TreeNode;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-import basic.TreeNode;
-
 import java.util.TreeSet;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Given a non-empty special binary tree consisting of nodes with the non-negative value, where each
@@ -17,6 +16,24 @@ import java.util.TreeSet;
  * If no such second minimum value exists, output -1 instead.
  */
 public class L671 {
+
+    @Test
+    public void findSecondMinimumValue() throws Exception {
+        TreeNode root = new TreeNode(2);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(5);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.left.right.left = new TreeNode(2);
+        root.left.right.right = new TreeNode(3);
+        root.right.left = new TreeNode(10);
+        root.right.right = new TreeNode(5);
+
+        Solution solution = new Solution();
+
+        assertEquals(3, solution.findSecondMinimumValue(root));
+        assertEquals(3, solution.findSecondMinimumValueRecursive(root));
+    }
 
     class Solution {
         /**
@@ -111,23 +128,5 @@ public class L671 {
             traverse(root.right, treeSet);
         }
 
-    }
-
-    @Test
-    public void findSecondMinimumValue() throws Exception {
-        TreeNode root = new TreeNode(2);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(5);
-        root.left.left = new TreeNode(6);
-        root.left.right = new TreeNode(2);
-        root.left.right.left = new TreeNode(2);
-        root.left.right.right = new TreeNode(3);
-        root.right.left = new TreeNode(10);
-        root.right.right = new TreeNode(5);
-
-        Solution solution = new Solution();
-
-        assertEquals(3, solution.findSecondMinimumValue(root));
-        assertEquals(3, solution.findSecondMinimumValueRecursive(root));
     }
 }

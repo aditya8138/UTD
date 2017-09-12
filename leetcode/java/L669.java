@@ -1,8 +1,7 @@
+import basic.TreeNode;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-
-import basic.TreeNode;
 
 /**
  * Given a binary search tree and the lowest and highest boundaries as {@code L} and {@code R}, trim
@@ -10,6 +9,31 @@ import basic.TreeNode;
  * root of the tree, so the result should return the new root of the trimmed binary search tree.
  */
 public class L669 {
+
+    @Test
+    public void trimBST() throws Exception {
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(2);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(3);
+        root.left.right.right = new TreeNode(4);
+
+        root.right = new TreeNode(10);
+        root.right.left = new TreeNode(8);
+        root.right.left.left = new TreeNode(6);
+        root.right.left.right = new TreeNode(9);
+        root.right.right = new TreeNode(15);
+
+        Integer[] rootArr = {1, 2, 3, 4, 5, 6, 8, 9, 10, 15};
+        assertArrayEquals(rootArr, root.toArray().toArray());
+
+        Solution solution = new Solution();
+
+        TreeNode nroot = solution.trimBST(root, 2, 8);
+
+        Integer[] nrootArr = {2, 3, 4, 5, 6, 8};
+        assertArrayEquals(nrootArr, nroot.toArray().toArray());
+    }
 
     class Solution {
         /**
@@ -41,31 +65,6 @@ public class L669 {
             return root;
         }
 
-    }
-
-    @Test
-    public void trimBST() throws Exception {
-        TreeNode root = new TreeNode(5);
-        root.left = new TreeNode(2);
-        root.left.left = new TreeNode(1);
-        root.left.right = new TreeNode(3);
-        root.left.right.right = new TreeNode(4);
-
-        root.right = new TreeNode(10);
-        root.right.left = new TreeNode(8);
-        root.right.left.left = new TreeNode(6);
-        root.right.left.right = new TreeNode(9);
-        root.right.right = new TreeNode(15);
-
-        Integer[] rootArr = {1, 2, 3, 4, 5, 6, 8, 9, 10, 15};
-        assertArrayEquals(rootArr, root.toArray().toArray());
-
-        Solution solution = new Solution();
-
-        TreeNode nroot = solution.trimBST(root, 2, 8);
-
-        Integer[] nrootArr = {2, 3, 4, 5, 6, 8};
-        assertArrayEquals(nrootArr, nroot.toArray().toArray());
     }
 
 }

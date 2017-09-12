@@ -1,25 +1,65 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
+
 /**
- * Given an array of words and a length L, format the text such that each line has exactly L characters and is fully
- * (left and right) justified.
+ * Given an array of words and a length L, format the text such that each line has exactly L
+ * characters and is fully (left and right) justified.
  * <p>
- * You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra
- * spaces ' ' when necessary so that each line has exactly L characters.
+ * You should pack your words in a greedy approach; that is, pack as many words as you can in each
+ * line. Pad extra spaces ' ' when necessary so that each line has exactly L characters.
  * <p>
- * Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not
- * divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+ * Extra spaces between words should be distributed as evenly as possible. If the number of spaces
+ * on a line do not divide evenly between words, the empty slots on the left will be assigned more
+ * spaces than the slots on the right.
  * <p>
- * For the last line of text, it should be left justified and no extra space is inserted between words.
+ * For the last line of text, it should be left justified and no extra space is inserted between
+ * words.
  * <p>
  * For example, words: ["This", "is", "an", "example", "of", "text", "justification."] L: 16.
  */
 public class L068 {
+    @Test
+    public void fullJustify() throws Exception {
+        Solution solution = new Solution();
+
+        String[] words = {"This", "is", "an", "example", "of", "text", "justification."};
+        int length = 16;
+        String[] ret = {"This    is    an", "example  of text", "justification.  "};
+        assertArrayEquals(ret, solution.fullJustify(words, 16).toArray());
+        String[] ret1 = {""};
+        assertArrayEquals(ret1, solution.fullJustify(ret1, 0).toArray());
+
+        String[] words2 = {"a", "b", "c", "d", "e"};
+        assertArrayEquals(words2, solution.fullJustify(words2, 1).toArray());
+
+        String[] words3 = {"Don't", "go", "around", "saying", "the", "world", "owes", "you", "a", "living;", "the", "world", "owes", "you", "nothing;", "it", "was", "here", "first."};
+        String[] ret3 = {"Don't  go  around  saying  the", "world  owes  you a living; the", "world owes you nothing; it was", "here first.                   "};
+        assertArrayEquals(ret3, solution.fullJustify(words3, 30).toArray());
+    }
+
+    @Test
+    public void fullJustify2() throws Exception {
+        Solution solution = new Solution();
+
+        String[] words = {"This", "is", "an", "example", "of", "text", "justification."};
+        int length = 16;
+        String[] ret = {"This    is    an", "example  of text", "justification.  "};
+        assertArrayEquals(ret, solution.fullJustify2(words, 16).toArray());
+        String[] ret1 = {""};
+        assertArrayEquals(ret1, solution.fullJustify2(ret1, 0).toArray());
+
+        String[] words2 = {"a", "b", "c", "d", "e"};
+        assertArrayEquals(words2, solution.fullJustify2(words2, 1).toArray());
+
+        String[] words3 = {"Don't", "go", "around", "saying", "the", "world", "owes", "you", "a", "living;", "the", "world", "owes", "you", "nothing;", "it", "was", "here", "first."};
+        String[] ret3 = {"Don't  go  around  saying  the", "world  owes  you a living; the", "world owes you nothing; it was", "here first.                   "};
+        assertArrayEquals(ret3, solution.fullJustify2(words3, 30).toArray());
+    }
+
     class Solution {
         /**
          * Intuitive solution. Spaghetti Code. Slow but not sure why.
@@ -132,43 +172,5 @@ public class L068 {
             for (int i = 0; i < numberOfBlank; i++)
                 stringBuilder.append(" ");
         }
-    }
-
-    @Test
-    public void fullJustify() throws Exception {
-        Solution solution = new Solution();
-
-        String[] words = {"This", "is", "an", "example", "of", "text", "justification."};
-        int length = 16;
-        String[] ret = {"This    is    an", "example  of text", "justification.  "};
-        assertArrayEquals(ret, solution.fullJustify(words, 16).toArray());
-        String[] ret1 = {""};
-        assertArrayEquals(ret1, solution.fullJustify(ret1, 0).toArray());
-
-        String[] words2 = {"a", "b", "c", "d", "e"};
-        assertArrayEquals(words2, solution.fullJustify(words2, 1).toArray());
-
-        String[] words3 = {"Don't", "go", "around", "saying", "the", "world", "owes", "you", "a", "living;", "the", "world", "owes", "you", "nothing;", "it", "was", "here", "first."};
-        String[] ret3 = {"Don't  go  around  saying  the", "world  owes  you a living; the", "world owes you nothing; it was", "here first.                   "};
-        assertArrayEquals(ret3, solution.fullJustify(words3, 30).toArray());
-    }
-
-    @Test
-    public void fullJustify2() throws Exception {
-        Solution solution = new Solution();
-
-        String[] words = {"This", "is", "an", "example", "of", "text", "justification."};
-        int length = 16;
-        String[] ret = {"This    is    an", "example  of text", "justification.  "};
-        assertArrayEquals(ret, solution.fullJustify2(words, 16).toArray());
-        String[] ret1 = {""};
-        assertArrayEquals(ret1, solution.fullJustify2(ret1, 0).toArray());
-
-        String[] words2 = {"a", "b", "c", "d", "e"};
-        assertArrayEquals(words2, solution.fullJustify2(words2, 1).toArray());
-
-        String[] words3 = {"Don't", "go", "around", "saying", "the", "world", "owes", "you", "a", "living;", "the", "world", "owes", "you", "nothing;", "it", "was", "here", "first."};
-        String[] ret3 = {"Don't  go  around  saying  the", "world  owes  you a living; the", "world owes you nothing; it was", "here first.                   "};
-        assertArrayEquals(ret3, solution.fullJustify2(words3, 30).toArray());
     }
 }

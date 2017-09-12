@@ -1,6 +1,7 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Given a 2D board and a word, find if the word exists in the grid. The word can be constructed
@@ -9,6 +10,17 @@ import static org.junit.Assert.*;
  */
 
 public class L079 {
+    @Test
+    public void exist() throws Exception {
+        Solution solution = new Solution();
+        char[][] board1 = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
+
+        assertTrue(solution.exist(board1, "ABCCED"));
+        assertTrue(solution.exist(board1, "BCESEEDFSA"));
+        assertFalse(solution.exist(board1, "ABCB"));
+        assertFalse(solution.exist(board1, "ABCBNFKS"));
+    }
+
     class Solution {
         /**
          * Check if a word exist in the board. The function iterate through the board line by line.
@@ -76,16 +88,5 @@ public class L079 {
             return false;
         }
 
-    }
-
-    @Test
-    public void exist() throws Exception {
-        Solution solution = new Solution();
-        char[][] board1 = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
-
-        assertTrue(solution.exist(board1, "ABCCED"));
-        assertTrue(solution.exist(board1, "BCESEEDFSA"));
-        assertFalse(solution.exist(board1, "ABCB"));
-        assertFalse(solution.exist(board1, "ABCBNFKS"));
     }
 }

@@ -1,11 +1,27 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class L078 {
+    @Test
+    public void subsetsBitwise() throws Exception {
+        Solution solution = new Solution();
+        int[] s = {11, 22, 33, 44, 55};
+        System.out.println(solution.subsetsBitwise(s));
+    }
+
+    @Test
+    public void subsetsIntuitive() throws Exception {
+        Solution solution = new Solution();
+        int[] s = {11, 22, 33, 44, 55};
+        System.out.println(solution.subsetsIntuitive(s));
+    }
+
+    @Test
+    public void subsets() throws Exception {
+    }
+
     class Solution {
         /**
          * Intuitive solution following the previous problem 077.Combination. The union of all
@@ -54,23 +70,5 @@ public class L078 {
             }
             return ret;
         }
-    }
-
-    @Test
-    public void subsetsBitwise() throws Exception {
-        Solution solution = new Solution();
-        int[] s = {11, 22, 33, 44, 55};
-        System.out.println(solution.subsetsBitwise(s));
-    }
-
-    @Test
-    public void subsetsIntuitive() throws Exception {
-        Solution solution = new Solution();
-        int[] s = {11, 22, 33, 44, 55};
-        System.out.println(solution.subsetsIntuitive(s));
-    }
-
-    @Test
-    public void subsets() throws Exception {
     }
 }

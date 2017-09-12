@@ -1,12 +1,19 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Given an unsorted array of integers, find the length of longest continuous increasing
  * subsequence.
  */
 public class L674 {
+
+    @Test
+    public void findLengthOfLCIS() throws Exception {
+        Solution solution = new Solution();
+        assertEquals(3, solution.findLengthOfLCIS(new int[]{1, 3, 5, 4, 7}));
+        assertEquals(1, solution.findLengthOfLCIS(new int[]{2, 2, 2, 2, 2}));
+    }
 
     class Solution {
         /**
@@ -31,12 +38,5 @@ public class L674 {
             return max;
         }
 
-    }
-
-    @Test
-    public void findLengthOfLCIS() throws Exception {
-        Solution solution = new Solution();
-        assertEquals(3, solution.findLengthOfLCIS(new int[]{1, 3, 5, 4, 7}));
-        assertEquals(1, solution.findLengthOfLCIS(new int[]{2, 2, 2, 2, 2}));
     }
 }

@@ -1,6 +1,6 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Given a non-negative integer, you could swap two digits at most once to get the maximum valued
@@ -9,6 +9,18 @@ import static org.junit.Assert.*;
  * 9973. Explanation: No swap.</li> </ul> Note: The given number is in the range [0, 108]
  */
 public class L670 {
+
+    @Test
+    public void maximumSwap() throws Exception {
+        Solution solution = new Solution();
+        assertEquals(7236, solution.maximumSwap(2736));
+        assertEquals(9973, solution.maximumSwap(9937));
+        assertEquals(9913, solution.maximumSwap(1993));
+        assertEquals(99837, solution.maximumSwap(99738));
+        assertEquals(98863, solution.maximumSwap(98368));
+        assertEquals(10000, solution.maximumSwap(10000));
+        assertEquals(110000, solution.maximumSwap(100010));
+    }
 
     class Solution {
         /**
@@ -42,17 +54,5 @@ public class L670 {
             }
             return Integer.parseInt(String.valueOf(chars));
         }
-    }
-
-    @Test
-    public void maximumSwap() throws Exception {
-        Solution solution = new Solution();
-        assertEquals(7236, solution.maximumSwap(2736));
-        assertEquals(9973, solution.maximumSwap(9937));
-        assertEquals(9913, solution.maximumSwap(1993));
-        assertEquals(99837, solution.maximumSwap(99738));
-        assertEquals(98863, solution.maximumSwap(98368));
-        assertEquals(10000, solution.maximumSwap(10000));
-        assertEquals(110000, solution.maximumSwap(100010));
     }
 }
