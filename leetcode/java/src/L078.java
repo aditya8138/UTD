@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class L078_Subsets {
+public class L078 {
     class Solution {
         /**
          * Intuitive solution following the previous problem 077.Combination. The union of all
