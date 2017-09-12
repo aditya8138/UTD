@@ -1,5 +1,8 @@
-import java.util.Set;
-import java.util.TreeSet;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 
 /**
  * Implement a magic directory with buildDict, and search methods.
@@ -10,20 +13,21 @@ import java.util.TreeSet;
  * character into another character in this word, the modified word is in the dictionary you just
  * built.
  */
-public class L676_ImplementMagicDictionary {
+public class L676 {
+
     class MagicDictionary {
 
-        Set<String> dict;
+        ArrayList<String> dict;
 
         /**
          * Initialize your data structure here.
          */
         public MagicDictionary() {
-            dict = new TreeSet<>();
+            dict = new ArrayList<>();
         }
 
         /**
-         * Build a dictionary through a list of words
+         * Build a dictionary through a list of words, a brute force way.
          */
         public void buildDict(String[] dict) {
             char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -51,5 +55,19 @@ public class L676_ImplementMagicDictionary {
         }
     }
 
+    @Test
+    public void search() throws Exception {
+        MagicDictionary dict = new MagicDictionary();
+        // Input: buildDict(["hello", "leetcode"]), Output: Null
+        // Input: search("hello"), Output: False
+        // Input: search("hhllo"), Output: True
+        // Input: search("hell"), Output: False
+        // Input: search("leetcoded"), Output: False
+        dict.buildDict(new String[]{"hello", "leetcode"});
+        assertFalse(dict.search("hello"));
+        assertTrue(dict.search("hhllo"));
+        assertFalse(dict.search("hell"));
+        assertFalse(dict.search("leetcoded"));
+    }
 
 }
