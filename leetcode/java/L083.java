@@ -1,6 +1,8 @@
 import basic.ListNode;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 /**
  * Given a sorted linked list, delete all duplicates such that each element appear only once.
  * <p>
@@ -8,8 +10,15 @@ import org.junit.Test;
  */
 public class L083 {
     @Test
-    public void search() throws Exception {
-        // to-do
+    public void deleteDuplicates() throws Exception {
+
+        Integer[] d1 = new Integer[]{1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5};
+        Integer[] a1 = new Integer[]{1, 2, 3, 4, 5};
+
+        assertArrayEquals(new Integer[]{1, 2, 3},
+                ListNode.toArray(new Solution().deleteDuplicates(ListNode.asList(new Integer[]{1, 1, 1, 2, 2, 3}))));
+
+        assertArrayEquals(a1, ListNode.toArray(new Solution().deleteDuplicates(ListNode.asList(d1))));
     }
 
     class Solution {
