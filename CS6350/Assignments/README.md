@@ -16,7 +16,7 @@ To compile, simply using maven command `mvn package`, a package named *CS6350Ass
 ## Execution
 All execution need to be performed on department machine with Hadoop configured.
 
-### Assignment 1
+### [Assignment 1](./requirement/1.pdf)
 - Part 1
 
     ```bash
@@ -62,7 +62,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -ls assignment1/part2
     ```
 
-### Assignment 1b
+### [Assignment 1b](./requirement/1b.pdf)
 - Part 1
 
     ```bash
@@ -92,7 +92,7 @@ All execution need to be performed on department machine with Hadoop configured.
     hdfs dfs -cat hdfs://cshadoop1/user/netID/assignment1b/part2/result
     ```
 
-### Assignment 2
+### [Assignment 2](./requirement/2.pdf)
 From this assignment, relative path is used, if not specified.
 For example
 > hdfs://cshadoop1/user/netID/assignment1/part2/wiki
@@ -151,7 +151,7 @@ becomes
     hdfs dfs -cat assignment2/5/part-r-00000
     ```
 
-### Assignment 3
+### [Assignment 3](./requirement/3.pdf)
 This assignment is run on spark. One can either choose to use the _spark-shell_
 or _spark-submit_ to execute. Note the in _spark-shell_ a spark-context object
 `sc` is created automatically. There is no need to created again.

@@ -6,3 +6,5 @@ Class Section: CS6350.0U1.17U
 
 Instructor: Anurag Nagar
 
+### [Assignments](./Assignments)
+
