@@ -1,0 +1,103 @@
+% !TEX program = XeLaTeX
+
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[l2tabu, orthodox]{nag}
+\usepackage{tabu}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{cmbright}
+\usepackage{color}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}
+\usepackage{array}
+
+%FONTS
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setmonofont{Fira Code}
+\defaultfontfeatures{Extension = .otf}
+
+\usepackage{listings}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+% As a rule of thumb it should be loaded at the end of the preamble, after all
+% the other packages. A few exceptions exist, such as the cleveref package that
+% is also mentioned in this post. Hence, cleveref should be loaded after
+% hyperref.
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0.8,0.2,0.5}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+% This package introduces the \cref command. When using this command to make
+% cross-references, instead of \ref or \eqref, a word is placed in front of the
+% reference according to the type of reference: fig. for figures, eq. for
+% equations
+\usepackage{cleveref}
+
+\title{Report: Decision Tree (Bonus)}
+\author{Hanlin He\footnote{hxh160630@utdallas.edu},
+Tao Wang\footnote{txw162630@utdallas.edu}}
+
+\begin{document}
+\maketitle
+
+% A brief report indicating any assumptions that you made, your best results, what you accomplished, and what you learned. The report should clearly indicate the names of the team members.
+\section*{README}
+
+The structure of the project please refer to the \texttt{README} file. An online `Github-style' rendering readme is \href{https://cs6375.github.io/DecisionTree/}{here}.
+
+
+\section*{Result}
+
+\subsection*{Tree parameters}
+
+Tree parameters of both ID3 and random generated decision trees are as follow:
+
+\begin{table}[H]
+\centering
+\caption{Decision Tree Parameter Comparison}\label{t1}
+\begin{tabular}{ccc}\toprule
+Construting Method & Average Depth & Number of nodes\\\midrule
+ID3 & 8.1 & 265 \\
+Random & 8.36 & 249\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Accuracy}
+
+Accuracies of random generate decision tree are as follow:
+
+\begin{table}[H]
+\centering
+\caption{Random Generated Decision Tree Comparison on DataSet 1}
+\pgfplotstabletypeset[
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  columns/No/.style={column name={No.}, after row=\hline},
+  columns/Node/.style={column name={Node\#}},
+  columns/Leaf/.style={column name={Leaf\#}},
+  columns/Avg/.style={column name={Avg. Depth}},
+  columns/Training/.style={column name={Training Set}},
+  columns/Validation/.style={column name={Validation Set}},
+  columns/Test/.style={column name={Test Set}},
+]{data1.txt}
+\end{table}
+
+Accuracies of ID3 generated decision tree are as follow:
+
+\begin{table}[H]
+\centering
+\caption{ID3 Algorithm Generated Decision Tree on DataSet 1}
+\begin{tabular}{cccc}\toprule
+    & Training Set & Validation Set & Test Set \\\midrule
+Before Pruning & 100.0\% & 74.3\% & 75.1\% \\
+After Pruning  & 89.8\%. & 78.8\% & 78.6\%\\\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
