@@ -1,0 +1,22 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\begin{document}
+
+\begin{align}
+\begin{split}
+\frac{\partial E}{\partial w_i}
+&= \frac{\partial}{\partial w_i}\frac{1}{2}\sum_d(t_d-o_d)^2\\
+&= \frac{1}{2}\sum_d\frac{\partial}{\partial w_i}(t_d-o_d)^2\\
+&= \frac{1}{2}\sum_d2(t_d-o_d)\frac{\partial}{\partial w_i}(t_d-o_d)\\
+&= \sum_d(t_d-o_d)\frac{\partial}{\partial w_i}(t_d-\vec{w}\cdot(\vec{x_d}+\vec{x_d}^2))\\
+\frac{\partial E}{\partial w_i}
+&= \sum_d(t_d-o_d)(-x_{i,d}-x_{i,d}^2)
+\end{split}
+\end{align}
+
+\end{document}

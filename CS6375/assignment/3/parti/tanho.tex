@@ -1,0 +1,57 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\begin{document}
+
+For output unit, based on textbook:
+
+\begin{align}
+\label{o0}
+\frac{\partial E_d}{\partial net_j}=\frac{\partial E_d}{\partial o_j}\frac{\partial o_j}{\partial net_j}
+\end{align}
+
+Consider the first term:
+
+\begin{align}
+\label{o1}
+\begin{split}
+\frac{\partial E_d}{\partial o_j}
+&=\frac{\partial}{\partial o_j}\frac{1}{2}\sum_d(t_d-o_d)^2\qquad\texttt{//only $d = j$ matters}\\
+&=\frac{\partial}{\partial o_j}\frac{1}{2}(t_j-o_j)^2\\
+&=\frac{1}{2} \cdot 2 \cdot (t_j-o_j)\frac{\partial(t_j-o_j)}{\partial o_j}\\
+&=-(t_j-o_j)
+\end{split}
+\end{align}
+
+Consider the second term, since the \texttt{identity} function is used, the
+derivative is just the derivative of the \texttt{identity} function, which is
+$1$.
+
+\begin{align}
+\label{o2}
+\begin{split}
+\frac{\partial o_j}{\partial net_j}=\frac{\partial}{\partial net_j}\mathtt{identity}(net_j) = 1
+\end{split}
+\end{align}
+
+Substituting \cref{o1} and \cref{o2} into \cref{o0}:
+
+\begin{align}
+    \frac{\partial E_d}{\partial net_j}=-(t_j-o_j)
+\end{align}
+
+Thus, the gradient descent rule for output units is:
+
+\begin{align}
+\Delta w_{ji} = -\eta\frac{\partial E_d}{\partial w_{ji}} = \eta \cdot
+(t_j-o_j) \cdot x_{ji}
+\end{align}
+
+\end{document}
