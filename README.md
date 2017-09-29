@@ -9,7 +9,7 @@ Computer Science assignments and projects at UT Dallas.
 
 - CS6301 Implementation of Advanced Data Structures and Algorithms
 
-- [CS6375 Machine Learning](./CS6375)
+- CS6375 Machine Learning
 
 ## Course Taken
 
