@@ -16,6 +16,7 @@
 \usepackage{pgfplotstable}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{footnote}
 
 %FONTS
 \usepackage{fontspec}
@@ -61,12 +62,14 @@ Tree parameters of both ID3 and random generated decision trees are as follow:
 \begin{table}[H]
 \centering
 \caption{Decision Tree Parameter Comparison}\label{t1}
-\begin{tabular}{ccc}\toprule
-Construting Method & Average Depth & Number of nodes\\\midrule
-ID3 & 8.1 & 265 \\
-Random & 8.36 & 249\\\bottomrule
+\begin{tabular}{cccc}\toprule
+Construting Method & Average Depth & Number of nodes & Number of leaves \\\midrule
+ID3 & 8.1 & 265 & 133 \\
+Random\footnotemark & 8.3117 & 303.888 & 152.444\\\bottomrule
 \end{tabular}
 \end{table}
+
+\footnotetext{Data here are average computed by 1000 times randomly generated decision tree.}
 
 \subsection*{Accuracy}
 
