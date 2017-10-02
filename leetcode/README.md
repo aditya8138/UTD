@@ -20,6 +20,6 @@ Although the reason for that is well stated by the author, I still believe that
 Python might not be a best way to solve Leetcode problems.
 
 Now I turned to Java. The one language that everyone use for every purpose.
-Though the progress is slow, but finally there are some progress ;)
+Though the progress is slow, but finally there is some progress ;)
 
 Fun coding!
