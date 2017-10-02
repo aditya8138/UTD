@@ -74,10 +74,11 @@ _italic_ or __bold__ sentences are notes.
 
     Assume that we are using the linear kernel and the Lagrange multipliers are denoted by , true class value by y and attributes by x alpha 
         
-    -   [ ] w space equals sum for i of alpha subscript i y subscript i x subscript i 
-    -   [ ] w space equals sum for i of alpha subscript i y subscript i x subscript i squared 
-    -   [ ] w space equals sum for i of alpha subscript i y subscript i 
-    -   [ ] w space equals sum for i of alpha subscript i x subscript i
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?w=\sum_i{\alpha_iy_ix_i}) (w space equals sum for i of alpha subscript i y subscript i x subscript i )
+    
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?w=\sum_i{\alpha_iy_ix_i^2}) (w space equals sum for i of alpha subscript i y subscript i x subscript i squared )
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?w=\sum_i{\alpha_iy_i) (w space equals sum for i of alpha subscript i y subscript i )
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?w=\sum_i{\alpha_ix_i) (w space equals sum for i of alpha subscript i x subscript i)
         
 9.  How does SVM classiﬁer work with non-linear datasets?
 
