@@ -52,18 +52,22 @@ _italic_ or __bold__ sentences are notes.
     -   [ ] maximize the margin between the surface and the closest test data points on either side 
     -   [ ] minimize the margin between the surface and the closest training data points on either side
 
-6.      For the situation shown below, how many points are support vectors?
+6.  For the situation shown below, how many points are support vectors?
+
+    ![](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6375/quiz/fig/svm6.jpg)
 
     -   [ ] 1 
     -   [ ] 2
     -   [ ] can't say 
     -   [ ] 3
 
-7.      Consider a 2-D SVM separator whose equation is given by:
+7.  Consider a 2-D SVM separator whose equation is given by:
 
-        x 2 = 2 x 1 Assuming that we have normalized the data such that the distance from the separator to the lines passing through support vectors is at a distance of 1 on each side. The situation is illustrated below:
+     ![](https://raw.githubusercontent.com/hanlin-he/UTD/master/CS6375/quiz/fig/svm7.jpg)
 
-        What will be the total margin of separation for the SVM i.e. sum of the distance from the separator to the support vectors.
+    ![](http://latex.codecogs.com/svg.latex?x_2=2x_1) Assuming that we have normalized the data such that the distance from the separator to the lines passing through support vectors is at a distance of 1 on each side. The situation is illustrated below:
+
+    What will be the total margin of separation for the SVM i.e. sum of the distance from the separator to the support vectors.
         
     -   [ ] ![](http://latex.codecogs.com/svg.latex?\frac{2}{\sqrt{5}})
     -   [ ] ![](http://latex.codecogs.com/svg.latex?\frac{1}{\sqrt{5}})
@@ -93,8 +97,3 @@ _italic_ or __bold__ sentences are notes.
     -   [ ] In case where perfect classification cannot be done on the training dataset, we introduce slack variables as a way to penalize mis-classified points. 
     -   [ ] It is done to avoid overfitting 
     -   [ ] It is done as a way to prune the model
-
-
-
-
-
