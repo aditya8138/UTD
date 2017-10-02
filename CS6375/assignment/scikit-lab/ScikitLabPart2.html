@@ -11773,7 +11773,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># In this part, you will create a neural net for a dataset chosen from</span>
@@ -11797,7 +11797,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -11822,7 +11822,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Turn &#39;sex&#39; into three columns bool.</span>
@@ -11838,7 +11838,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Show data type.</span>
@@ -11855,7 +11855,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[4]:</div>
+<div class="prompt output_prompt">Out[80]:</div>
 
 
 
@@ -11883,7 +11883,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -11899,7 +11899,7 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[5]:</div>
+<div class="prompt output_prompt">Out[81]:</div>
 
 
 
@@ -12034,7 +12034,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rings</span><span class="o">.</span><span class="n">values</span>
@@ -12047,7 +12047,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rings&quot;</span><span class="p">]</span> <span class="c1"># remove rings from data, so we can convert all the dataframe to a numpy 2D array.</span>
@@ -12061,7 +12061,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span>
@@ -12077,7 +12077,7 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt output_prompt">Out[84]:</div>
 
 
 
@@ -12100,7 +12100,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Random split data set into test and train.</span>
@@ -12115,7 +12115,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
@@ -12129,7 +12129,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
@@ -12145,7 +12145,7 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[11]:</div>
+<div class="prompt output_prompt">Out[87]:</div>
 
 
 
@@ -12162,7 +12162,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now apply the transformations to the data:</span>
@@ -12177,7 +12177,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_train</span>
@@ -12193,25 +12193,25 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[89]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[ 0.53862423,  0.51278765,  0.11835678, ..., -0.76283214,
-        -0.67417051,  1.4588616 ],
-       [-1.95975865, -2.00406784, -1.6443327 , ..., -0.76283214,
-        -0.67417051,  1.4588616 ],
-       [-1.2518835 , -1.19867408, -1.05676954, ..., -0.76283214,
-        -0.67417051,  1.4588616 ],
+<pre>array([[ 1.08886661,  1.02946733,  0.83663702, ..., -0.75890935,
+         1.48744748, -0.69113295],
+       [-0.48127897, -0.67065642, -0.79519068, ...,  1.31768044,
+        -0.67229265, -0.69113295],
+       [ 0.4690723 ,  0.47942729,  0.25384141, ...,  1.31768044,
+        -0.67229265, -0.69113295],
        ..., 
-       [-0.91876578, -0.84631432, -0.93925691, ..., -0.76283214,
-        -0.67417051,  1.4588616 ],
-       [ 0.53862423, -0.04092056,  0.23586941, ...,  1.31090438,
-        -0.67417051, -0.68546598],
-       [-2.04303808, -2.00406784, -1.9968706 , ..., -0.76283214,
-        -0.67417051,  1.4588616 ]])</pre>
+       [-1.18371251, -0.82066734, -0.67863156, ..., -0.75890935,
+         1.48744748, -0.69113295],
+       [ 0.38643306,  0.47942729,  0.83663702, ...,  1.31768044,
+        -0.67229265, -0.69113295],
+       [-1.84482644, -1.87074377, -1.37798628, ..., -0.75890935,
+        -0.67229265,  1.44689962]])</pre>
 </div>
 
 </div>
@@ -12222,11 +12222,11 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
-<span class="n">mlp</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;logistic&#39;</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">mlp</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12236,7 +12236,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mlp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
@@ -12252,15 +12252,15 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[91]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>MLPClassifier(activation=&#39;logistic&#39;, alpha=0.0001, batch_size=&#39;auto&#39;,
-       beta_1=0.9, beta_2=0.999, early_stopping=False, epsilon=1e-08,
-       hidden_layer_sizes=(5, 8), learning_rate=&#39;constant&#39;,
+<pre>MLPClassifier(activation=&#39;relu&#39;, alpha=0.0001, batch_size=&#39;auto&#39;, beta_1=0.9,
+       beta_2=0.999, early_stopping=False, epsilon=1e-08,
+       hidden_layer_sizes=(8, 30, 30), learning_rate=&#39;constant&#39;,
        learning_rate_init=0.001, max_iter=1000, momentum=0.9,
        nesterovs_momentum=True, power_t=0.5, random_state=None,
        shuffle=True, solver=&#39;adam&#39;, tol=0.0001, validation_fraction=0.1,
@@ -12275,7 +12275,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
@@ -12288,7 +12288,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[93]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mlp</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
@@ -12304,13 +12304,13 @@ dtype: object</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[17]:</div>
+<div class="prompt output_prompt">Out[93]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>0.26196172248803828</pre>
+<pre>0.30023923444976075</pre>
 </div>
 
 </div>
@@ -12321,7 +12321,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">classification_report</span><span class="p">,</span><span class="n">confusion_matrix</span>
@@ -12342,29 +12342,56 @@ dtype: object</pre>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[[ 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  1  2  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  4  8  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0 10  9  6  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  5  5 31  7  0  0  0  0  2  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  2  6 36 23  8  2  0  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  3 27 36 42  7  2  0  3  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  1  8 32 52 23 16  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  4 14 42 34 28  0  7  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  2  6 29 21 34  0  1  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  1  3 14 19 17  0  7  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  1  0  0  5  6 10  0  8  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  1  4 10 11  0  9  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  1  3  5  6  0  7  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  1  1  1  0 11  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  1  1  3  0  4  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  1  2  0  4  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  1  0  4  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  1  0  3  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  1  0  3  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0]
- [ 0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0]]
+<pre>[[ 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  5  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  7  4  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  3  7  9  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  2 14 15  8  2  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  1 16 32 19  7  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  1  1 21 46 28  6  1  1  3  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  1  9 34 72 26  6  1  2  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  1  8 54 40 10  0  7  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  1  4 26 39 25  0  8  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  3  1 17 19 12  0  6  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  3 10 11  4  0  7  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  1  1  2  6  2  0  9  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  1  7  8  3  0  8  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  3  2  0  0  6  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  1  5  2  0  3  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  1  2  5  1  0  2  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  1  1  0  3  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  2  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  1  0  0  2  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  3  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0
+   0]
+ [ 0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0
+   0]]
 </pre>
 </div>
 </div>
@@ -12375,7 +12402,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
@@ -12397,31 +12424,33 @@ dtype: object</pre>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>             precision    recall  f1-score   support
 
-          1       0.00      0.00      0.00         1
-          3       0.00      0.00      0.00         3
-          4       0.67      0.33      0.44        12
-          5       0.37      0.40      0.38        25
-          6       0.20      0.10      0.13        50
-          7       0.31      0.47      0.38        77
-          8       0.29      0.30      0.30       120
-          9       0.26      0.39      0.31       132
-         10       0.26      0.26      0.26       129
-         11       0.25      0.37      0.30        93
-         12       0.00      0.00      0.00        61
-         13       0.11      0.27      0.15        30
-         14       0.00      0.00      0.00        35
-         15       0.00      0.00      0.00        22
-         16       0.00      0.00      0.00        14
-         17       0.00      0.00      0.00         9
-         18       0.00      0.00      0.00         7
-         19       0.00      0.00      0.00         5
-         20       0.00      0.00      0.00         4
-         21       0.00      0.00      0.00         4
-         22       0.00      0.00      0.00         1
-         23       0.00      0.00      0.00         1
+          2       0.00      0.00      0.00         1
+          3       0.00      0.00      0.00         5
+          4       0.44      0.64      0.52        11
+          5       0.47      0.35      0.40        20
+          6       0.34      0.34      0.34        41
+          7       0.38      0.42      0.40        76
+          8       0.37      0.43      0.39       108
+          9       0.31      0.48      0.38       151
+         10       0.24      0.33      0.28       121
+         11       0.37      0.24      0.29       104
+         12       0.00      0.00      0.00        59
+         13       0.10      0.19      0.13        36
+         14       0.00      0.00      0.00        22
+         15       0.00      0.00      0.00        27
+         16       0.08      0.08      0.08        12
+         17       0.00      0.00      0.00        12
+         18       0.00      0.00      0.00        11
+         19       0.00      0.00      0.00         1
+         20       0.00      0.00      0.00         6
+         21       0.00      0.00      0.00         3
+         22       0.00      0.00      0.00         3
+         23       0.00      0.00      0.00         3
+         24       0.00      0.00      0.00         1
+         26       0.00      0.00      0.00         1
          27       0.00      0.00      0.00         1
 
-avg / total       0.22      0.26      0.23       836
+avg / total       0.26      0.30      0.27       836
 
 </pre>
 </div>

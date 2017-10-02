@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[77]:
 
 
 # In this part, you will create a neural net for a dataset chosen from
@@ -18,7 +18,7 @@
 # the performance of the model using the best set of parameters.
 
 
-# In[2]:
+# In[78]:
 
 
 import numpy as np
@@ -36,7 +36,7 @@ df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/abal
                         'rings'])
 
 
-# In[3]:
+# In[79]:
 
 
 # Turn 'sex' into three columns bool.
@@ -45,39 +45,39 @@ for label in "MFI":
 del df['sex']
 
 
-# In[4]:
+# In[80]:
 
 
 # Show data type.
 df.dtypes
 
 
-# In[5]:
+# In[81]:
 
 
 df.describe()
 
 
-# In[6]:
+# In[82]:
 
 
 y = df.rings.values
 
 
-# In[7]:
+# In[83]:
 
 
 del df["rings"] # remove rings from data, so we can convert all the dataframe to a numpy 2D array.
 X = df.values.astype(np.float)
 
 
-# In[8]:
+# In[84]:
 
 
 X
 
 
-# In[9]:
+# In[85]:
 
 
 # Random split data set into test and train.
@@ -85,20 +85,20 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle='true')
 
 
-# In[10]:
+# In[86]:
 
 
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 
 
-# In[11]:
+# In[87]:
 
 
 scaler.fit(X_train)
 
 
-# In[12]:
+# In[88]:
 
 
 # Now apply the transformations to the data:
@@ -106,45 +106,45 @@ X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
 
-# In[13]:
+# In[89]:
 
 
 X_train
 
 
-# In[14]:
+# In[90]:
 
 
 from sklearn.neural_network import MLPClassifier
-mlp = MLPClassifier(activation='logistic', hidden_layer_sizes=(5,8), max_iter=1000)
+mlp = MLPClassifier(hidden_layer_sizes=(8,30,30), max_iter=1000)
 
 
-# In[15]:
+# In[91]:
 
 
 mlp.fit(X_train,y_train)
 
 
-# In[16]:
+# In[92]:
 
 
 predictions = mlp.predict(X_test)
 
 
-# In[17]:
+# In[93]:
 
 
 mlp.score(X_test, y_test)
 
 
-# In[18]:
+# In[94]:
 
 
 from sklearn.metrics import classification_report,confusion_matrix
 print(confusion_matrix(y_test,predictions))
 
 
-# In[19]:
+# In[95]:
 
 
 print(classification_report(y_test,predictions))
