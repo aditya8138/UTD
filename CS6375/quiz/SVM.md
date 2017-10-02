@@ -52,14 +52,46 @@ _italic_ or __bold__ sentences are notes.
     -   [ ] maximize the margin between the surface and the closest test data points on either side 
     -   [ ] minimize the margin between the surface and the closest training data points on either side
 
+6.      For the situation shown below, how many points are support vectors?
 
+    -   [ ] 1 
+    -   [ ] 2
+    -   [ ] can't say 
+    -   [ ] 3
 
+7.      Consider a 2-D SVM separator whose equation is given by:
 
+        x 2 = 2 x 1 Assuming that we have normalized the data such that the distance from the separator to the lines passing through support vectors is at a distance of 1 on each side. The situation is illustrated below:
 
+        What will be the total margin of separation for the SVM i.e. sum of the distance from the separator to the support vectors.
+        
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\frac{2}{\sqrt{5}})
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\frac{1}{\sqrt{5}})
+    -   [ ] 1
+    -   [ ] 2       
 
+8.  What is the solution obtained for the best value of weights when the SVM problem is solved using Lagrange multipliers?
 
+    Assume that we are using the linear kernel and the Lagrange multipliers are denoted by , true class value by y and attributes by x alpha 
+        
+    -   [ ] w space equals sum for i of alpha subscript i y subscript i x subscript i 
+    -   [ ] w space equals sum for i of alpha subscript i y subscript i x subscript i squared 
+    -   [ ] w space equals sum for i of alpha subscript i y subscript i 
+    -   [ ] w space equals sum for i of alpha subscript i x subscript i
+        
+9.  How does SVM classiﬁer work with non-linear datasets?
 
+    -   [ ] By using kernels, which can evaluate similarity of data points in transformed dimensions. 
+    -   [ ] By making a non-linear decision surface
+    -   [ ] By outputting a classiﬁer with non-zero training error values 
+    -   [ ] SVM cannot work with non-linear dataset
 
+10. What is the purpose of introducing slack variables in SVM?
+
+    -   [ ] It is done to randomize the model 
+    -   [ ] In case where perfect classification cannot be done on the training dataset, we introduce slack variables as a way to penalize mis-classified points. 
+    -   [ ] It is done to avoid overfitting 
+    -   [ ] It is done as a way to prune the model
 
 
 
