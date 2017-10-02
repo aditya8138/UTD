@@ -5,18 +5,18 @@ _italic_ or __bold__ sentences are notes.
 
 1.  Consider the straight line below:
 
-        4x + 2y + 7 = 0
+    ![](http://latex.codecogs.com/svg.latex?4x+2y+7=0)
         
     Which of the following vectors would be normal (perpendicular) to this line?
     
-    -   [ ] (4,2)
-    -   [ ] (2,4)
-    -   [ ] (-4,-2)
-    -   [ ] (-2,-4)
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\binom{4}{2})
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\binom{2}{4})
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\binom{-4}{-2})
+    -   [ ] ![](http://latex.codecogs.com/svg.latex?\binom{-2}{-4})
 
 2.  Consider the straight line in 2-D:
 
-        -2x + 3y + 4 = 0
+    ![](http://latex.codecogs.com/svg.latex?-2x+3y+4=0)
     
     Which of the following are true?
     
@@ -27,7 +27,7 @@ _italic_ or __bold__ sentences are notes.
 
 3.  Suppose for a two attribute scenario, we design the following decision function:
 
-        y = 4x 1 + 2x 2 + 7
+    ![](http://latex.codecogs.com/svg.latex?y=4x_1+2x_2+7)
     
     (Remember y = 0 on the decision boundar and sign of y gives the classiﬁcation label for a test data point) What would be the distance from the decision boundary and classiﬁcation for the data point (2, 1)
 
