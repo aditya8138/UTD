@@ -7,6 +7,22 @@
 
 \begin{document}
 
+\section{}
+
+The training rule should be:
+
+\begin{align}
+    w_i\leftarrow w_i + \Delta w_i
+\end{align}
+
+where
+
+\begin{align}
+    \Delta w_i = -\eta\frac{\partial E}{\partial w_i}
+\end{align}
+
+We can calculate $\frac{\partial E}{\partial w_i}$ as follow:
+
 \begin{align}
 \begin{split}
 \frac{\partial E}{\partial w_i}
@@ -17,6 +33,12 @@
 \frac{\partial E}{\partial w_i}
 &= \sum_d(t_d-o_d)(-x_{i,d}-x_{i,d}^2)
 \end{split}
+\end{align}
+
+Thus, we have:
+
+\begin{align}
+    \Delta w_i = \eta \sum_{d\in D} (t_d - i_d)(x_{i,d}-x_{i,d}^2)
 \end{align}
 
 \end{document}
