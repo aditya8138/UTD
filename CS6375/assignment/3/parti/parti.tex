@@ -1,0 +1,45 @@
+% !TEX program = XeLaTeX
+
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[l2tabu, orthodox]{nag}
+\usepackage{tabu}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{cmbright}
+\usepackage{color}
+\usepackage{standalone}
+%FONTS
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text}
+
+\usepackage{parskip}
+% As a rule of thumb it should be loaded at the end of the preamble, after all
+% the other packages. A few exceptions exist, such as the cleveref package that
+% is also mentioned in this post. Hence, cleveref should be loaded after
+% hyperref.
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0.8,0.2,0.5}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+% This package introduces the \cref command. When using this command to make
+% cross-references, instead of \ref or \eqref, a word is placed in front of the
+% reference according to the type of reference: fig. for figures, eq. for
+% equations
+\usepackage{cleveref}
+
+\title{Assignment 3 Part I}
+\author{Hanlin He\footnote{hxh160630@utdallas.edu},
+Tao Wang\footnote{txw162630@utdallas.edu}}
+
+\begin{document}
+\maketitle
+
+\input{tanh}
+
+
+\end{document}
