@@ -1,0 +1,72 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\begin{document}
+
+\section{}
+
+\subsection{}
+
+First calculate $x_3$ and $x_4$:
+
+\[x_3 = w_{31} x_1 + w_{32} x_2\]
+\[x_4 = w_{41} x_1 + w_{42} x_2\]
+
+Then, $x_5$:
+
+\begin{align}
+\begin{split}
+x_5 &= w_{53} h(x_3) + w_{54} h(x_4)\\
+    &= w_{53} h(w_{31} x_1 + w_{32} x_2) + w_{54} h(w_{41} x_1 + w_{42} x_2)
+\end{split}
+\end{align}
+
+Final output would be:
+
+\begin{align}
+\begin{split}
+o
+&= h(x_5)\\
+&= h(w_{53} h(w_{31} x_1 + w_{32} x_2) + w_{54} h(w_{41} x_1 + w_{42} x_2))
+\end{split}
+\end{align}
+
+\subsection{}
+
+If vector notation is used:
+
+\begin{align}
+    \label{nn1}
+    o = h(h(X \cdot W^{(1)}) \cdot W^{(2)})
+\end{align}
+
+\subsection{}
+
+Basically, we can transform $h_2(x)$ as:
+
+\begin{align}
+\begin{split}
+    h_2(x) &= \frac{e^x-e^{-x}}{e^x+e^{-x}}\\
+           &= \frac{e^x-e^{-x}}{e^x+e^{-x}} + 1 - 1\\
+           &= \frac{e^x-e^{-x} + e^x + e^{-x}}{e^x+e^{-x}} - 1\\
+           &= \frac{2e^x}{e^x+e^{-x}} - 1\\
+           &= \frac{2}{1+e^{-2x}} - 1\\
+    h_2(x) &= 2h_1(2x)-1
+\end{split}
+\end{align}
+
+Substitute into \cref{nn1}:
+
+\begin{align}
+\begin{split}
+o &= h_2(h_2(X \cdot W^{(1)}) \cdot W^{(2)}) \\
+  &= 2h_1(2 \cdot 2h_1(2 \cdot X \cdot W^{(1)}) \cdot W^{(2)})
+\end{split}
+\end{align}
+
+\qed
+\end{document}

@@ -1,0 +1,75 @@
+\documentclass[preview]{standalone}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\begin{document}
+
+\section{}
+
+\subsection{}
+
+From textbook, we know:
+
+\[\Delta w_{ji} = -\eta\frac{\partial E_d}{\partial w_{ji}}\]
+
+If we use 
+
+\[E(\vec{w})\equiv\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2\]
+
+Then we would have the following in calculating
+$\displaystyle\frac{\partial E_d}{\partial w_{ji}}$:
+
+\begin{align}
+\begin{split}
+\frac{\partial E_d}{\partial w_{ji}}
+&= \frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2 \right)\\
+&=
+\frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2\right)
++
+\frac{\partial}{\partial w_{ji}}\left(\gamma\sum_{i,j}w_{ji}^2 \right)\\
+%&= \frac{\partial E_d}{\partial net_{{k}}}\frac{\partial net_{{k}}}{\partial net_{j}}
+\end{split}
+\end{align}
+
+The first part is equation computed in original error definition, i.e.,
+\[\frac{\partial E_d}{\partial w_{ji}}
+= \frac{\partial E_d}{\partial net_{{k}}}\frac{\partial net_{{k}}}{\partial
+net_{j}}
++
+\frac{\partial}{\partial w_{ji}}\left(\gamma\sum_{i,j}w_{ji}^2 \right)\]
+
+For the second part, apply basic calculus. Since the derivative would be zero
+except the same $i,j$ in $w_{ji}$ occurs. The summation over $i,j$ could be
+dropped.
+
+\begin{align}
+\begin{split}
+\frac{\partial}{\partial w_{ji}}\left(\gamma\sum_{i,j}w_{ji}^2 \right)
+= \frac{\partial}{\partial w_{ji}}\left(\gamma w_{ji}^2 \right)
+= 2 \gamma \cdot w_{ji}
+\end{split}
+\end{align}
+
+Thus, we have:
+\begin{align}
+\begin{split}
+\frac{\partial E_d}{\partial w_{ji}}
+= \delta_j + 2 \gamma \cdot w_{ji}
+\end{split}
+\end{align}
+where $\delta_j$ is the original calculated result.
+
+Therefore, in final form:
+\begin{align}
+\begin{split}
+    \Delta _{ji} = \eta\delta_jx_{ji} - 2\eta\gamma \cdot w_{ji}
+\end{split}
+\end{align}
+
+The additional $(-2\eta\gamma \cdot w_{ji})$ is basically the same as the
+weight multiplied by the constant $1 - 2\eta\gamma$.\qed
+
+\end{document}
