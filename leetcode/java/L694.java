@@ -11,6 +11,15 @@ import static org.junit.Assert.assertEquals;
  * <p>
  * Count the number of distinct islands. An island is considered to be the same as another if and
  * only if one island can be translated (and not rotated or reflected) to equal the other.
+ * <p>
+ * Example 1: [[11000], [11000], [00011], [00011]]. Given the above grid map, return 1.
+ * <p>
+ * Example 2: [[11011], [10000], [00001], [11011]]. Given the above grid map, return 3.
+ * <p>
+ * Notice that: 11 1 and 1 11 are considered different island shapes, because we do not consider
+ * reflection / rotation.
+ * <p>
+ * Note: The length of each dimension in the given grid does not exceed 50.
  */
 public class L694 {
     class Solution {
