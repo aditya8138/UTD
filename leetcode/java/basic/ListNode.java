@@ -7,7 +7,7 @@ public class ListNode {
     public int val;
     public ListNode next;
 
-    ListNode(int x) {
+    public ListNode(int x) {
         val = x;
     }
 
@@ -22,7 +22,7 @@ public class ListNode {
     }
 
     public static Integer[] toArray(ListNode head) {
-        ArrayList<Integer> a = new ArrayList();
+        ArrayList<Integer> a = new ArrayList<>();
         while (head != null) {
             a.add(head.val);
             head = head.next;
