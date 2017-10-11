@@ -82,26 +82,27 @@ Based on textbook:
 \begin{split}
 \frac{\partial E_d}{\partial net_j}
 &=\sum_{{k}\in{Downstream(j)}}\frac{\partial E_d}{\partial net_{{k}}}\frac{\partial net_{{k}}}{\partial net_{j}}\\
+&=\sum_{{k}\in{Downstream(j)}}-\delta_{{k}}\frac{\partial net_{{k}}}{\partial net_{j}}
 \end{split}
 \end{align}
 
-For the first term in \cref{i0}, applying the chain rule again as:
-\begin{align}
-\label{i1}
-\frac{\partial E_d}{\partial net_{{k}}}=\frac{\partial E_d}{\partial
-o_{{k}}}\frac{\partial o_{{k}}}{\partial net_{{k}}}
-\end{align}
+%For the first term in \cref{i0}, applying the chain rule again as:
+%\begin{align}
+%\label{i1}
+%\frac{\partial E_d}{\partial net_{{k}}}=\frac{\partial E_d}{\partial
+%o_{{k}}}\frac{\partial o_{{k}}}{\partial net_{{k}}}
+%\end{align}
 
-We have already calculated the first part of \cref{i1} as
-$\displaystyle\frac{\partial E_d}{\partial o_{{k}}}=-(t_{{k}}-o_{{k}})$. And
-for the second part, since the $\tanh()$ function is used, the derivative is
-just the derivative of the $\tanh()$ function, which is \cref{tanhderiv}. Thus,
-we have:
+%We have already calculated the first part of \cref{i1} as
+%$\displaystyle\frac{\partial E_d}{\partial o_{{k}}}=-(t_{{k}}-o_{{k}})$. And
+%for the second part, since the $\tanh()$ function is used, the derivative is
+%just the derivative of the $\tanh()$ function, which is \cref{tanhderiv}. Thus,
+%we have:
 
-\begin{align}
-\label{i2}
-\frac{\partial E_d}{\partial net_{{k}}}=-(t_{{k}}-o_{{k}})\cdot(1-o_{{k}}^2)
-\end{align}
+%\begin{align}
+%\label{i2}
+%\frac{\partial E_d}{\partial net_{{k}}}=-(t_{{k}}-o_{{k}})\cdot(1-o_{{k}}^2)
+%\end{align}
 
 For the second term in \cref{i0}:
 
@@ -119,16 +120,14 @@ Substitute into \cref{i0}
 \begin{align}
 \label{i4}
 \frac{\partial E_d}{\partial net_{{k}}}
-&= \sum_{{k\in Downstream(j)}}-(t_{{k}}-o_{{k}})\cdot(1-o_{{k}}^2)\cdot
-w_{{kj}} \cdot(1-o_j^2)
+&= \sum_{{k\in Downstream(j)}}-\delta_{{k}}\cdot w_{{kj}} \cdot(1-o_j^2)
 \end{align}
 
 Rearranging terms and using $\delta_j$ to denote $-\frac{\partial E_d}{\partial
 net_j}$, we have:
 
 \begin{align}
-    \delta_j = (1-o_j^2)\sum_{{k\in
-    Downstream(j)}}(t_{{k}}-o_{{k}})\cdot(1-o_{{k}}^2)w_{{kj}}
+    \delta_j = -(1-o_j^2)\sum_{{k\in Downstream(j)}}\delta_{{k}}\cdot w_{{kj}}
 \end{align}
 
 and the gradient descent rule for hidden units:

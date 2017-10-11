@@ -4,6 +4,7 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{mathtools}
+\usepackage{cleveref}
 
 \begin{document}
 
@@ -41,7 +42,7 @@ If vector notation is used:
 
 \begin{align}
     \label{nn1}
-    o = h(h(X \cdot W^{(1)}) \cdot W^{(2)})
+    o = W^{(2)} \cdot h(X \cdot W^{(1)})
 \end{align}
 
 \subsection{}
@@ -63,8 +64,8 @@ Substitute into \cref{nn1}:
 
 \begin{align}
 \begin{split}
-o &= h_2(h_2(X \cdot W^{(1)}) \cdot W^{(2)}) \\
-  &= 2h_1(2 \cdot 2h_1(2 \cdot X \cdot W^{(1)}) \cdot W^{(2)})
+o &= W^{(2)} \cdot h_2(X \cdot W^{(1)}) \\
+  &= 2 \cdot 2h_1(2 \cdot X \cdot W^{(1)}) \cdot W^{(2)}
 \end{split}
 \end{align}
 
