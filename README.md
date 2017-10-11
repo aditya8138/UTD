@@ -27,7 +27,7 @@ Computer Science assignments and projects at UT Dallas.
 
 - [CS6390 Advanced Computer Networks](./CS6390)
 
-## Course _Audit_
+## Course _Audited_
 
 It is said that all courses at UT Dallas are __No Audit Allowed (MNA)__.
 
