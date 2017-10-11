@@ -17,7 +17,7 @@ From textbook, we know:
 
 If we use 
 
-\[E(\vec{w})\equiv\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2\]
+\[E(\vec{w})\equiv\frac{1}{2}\sum_{d\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2\]
 
 Then we would have the following in calculating
 $\displaystyle\frac{\partial E_d}{\partial w_{ji}}$:
@@ -25,9 +25,9 @@ $\displaystyle\frac{\partial E_d}{\partial w_{ji}}$:
 \begin{align}
 \begin{split}
 \frac{\partial E_d}{\partial w_{ji}}
-&= \frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2 \right)\\
+&= \frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{d\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2+\gamma\sum_{i,j}w_{ji}^2 \right)\\
 &=
-\frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{D\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2\right)
+\frac{\partial}{\partial w_{ji}}\left(\frac{1}{2}\sum_{d\in{D}}\sum_{{k\in{outputs}}}(t_{{kd}}-o_{{kd}})^2\right)
 +
 \frac{\partial}{\partial w_{ji}}\left(\gamma\sum_{i,j}w_{ji}^2 \right)\\
 %&= \frac{\partial E_d}{\partial net_{{k}}}\frac{\partial net_{{k}}}{\partial net_{j}}
