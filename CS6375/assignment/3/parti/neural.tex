@@ -42,7 +42,7 @@ If vector notation is used:
 
 \begin{align}
     \label{nn1}
-    o = W^{(2)} \cdot h(X \cdot W^{(1)})
+    o = W^{(2)} \cdot h(W^{(1)} \cdot X)
 \end{align}
 
 \subsection{}
@@ -64,10 +64,12 @@ Substitute into \cref{nn1}:
 
 \begin{align}
 \begin{split}
-o &= W^{(2)} \cdot h_2(X \cdot W^{(1)}) \\
-  &= 2 \cdot 2h_1(2 \cdot X \cdot W^{(1)}) \cdot W^{(2)}
+o &= W^{(2)} \cdot h_2(W^{(1)} \cdot X) \\
+  &= W^{(2)} \cdot2h_1(W^{(1)} \cdot 2 \cdot X) - 1
 \end{split}
 \end{align}
+
+Basically it is same function.
 
 \qed
 \end{document}
