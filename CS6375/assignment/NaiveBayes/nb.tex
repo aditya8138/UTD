@@ -53,6 +53,30 @@ P(g_a|\lnot w_h)
 
 \section{}
 
+Let $B$ denotes the taxi was blue, $SB$ denotes the taxi looked blue. Then:
+\[P(SB|B)=0.75\]
+and
+\[P(SB|\lnot B)=0.25\]
+
+We need to compute $P(B|SB)$.
+
+Given the prior $P(B)=0.1$, we have:
+
+\begin{align*}
+    P(B|SB)&=\frac{P(SB|B)P(B)}{P(SB)}\\
+           &=\frac{0.75\times0.1}{x}\\
+           &=\frac{0.075}{x}\\
+    P(\lnot B|SB)&=\frac{P(SB|\lnot B)P(\lnot B)}{P(SB)}\\
+                 &=\frac{0.25\times0.9}{x}\\
+                 &=\frac{0.225}{x}
+\end{align*}
+where $x$ is some constant.
+
+Obviously, $\lnot B$ has greater probability. Thus, the taxi was more likely a
+green taxi.
+
+\pagebreak
+
 \section{}
 
 \subsection{}
@@ -63,8 +87,8 @@ Using naive bayes classifier, assuming all three factors are independent given m
 P(No|Good, Pass, Out)
 &=\frac{P(Good, Pass, Out|No){P(No)}}{P(Good, Pass, Out)}\\
 &=\frac{P(Good|No) P(Pass|No) P(Out|No){P(No)}}{P(Good) P(Pass) P(Out)}\\
-&=\frac{\frac{3}{5}\times\frac{1}{5}\times\frac{2}{5}\times\frac{5}{8}}{\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2}}\\
-&=\frac{\frac{3}{100}}{\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2}}\\\\
+&=\frac{\frac{3}{5}\times\frac{1}{5}\times\frac{3}{5}\times\frac{5}{8}}{\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2}}\\
+&=\frac{\frac{9}{200}}{\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2}}\\\\
 P(Yes|Good, Pass, Out)
 &=\frac{P(Good, Pass, Out|Yes){P(Yes)}}{P(Good, Pass, Out)}\\
 &=\frac{P(Good|Yes) P(Pass|Yes) P(Out|Yes){P(Yes)}}{P(Good) P(Pass) P(Out)}\\
@@ -72,7 +96,8 @@ P(Yes|Good, Pass, Out)
 &=\frac{\frac{3}{72}}{\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2}}\\
 \end{align*}
 
-It's easy to compute $\arg\max = P(Yes|Good, Pass, Out)$. We can predict his happiness is \emph{YES}.
+It's easy to compute $\arg\max = P(No|Good, Pass, Out)$. We can predict his
+happiness is \emph{NO}.
 
 \subsection{}
 
@@ -118,23 +143,23 @@ written as:
 
 \begin{align*}
 \sum_i\ln\frac{P(X_i|Y=0)}{P(X_i|Y=1)}
-&=\sum_i\ln\frac{\theta_{i1}^{X_i}(1-\theta_{i1})^{(1-X_i)}}{\theta_{i0}^{X_i}(1-\theta_{i0})^{(1-X_i)}}\\
-&=\sum_i\left(\ln\frac{\theta_{i1}^{X_i}}{\theta_{i0}^{X_i}}+\ln\frac{(1-\theta_{i1})^{(1-X_i)}}{(1-\theta_{i0})^{(1-X_i)}}\right)\\
-&=\sum_i\Bigg(\ln\bigg(\frac{\theta_{i1}}{\theta_{i0}}\bigg)^{X_i}+\ln\bigg(\frac{1-\theta_{i1}}{1-\theta_{i0}}\bigg)^{(1-X_i)}\Bigg)\\
-&=\sum_i\left(\ln\frac{\theta_{i1}}{\theta_{i0}}\cdot{X_i}+\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\cdot{(1-X_i)}\right)\\
-&=\sum_i\Bigg(\bigg(\ln\frac{\theta_{i1}}{\theta_{i0}}-\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\bigg)\cdot{X_i}+\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\Bigg)
+&=\sum_i\ln\frac{\theta_{i0}^{X_i}(1-\theta_{i0})^{(1-X_i)}}{\theta_{i1}^{X_i}(1-\theta_{i1})^{(1-X_i)}}\\
+&=\sum_i\left(\ln\frac{\theta_{i0}^{X_i}}{\theta_{i1}^{X_i}}+\ln\frac{(1-\theta_{i0})^{(1-X_i)}}{(1-\theta_{i1})^{(1-X_i)}}\right)\\
+&=\sum_i\Bigg(\ln\bigg(\frac{\theta_{i0}}{\theta_{i1}}\bigg)^{X_i}+\ln\bigg(\frac{1-\theta_{i0}}{1-\theta_{i1}}\bigg)^{(1-X_i)}\Bigg)\\
+&=\sum_i\left(\ln\frac{\theta_{i0}}{\theta_{i1}}\cdot{X_i}+\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\cdot{(1-X_i)}\right)\\
+&=\sum_i\Bigg(\bigg(\ln\frac{\theta_{i0}}{\theta_{i1}}-\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\bigg)\cdot{X_i}+\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\Bigg)
 \end{align*}
 
 Note this expression is a linear weighted sum of the $X_i$'s. Substituting
 the expression back into equation (19) in textbook, we have
 
-\[P(Y=1|X)=\cfrac{1}{1+\exp\bigg(\ln\frac{1-\pi}{\pi}+\sum_i\Big(\big(\ln\frac{\theta_{i1}}{\theta_{i0}}-\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\big)\cdot{X_i}+\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\Big)\bigg)}\]
+\[P(Y=1|X)=\cfrac{1}{1+\exp\bigg(\ln\frac{1-\pi}{\pi}+\sum_i\Big(\big(\ln\frac{\theta_{i0}}{\theta_{i1}}-\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\big)\cdot{X_i}+\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\Big)\bigg)}\]
 Or equivalently,
 \[P(Y=1|X)=\cfrac{1}{1+\exp(w_0+\sum_{i=1}^nw_iX_i)}\]
 where the weights $w_1\ldots w_n$ are given by:
-\[w_i=\ln\frac{\theta_{i1}}{\theta_{i0}}-\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\]
+\[w_i=\ln\frac{\theta_{i0}}{\theta_{i1}}-\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\]
 and where
-\[w_0=\ln\frac{1-\pi}{\pi}+\sum_i\ln\frac{1-\theta_{i1}}{1-\theta_{i0}}\]
+\[w_0=\ln\frac{1-\pi}{\pi}+\sum_i\ln\frac{1-\theta_{i0}}{1-\theta_{i1}}\]
 Also we have
 \[P(Y=0|X)=1-P(Y=1|X)=\cfrac{\exp(w_0+\sum_{i=1}^nw_iX_i)}{1+\exp(w_0+\sum_{i=1}^nw_iX_i)}\]
 
@@ -160,18 +185,6 @@ Thus, we have:
 w_0&=\ln\frac{1-\pi}{\pi}+\sum_i\ln\frac{h(X_i,\theta_{i0})}{h(X_i,\theta_{i1})}\\
 w_i&=\theta_{i1}^T-\theta_{i0}^T
 \end{align*}
-
-
-
-
-
-
-
-
-
-
-
-
 
 \end{document}
 
