@@ -39,10 +39,10 @@ public class L683 {
     @Test
     public void calPoints() throws Exception {
 
-        int[] flowers = new int[]{1, 3, 2};
+        int[] flowers = new int[]{2,1,4,3};
 
         int k = 1;
-        assertEquals(2, new Solution().kEmptySlots(flowers, k));
+        assertEquals(1, new Solution().kEmptySlots(flowers, k));
     }
 
     class Solution {
@@ -52,15 +52,22 @@ public class L683 {
                 return -1;
             int b = 0;
             boolean[] boom = new boolean[flowers.length + 1];
+
+            // Current implementation is not accepted on Leetcode.
+            boom[0] = true;
             for (int f : flowers) {
                 b++;
                 boom[f] = true;
                 int i;
+
+                //
                 for (i = 1; f + i <= flowers.length && !boom[f + i]; i++) ;
                 if (f + i <= flowers.length && i - 1 == k)
                     return b;
-                for (i = -1; f + i > 0 && !boom[f + i]; i--) ;
-                if (f + i > 0 && 0 - i - 1 == k)
+
+                //
+                for (i = -1; f + i >= 0 && !boom[f + i]; i--) ;
+                if (f + i >= 0 && 0 - i - 1 == k)
                     return b;
             }
             return -1;
