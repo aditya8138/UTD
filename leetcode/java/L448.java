@@ -34,6 +34,11 @@ public class L448 {
     }
 
     class Solution {
+        /**
+         * First in place rearrange the array so that each number x is place in index x-1. For
+         * duplicate numbers, leave them at original index. After rearrangement, all index with
+         * number in it not satisfy index = x - 1, are corresponding to the missing number.
+         */
         public List<Integer> findDisappearedNumbers(int[] nums) {
             int i = 0;
             int tmp;
