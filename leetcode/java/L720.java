@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -10,26 +12,36 @@ public class L720 {
     public void longestWord() throws Exception {
         Solution solution = new Solution();
 
-        String[] words = {"a", "banana", "app", "appl", "ap", "apply", "apple", "applyi"};
+        String[] words = {"a", "banana", "app", "appl", "ap", "apply", "apple"};
 
-        System.out.println(solution.longestWord(words));
+        assertTrue("apple".equals(solution.longestWord(words)));
     }
 
     class Solution {
+
+        /**
+         * Naive Solution. Put string into priority queue based on length of word, and validate from
+         * the longest string. Use {@code HashSet} to determine whether a substring exists in words
+         * list.
+         *
+         * @param words Words list to check.
+         *
+         * @return The longest word in {@code words} that can be built one character at a time by
+         * other words in words
+         */
         public String longestWord(String[] words) {
             HashSet<String> set = new HashSet<>();
             set.addAll(Arrays.asList(words));
 
-            PriorityQueue<String> x = new PriorityQueue<>(new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    if (o1.length() < o2.length())
-                        return 1;
-                    if (o1.length() > o2.length())
-                        return -1;
-                    return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
-                }
-            });
+            PriorityQueue<String> x = new PriorityQueue<>(
+                    (o1, o2) -> {
+                        if (o1.length() < o2.length())
+                            return 1;
+                        if (o1.length() > o2.length())
+                            return -1;
+                        return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
+                    }
+            );
 
             x.addAll(Arrays.asList(words));
 
