@@ -9,6 +9,39 @@
  */
 public class L097 {
 
+    class OptimizeDPSolution {
+        public boolean isInterleave(String s1, String s2, String s3) {
+
+            int l1 = s1.length();
+            int l2 = s2.length();
+            int l3 = s3.length();
+
+            if (l3 != l1 + l2)
+                return false;
+
+            boolean[][] m = new boolean[l2 + 1][l1 + 1];
+
+            m[l2][l1] = true;
+
+            for (int i2 = l2 - 1; i2 >= 0; i2--) {
+                m[i2][l1] = (s3.charAt(l3 - l2 + i2) == s2.charAt(i2) && m[i2 + 1][l1]);
+            }
+
+            for (int i1 = l1 - 1; i1 >= 0; i1--) {
+                m[l2][i1] = (s3.charAt(l3 - l1 + i1) == s1.charAt(i1) && m[l2][i1 + 1]);
+            }
+
+            for (int i2 = l2 - 1; i2 >= 0; i2--) {
+                for (int i1 = l1 - 1; i1 >= 0; i1--) {
+                    m[i2][i1] = (s3.charAt(l3 - l1 + i1 - l2 + i2) == s1.charAt(i1) && m[i2][i1 + 1])
+                            || (s3.charAt(l3 - l1 + i1 - l2 + i2) == s2.charAt(i2) && m[i2 + 1][i1]);
+                }
+            }
+
+            return m[0][0];
+        }
+    }
+
     class DirectDPSolution {
         public boolean isInterleave(String s1, String s2, String s3) {
             int l1 = s1.length();
