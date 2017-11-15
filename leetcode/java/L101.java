@@ -32,6 +32,31 @@ import basic.TreeNode;
  */
 public class L101 {
 
+    /*
+     * Reasonable recursive solution.
+     * The mirror part is unnecessary, simply change recursion parameter would do the same thing.
+     */
+    class Solution {
+        public boolean isSymmetric(TreeNode root) {
+            if (root == null)
+                return true;
+
+            return isSymmetric(root.left, root.right);
+        }
+
+        private boolean isSymmetric(TreeNode a, TreeNode b) {
+            if (a == null && b == null)
+                return true;
+
+            if (a == null || b == null)
+                return false;
+
+            if (a.val != b.val)
+                return false;
+
+            return isSymmetric(a.left, b.right) && isSymmetric(a.right, b.left);
+        }
+    }
 
     /*
      * Intuitive solution. First mirror a subtree, and then check if left and right are the same.
