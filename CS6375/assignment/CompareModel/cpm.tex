@@ -1,0 +1,73 @@
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[l2tabu, orthodox]{nag}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{standalone}
+
+\usepackage{parskip}
+% As a rule of thumb it should be loaded at the end of the preamble, after all
+% the other packages. A few exceptions exist, such as the cleveref package that
+% is also mentioned in this post. Hence, cleveref should be loaded after
+% hyperref.
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0.8,0.2,0.5}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+% This package introduces the \cref command. When using this command to make
+% cross-references, instead of \ref or \eqref, a word is placed in front of the
+% reference according to the type of reference: fig. for figures, eq. for
+% equations
+\usepackage{cleveref}
+
+\title{Assignment 4 Part I}
+\author{Hanlin He\footnote{hxh160630@utdallas.edu},
+Tao Wang\footnote{txw162630@utdallas.edu}}
+
+\begin{document}
+\maketitle
+
+\section{}
+
+\begin{align*}
+E_{agg}(x) &= E\left[\bigg\{\frac{1}{M}\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
+&= \frac{1}{M^2}E\left[\bigg\{\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
+&= \frac{1}{M^2}E\bigg[\sum_{i=1}^M\epsilon_i^2(x)+\sum_{i=1}^M\sum_{j=1}^M\epsilon_i(x)\epsilon_j(x)\bigg]\qquad\text{// }\forall i\neq j,E[\epsilon_i(x)\epsilon_j(x)]=0\\
+&= \frac{1}{M^2}E\bigg[\sum_{i=1}^M\epsilon_i^2(x)\bigg]\\
+&= \frac{1}{M^2}\sum_{i=1}^ME[\epsilon_i^2(x)]\qquad\text{// }E_{avg}=\frac{1}{M}\sum_{i=1}^ME[\epsilon_i^2(x)]\\
+&= \frac{1}{M}E_{avg}
+\end{align*}
+
+\section{}
+
+Since all \emph{convex} function have following inequality:
+\[f\bigg(\sum_{i=1}^M\lambda_ix_i\bigg)\leq\sum_{i=1}^M\lambda_if(x_i)\]
+
+Given that $f: x \rightarrow x^2$ is a convex function.
+
+\begin{align*}
+E_{agg}(x) &= E\left[\bigg\{\frac{1}{M}\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
+&= \frac{1}{M^2}E\left[\bigg\{\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
+&= \frac{1}{M^2}E\left[f\bigg\{\sum_{i=1}^M\epsilon_i(x)\bigg\}\right]\\
+&\leq \frac{1}{M^2}E\left[\sum_{i=1}^Mf\big(\epsilon_i(x)\big)\right]\\
+&= \frac{1}{M}E_{avg}
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
