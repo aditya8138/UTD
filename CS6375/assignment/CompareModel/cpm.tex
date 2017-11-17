@@ -52,22 +52,10 @@ Given that $f: x \rightarrow x^2$ is a convex function.
 
 \begin{align*}
 E_{agg}(x) &= E\left[\bigg\{\frac{1}{M}\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
-&= \frac{1}{M^2}E\left[\bigg\{\sum_{i=1}^M\epsilon_i(x)\bigg\}^2\right]\\
-&= \frac{1}{M^2}E\left[f\bigg\{\sum_{i=1}^M\epsilon_i(x)\bigg\}\right]\\
-&\leq \frac{1}{M^2}E\left[\sum_{i=1}^Mf\big(\epsilon_i(x)\big)\right]\\
-&= \frac{1}{M}E_{avg}
+&= E\left[\bigg\{\sum_{i=1}^M\frac{1}{M}\epsilon_i(x)\bigg\}^2\right]\\
+&\leq E\left[\sum_{i=1}^M\frac{1}{M}\bigg\{\epsilon_i(x)\bigg\}^2\right]\\
+&= \frac{1}{M}E\left[\sum_{i=1}^M\bigg\{\epsilon_i(x)\bigg\}^2\right]\\
+&= E_{avg}
 \end{align*}
-
-
-
-
-
-
-
-
-
-
-
-
 
 \end{document}
