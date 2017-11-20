@@ -78,12 +78,16 @@ public class L729 {
         assertTrue(myCalendar.book(75, 92));
     }
 
-    class MyCalendar {
+    public static class MyCalendar {
 
         Map<Integer, Integer> c;
 
         public MyCalendar() {
             this.c = new TreeMap<>();
+        }
+
+        public MyCalendar(MyCalendar o) {
+            this.c = new TreeMap<>(o.c);
         }
 
         public boolean book(int start, int end) {
