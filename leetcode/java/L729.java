@@ -20,10 +20,64 @@
  * SOFTWARE.
  */
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * <h1>729. My Calendar I</h1>
+ * <p>
+ * Implement a {@code MyCalendar} class to store your events. A new event can be added if adding the
+ * event will not cause a double booking.
+ * <p>
+ * Your class will have the method, {@code book(int start, int end)}. Formally, this represents a
+ * booking on the half open interval {@code [start, end)}, the range of real numbers {@code x} such
+ * that {@code start <= x < end}.
+ * <p>
+ * A double booking happens when two events have some non-empty intersection (ie., there is some
+ * time that is common to both events.)
+ * <p>
+ * For each call to the method {@code MyCalendar.book}, return {@code true} if the event can be
+ * added to the calendar successfully without causing a double booking. Otherwise, return {@code
+ * false} and do not add the event to the calendar.
+ * <p>
+ * Your class will be called like this: {@code MyCalendar cal = new MyCalendar();
+ * MyCalendar.book(start, end)}.
+ * <p>
+ * Example 1:
+ * <pre>
+ * MyCalendar();
+ * MyCalendar.book(10, 20); // returns true
+ * MyCalendar.book(15, 25); // returns false
+ * MyCalendar.book(20, 30); // returns true
+ * Explanation:
+ * The first event can be booked.  The second can't because time 15 is already booked by another
+ * event.
+ * The third event can be booked, as the first event takes every time less than 20, but not
+ * including 20.
+ * </pre>
+ * <p>
+ * Note:
+ * <p>
+ * The number of calls to {@code MyCalendar.book} per test case will be at most 1000. In calls to
+ * {@code MyCalendar.book(start, end)}, start and end are integers in the range [0, 10^9].
+ */
 public class L729 {
+    @Test
+    public void book() throws Exception {
+        MyCalendar myCalendar = new MyCalendar();
+
+        assertTrue(myCalendar.book(97, 100));
+        assertTrue(myCalendar.book(33, 51));
+        assertFalse(myCalendar.book(89, 100));
+        assertFalse(myCalendar.book(83, 100));
+        assertTrue(myCalendar.book(75, 92));
+    }
+
     class MyCalendar {
 
         Map<Integer, Integer> c;
@@ -44,7 +98,3 @@ public class L729 {
         }
     }
 }
-/*
-["MyCalendar","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book"]
-[[],[97,100],[33,51],[89,100],[83,100],[75,92],[76,95],[19,30],[53,63],[8,23],[18,37],[87,100],[83,100],[54,67],[35,48],[58,75],[70,89],[13,32],[44,63],[51,62],[2,15]]
- */
