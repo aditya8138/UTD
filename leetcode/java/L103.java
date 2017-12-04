@@ -87,5 +87,60 @@ public class L103 {
 
             return ret;
         }
+
+        public List<List<Integer>> zigzagLevelOrderRe(TreeNode root) {
+
+            List<List<Integer>> ret = new LinkedList<>();
+
+            if (root == null)
+                return ret;
+
+            LinkedList<TreeNode> queue1 = new LinkedList<TreeNode>();
+            LinkedList<TreeNode> queue2 = new LinkedList<TreeNode>();
+
+            queue1.offer(root);
+
+            // Each time, the level in queue is left --> right.
+            while (true) {
+                LinkedList<Integer> next = new LinkedList<>();
+
+                while (!queue1.isEmpty()) {
+                    TreeNode t = queue1.poll();
+
+                    // Put at the end.
+                    next.addLast(t.val);
+
+                    // Put in queue from left -> right
+                    if (t.left != null)
+                        queue2.offer(t.left);
+                    if (t.right != null)
+                        queue2.offer(t.right);
+
+                }
+                ret.add(next);
+
+                if (queue2.isEmpty())
+                    break;
+
+                next = new LinkedList<>();
+                while (!queue2.isEmpty()) {
+                    TreeNode t = queue2.poll();
+
+                    // Put at the beginning.
+                    next.addFirst(t.val);
+
+                    // Put in queue from left -> right
+                    if (t.left != null)
+                        queue1.offer(t.left);
+                    if (t.right != null)
+                        queue1.offer(t.right);
+                }
+                ret.add(next);
+                if (queue1.isEmpty())
+                    break;
+            }
+
+            return ret;
+        }
     }
 }
