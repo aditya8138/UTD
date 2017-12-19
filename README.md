@@ -1,6 +1,6 @@
 # UTD
 
-Computer Science assignments and projects at UT Dallas.
+Computer Science notes, assignments and projects at UT Dallas.
 
 <!-- ## Courses In Progress -->
 
