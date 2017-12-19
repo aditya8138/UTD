@@ -6,7 +6,7 @@ Computer Science assignments and projects at UT Dallas.
 
 ## Courses Taken
 
-- CS6301 Language Based Security
+- [CS6301 Language Based Security](./CS6301LBS)
 
 - CS6301 Implementation of Advanced Data Structures and Algorithms
 
