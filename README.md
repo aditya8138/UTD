@@ -8,7 +8,7 @@ Computer Science notes, assignments and projects at UT Dallas.
 
 - [CS6301 Language Based Security](./CS6301LBS)
 
-- CS6301 Implementation of Advanced Data Structures and Algorithms
+- [CS6301 Implementation of Advanced Data Structures and Algorithms](./CS6301IADSA)
 
 - [CS6313 Statistical Methods for Data Science](./CS6313)
 
