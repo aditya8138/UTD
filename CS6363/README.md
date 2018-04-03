@@ -15,7 +15,7 @@ Instructor(s): Benjamin Raichel
 * Graph Algorithm.
 * NPC
 
-## About the Note
+## About the [Note](./notes/notes.pdf)
 The notes are lecture notes taken from **CS6363: Design and Analysis of Computer Algorithms** taught by Benjamin Raichel
 at University of Texas at Dallas in Fall 2016.
 
