@@ -15,7 +15,7 @@ Instructor(s): Benjamin Raichel
 * Graph Algorithm.
 * NPC
 
-## About the Note
+## About the [Note](./notes/notes.pdf)
 The notes are lecture notes taken from **CS6363: Design and Analysis of Computer Algorithms** taught by Benjamin Raichel
 at University of Texas at Dallas in Fall 2016.
 
@@ -26,8 +26,7 @@ which Benjamin strongly recommended as off-class additional reading material.
 
 Taking note in Ben's class is a pleasant experience, though there might be some times
 in the semester you cannot read the note on blackboard.
-I hope this note would help you, if you are taking the same class as I did,
-and are bored enough to find this note.
+I hope this note would help you, if you are taking the same class as I did.
 I wish you receive a good grade in this course and all other courses in the future.
 
 
