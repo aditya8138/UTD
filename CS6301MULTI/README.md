@@ -1,6 +1,6 @@
 # CS6301 MULTI
 
-Course Title: Special Topics in Computer Science - Intro to __Multi__Core
+Course Title: Special Topics in Computer Science - Intro to **Multi**Core
 Programming
 
 Class Section: CS6301.003.18F
