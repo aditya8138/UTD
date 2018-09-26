@@ -9,7 +9,7 @@ Instructor: Neeraj Mittal
 
 Homework Assignments:
 
-- hw1
+- [hw1](./hw1.pdf)
 
 Project Assignments:
 
