@@ -9,3 +9,7 @@ Instructor: Kevin Hamlen
 ## A Coq [Cheatsheet](./coq_cheatsheet.md)
 
 ## A Final Project on [Verifying BWT](https://coquistadores.github.io/CertiBWT/)
+
+## Assignments
+
+By request of Dr. Hamlen, the assignments are omitted.
